@@ -3,10 +3,12 @@
  */
 
 var StaticGame = function() {
-    this.PADDLE_GAP = 0.02;
-    this.PADDLE_THICKNESS = 0.02;
+    this.PADDLE_GAP = 0.08;
+    this.PADDLE_THICKNESS = 0.04;
     this.CIRCLE_DIAMETER = 0.85;
-    this.ROTATE_ACCEL = 0.001;
+    this.ROTATE_ACCEL = 0.0005;
+
+    this.score = 0;
 
     this.paddleAngles = [];
 
@@ -14,14 +16,21 @@ var StaticGame = function() {
     this.rotateSpeed = 0;
 
     this.update = function(delta) {
-        if (this.desiredRotateSpeed - this.rotateSpeed <= this.ROTATE_ACCEL) {
+        if (this.desiredRotateSpeed - this.rotateSpeed <= this.ROTATE_ACCEL * delta) {
             this.rotateSpeed = this.desiredRotateSpeed;
         } else {
-            this.rotateSpeed += this.ROTATE_ACCEL;
+            this.rotateSpeed += this.ROTATE_ACCEL * delta;
+        }
+
+        for (var i = 0; i < this.paddleAngles.length; i++) {
+            this.paddleAngles[i] += this.rotateSpeed * delta;
         }
     };
 
     this.render = function() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        this.renderScore();
         this.renderPaddles();
     };
 
@@ -51,12 +60,11 @@ var StaticGame = function() {
             var angle = this.paddleAngles[i];
 
             var pos = [canvas.width / 2 + Math.cos(angle) * radius, canvas.height / 2 + Math.sin(angle) * radius];
-            ctx.fillRect(pos[0] - 20, pos[1] - 20 , 40, 40);
 
             var unitVector = [Math.cos(angle), Math.sin(angle)];
             var orthogonalUnitVector = this.getOrthogonalUnitVector(angle);
 
-            var paddleWidth = this.getPaddleLength(this.paddleAngles.length);
+            var paddleWidth = this.getPaddleLength(this.paddleAngles.length) - baseSize * this.PADDLE_GAP;
 
             var point1 = [
                 pos[0] - paddleWidth / 2 * orthogonalUnitVector[0] - paddleThickness / 2 * unitVector[0],
@@ -85,19 +93,19 @@ var StaticGame = function() {
         }
     };
 
-    this.click = function(x, y) {
+    this.renderScore = function() {
+        ctx.fillStyle = '#' + Constants.COLOR_GRAY;
+        ctx.textAlign = canvas.height > canvas.width ? 'center' : 'left';
+        ctx.textBaseline = canvas.height > canvas.width ? 'top' : 'middle';
+        ctx.font = this._getScoreFontSize() + 'px PirulenRg-Regular';
 
+        ctx.fillText('' + this.score,
+            canvas.height > canvas.width ? canvas.width / 2 : canvas.width * 0.1,
+            canvas.height > canvas.width ? canvas.height * 0.1 : canvas.height / 2);
     };
 
-    this.init = function() {
-        this.desiredRotateSpeed = 0.1;
-        this.rotateSpeed = 0;
+    this.click = function(x, y) {
 
-        this.paddleAngles = [
-            Math.PI - Math.PI * 3 / 2,
-            Math.PI - Math.PI * 13 / 6,
-            Math.PI - Math.PI * 17 / 6
-        ];
     };
 
     // paddle functions
@@ -128,5 +136,22 @@ var StaticGame = function() {
         var distance = Math.sqrt(dx * dx + dy * dy);
 
         return distance - baseSize * this.PADDLE_GAP;
+    };
+
+    this._getScoreFontSize = function() {
+        return canvas.width / 12;
+    };
+
+    this.init = function() {
+        this.desiredRotateSpeed = 0.05;
+        this.rotateSpeed = 0;
+
+        this.paddleAngles = [
+            -Math.PI * 3 / 2,
+            -Math.PI * 13 / 6,
+            -Math.PI * 17 / 6
+        ];
+
+        this.score = 0;
     };
 };
