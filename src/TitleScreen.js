@@ -31,6 +31,10 @@ var StaticTitleScreen = function() {
         for (var i = 0; i < this.transitionLineList.length; i++) {
             this.transitionLineList[i].update(delta);
         }
+
+        if (this.isTransitionOver()) {
+            StateManager.setState(StateManager.STATE_SCORES);
+        }
     };
 
     this.render = function() {
