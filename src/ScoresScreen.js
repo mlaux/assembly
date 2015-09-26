@@ -22,11 +22,20 @@ var StaticScoresScreen = function() {
     this.render = function() {
         GuiUtils.initializeContextForGui();
 
-        ctx.font = this._getScoreFontSize() + 'px Begok';
-        var y = 0;
+        ctx.fillText('hiscores', canvas.width / 2, 0);
+
+        var y = 2 * this._getScoreFontSize();
         for (var k = 0; k < this.scores.length; k++) {
             var score = this.scores[k];
-            ctx.fillText(score['username'] + ' ' + score['score'], canvas.width / 2, y);
+            var nameWidth = ctx.measureText(score['username']).width;
+            var scoreWidth = ctx.measureText(score['score']).width;
+            var totalWidth = nameWidth + scoreWidth;
+
+            ctx.font = this._getScoreFontSize() + 'px Begok';
+            ctx.fillText(score['username'], canvas.width / 2 - totalWidth / 2, y);
+
+            ctx.font = this._getScoreFontSize() + 'px PirulenRg-Regular';
+            ctx.fillText(score['score'], canvas.width / 2 + totalWidth / 2, y - canvas.width / 240);
             y += this._getScoreFontSize();
         }
     };
