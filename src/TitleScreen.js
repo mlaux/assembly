@@ -5,17 +5,20 @@
 var StaticTitleScreen = function() {
     this.MAX_LINE_COUNT = 20;
     this.LINE_CREATE_TIME = 400;
+    this.LINE_BASE_TRANSITION_SPEED = 0.01;
 
     this.createLineCountdown = this.LINE_CREATE_TIME;
     this.lineList = [];
     this.transitionLineList = [];
+
+    this.transitionStartTime = 0;
 
     this.update = function(delta) {
         if (this.createLineCountdown <= 0 && this.lineList.length < this.MAX_LINE_COUNT) {
             this.lineList.push(new TitleLine());
             this.createLineCountdown = this.LINE_CREATE_TIME;
         }
-        this.createLineCountdown -= delta * 20;
+        this.createLineCountdown -= delta / Constants.DELTA_SCALE;
 
         for (var i = 0; i < this.lineList.length; i++) {
             this.lineList[i].update(delta);
@@ -32,11 +35,17 @@ var StaticTitleScreen = function() {
 
     this.render = function() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+
         ctx.fillStyle = '#' + Constants.COLOR_WHITE;
-        ctx.font = this._getTitleFontSize() + 'px Begok';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'top';
-        ctx.fillText('assembly', canvas.width / 2, canvas.height * 0.1);
+
+        ctx.font = this._getTitleFontSize() + 'px Begok';
+        ctx.fillText('assembly', canvas.width / 2, this.getTitleYPos());
+
+        ctx.font = this._getMenuFontSize() + 'px Begok';
+        ctx.fillText('play', canvas.width / 2, this.getPlayYPos());
+        ctx.fillText('scores', canvas.width / 2, this.getScoreYPos());
 
         for (var i = 0; i < this.lineList.length; i++) {
             this.lineList[i].render();
@@ -44,6 +53,10 @@ var StaticTitleScreen = function() {
         for (var i = 0; i < this.transitionLineList.length; i++) {
             this.transitionLineList[i].render();
         }
+    };
+
+    this.click = function(x, y) {
+
     };
 
     this.init = function() {
@@ -55,25 +68,61 @@ var StaticTitleScreen = function() {
     };
 
     this.startTransition = function() {
-        console.log('starting transition');
-        for (var y = 0; y < this.getTitleHeight(); y += this.getTitleLineHeight() - 1) {
-            this.transitionLineList.push(new TitleLine(true, 1.0, y / this.getTitleHeight()));
+        this.transitionStartTime = Date.now();
+
+        for (var y = 0; y < this.getTitleFontHeight(); y += this.getLineHeight() - 1) {
+            this.transitionLineList.push(new TitleLine(true, 1.0, this.getTitleYPos() / canvas.height + y / canvas.height));
         }
+
+        for (var y = 0; y < this.getMenuFontHeight(); y += this.getLineHeight() - 1) {
+            this.transitionLineList.push(new TitleLine(true, 1.0, this.getPlayYPos() / canvas.height + y / canvas.height));
+        }
+
+        for (var y = 0; y < this.getMenuFontHeight(); y += this.getLineHeight() - 1) {
+            this.transitionLineList.push(new TitleLine(true, 1.0, this.getScoreYPos() / canvas.height + y / canvas.height));
+        }
+    };
+
+    this.isTransitionOver = function() {
+        return this.transitionStartTime !== 0 && (Date.now() - this.transitionStartTime) * Constants.DELTA_SCALE * this.LINE_BASE_TRANSITION_SPEED >= 1.0;
+    };
+
+    // title methods
+    this._getTitleFontSize = function() {
+        return canvas.width / 11.25;
     };
 
     this.getTitleYPos = function() {
         return canvas.height * 0.1;
     };
 
-    this.getTitleHeight = function() {
+    this.getTitleFontHeight = function() {
         return canvas.width * 0.1;
     };
 
-    this.getTitleLineHeight = function() {
-        return canvas.width * 0.005;
+    // menu methods
+    this._getMenuFontSize = function() {
+        return canvas.width / 22.5;
     };
 
-    this._getTitleFontSize = function() {
-        return canvas.width / 11.25;
+    this.getPlayYPos = function() {
+        return canvas.height * 0.5;
+    };
+
+    this.getPlayWidth = function() {
+        return
+    };
+
+    this.getScoreYPos = function() {
+        return this.getPlayYPos() + this.getMenuFontHeight() * 2;
+    };
+
+    this.getMenuFontHeight = function() {
+        return canvas.width * 0.05;
+    };
+
+    // other methods
+    this.getLineHeight = function() {
+        return canvas.width * 0.005;
     };
 };

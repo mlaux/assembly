@@ -9,6 +9,7 @@ var time = Date.now();
 
 var Constants = new StaticConstants();
 var Game = new StaticGame();
+var GameInput = new StaticGameInput();
 var Graphics = new StaticGraphics();
 var Logic = new StaticLogic();
 var StateManager = new StaticStateManager();
@@ -22,7 +23,7 @@ var resize = function() {
 };
 
 var loop = function() {
-    var delta = (Date.now() - time) / 20;
+    var delta = (Date.now() - time) * Constants.DELTA_SCALE;
     time = Date.now();
 
     var state = StateManager.getState();
@@ -37,6 +38,7 @@ window.onload = function() {
     resize();
     setInterval(loop, 15);
 
+    GameInput.init();
     TitleScreen.init();
 };
 window.onresize = resize;

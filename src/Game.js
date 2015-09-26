@@ -10,4 +10,8 @@ var StaticGame = function() {
     this.render = function() {
 
     };
+
+    this.click = function(x, y) {
+
+    };
 };

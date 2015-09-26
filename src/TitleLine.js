@@ -3,9 +3,9 @@
  */
 
 var TitleLine = function(transitionLine, x, y) {
-    this.pos = [_.isNumber(x) ? x : 1.0, _.isNumber(y) ? y : Math.random()];
+    this.pos = [_.isNumber(x) ? x : 1.0, _.isNumber(y) ? y : TitleScreen.getTitleYPos() / canvas.height + TitleScreen.getTitleFontHeight() / canvas.height * Math.random()];
     this.width = transitionLine ? 10 : Math.random() * 0.4 + 0.2;
-    this.speed = transitionLine ? Math.random() * 0.01 + 0.01 : Math.random() * 0.006 + 0.001;
+    this.speed = transitionLine ? Math.random() * 0.01 + TitleScreen.LINE_BASE_TRANSITION_SPEED : Math.random() * 0.006 + 0.001;
 
     this.update = function(delta) {
         this.pos[0] -= this.speed * delta;
@@ -14,7 +14,7 @@ var TitleLine = function(transitionLine, x, y) {
     this.render = function() {
         // ctx.fillStyle = '#660000';
         ctx.fillStyle = '#' + Constants.COLOR_DARK_GRAY;
-        ctx.fillRect(this.pos[0] * canvas.width, TitleScreen.getTitleYPos() + this.pos[1] * TitleScreen.getTitleHeight(), this._getWidth(), this._getHeight());
+        ctx.fillRect(this.pos[0] * canvas.width, this.pos[1] * canvas.height, this._getWidth(), this._getHeight());
     };
 
     this.isDead = function() {
@@ -26,6 +26,6 @@ var TitleLine = function(transitionLine, x, y) {
     };
 
     this._getHeight = function() {
-        return TitleScreen.getTitleLineHeight();
+        return TitleScreen.getLineHeight();
     };
 };

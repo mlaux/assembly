@@ -5,4 +5,6 @@
 var StaticConstants = function() {
     this.COLOR_WHITE = 'e6e7e8';
     this.COLOR_DARK_GRAY = '232323';
+
+    this.DELTA_SCALE = 0.05;
 };
