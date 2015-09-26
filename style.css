@@ -1,0 +1,16 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    background-color: #232323;
+}
+
+canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+@font-face {
+    font-family: 'Begok';
+    src: url('assets/fonts/begok.ttf');
+}
