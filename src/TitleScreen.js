@@ -53,18 +53,23 @@ var StaticTitleScreen = function() {
         for (var i = 0; i < this.transitionLineList.length; i++) {
             this.transitionLineList[i].render();
         }
+
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+        ctx.fillRect(canvas.width / 2 - this.getScoreWidth() / 2, this.getScoreYPos(), this.getScoreWidth(), this.getMenuFontHeight());
     };
 
     this.click = function(x, y) {
-
+        if (x >= canvas.width / 2 - this.getPlayWidth() / 2 && x < canvas.width / 2 + this.getPlayWidth() / 2) {
+            if (y >= this.getPlayYPos() && y < this.getPlayYPos() + this.getMenuFontHeight()) {
+                this.startTransition();
+            }
+        }
     };
 
     this.init = function() {
         for (var i = 0; i < this.MAX_LINE_COUNT; i++) {
             this.lineList.push(new TitleLine(false, Math.random()));
         }
-
-        setTimeout(this.startTransition.bind(this), 2000);
     };
 
     this.startTransition = function() {
@@ -110,11 +115,15 @@ var StaticTitleScreen = function() {
     };
 
     this.getPlayWidth = function() {
-        return
+        return canvas.width / 22.5 * 4;
     };
 
     this.getScoreYPos = function() {
         return this.getPlayYPos() + this.getMenuFontHeight() * 2;
+    };
+
+    this.getScoreWidth = function() {
+        return canvas.width / 22.5 * 6;
     };
 
     this.getMenuFontHeight = function() {

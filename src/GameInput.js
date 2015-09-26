@@ -5,7 +5,7 @@
 var StaticGameInput = function() {
     this.init = function() {
         canvas.addEventListener('mousedown', function(e) {
-            console.log(e.clientX, e.clientY);
-        });
+            StateManager.getState().click(e.clientX, e.clientY);
+        }.bind(this));
     };
 };
