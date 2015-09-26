@@ -13,6 +13,7 @@ var GameInput = new StaticGameInput();
 var Graphics = new StaticGraphics();
 var GuiUtils = new StaticGuiUtils();
 var Logic = new StaticLogic();
+var MathUtils = new StaticMathUtils();
 var Network = new StaticNetwork();
 var StateManager = new StaticStateManager();
 var TitleScreen = new StaticTitleScreen();
@@ -32,6 +33,8 @@ var loop = function() {
     var state = StateManager.getState();
     state.update(delta);
     state.render();
+
+    window.requestAnimationFrame(loop);
 };
 
 window.onload = function() {
@@ -39,7 +42,7 @@ window.onload = function() {
     ctx = canvas.getContext('2d');
 
     resize();
-    setInterval(loop, 15);
+    loop();
 
     GameInput.init();
     TitleScreen.init();
