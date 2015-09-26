@@ -11,10 +11,6 @@ var StaticStateManager = function() {
 
     this.setState = function(state) {
         this.state = state;
-        var stateObj = this.getState();
-        if (stateObj['init']) {
-            stateObj.init();
-        }
     };
 
     this.getState = function() {

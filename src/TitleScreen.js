@@ -60,6 +60,7 @@ var StaticTitleScreen = function() {
         }
         if (x >= canvas.width / 2 - this.getScoreWidth() / 2 && x < canvas.width / 2 + this.getScoreWidth() / 2) {
             if (y >= this.getScoreYPos() && y < this.getScoreYPos() + this.getMenuFontHeight()) {
+                ScoresScreen.init();
                 this.startTransition(function() {
                     StateManager.setState(StateManager.STATE_SCORES);
                 });
@@ -74,20 +75,9 @@ var StaticTitleScreen = function() {
     };
 
     this.startTransition = function(callback) {
-        this.transitionStartTime = Date.now();
-
-        for (var y = 0; y < this.getTitleFontHeight(); y += this.getLineHeight() - 1) {
-            this.transitionLineList.push(new TitleLine(true, 1.0, this.getTitleYPos() / canvas.height + y / canvas.height));
+        for (var y = 0; y < canvas.height; y += this.getLineHeight() - 1) {
+            this.transitionLineList.push(new TitleLine(true, 1.0, y / canvas.height));
         }
-
-        for (var y = 0; y < this.getMenuFontHeight(); y += this.getLineHeight() - 1) {
-            this.transitionLineList.push(new TitleLine(true, 1.0, this.getPlayYPos() / canvas.height + y / canvas.height));
-        }
-
-        for (var y = 0; y < this.getMenuFontHeight(); y += this.getLineHeight() - 1) {
-            this.transitionLineList.push(new TitleLine(true, 1.0, this.getScoreYPos() / canvas.height + y / canvas.height));
-        }
-
         setTimeout(callback, this.getTransitionTime());
     };
 
