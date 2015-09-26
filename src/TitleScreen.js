@@ -58,12 +58,16 @@ var StaticTitleScreen = function() {
     this.click = function(x, y) {
         if (x >= canvas.width / 2 - this.getPlayWidth() / 2 && x < canvas.width / 2 + this.getPlayWidth() / 2) {
             if (y >= this.getPlayYPos() && y < this.getPlayYPos() + this.getMenuFontHeight()) {
-                this.startTransition();
+                this.startTransition(function() {
+                    StateManager.setState(StateManager.STATE_GAME);
+                });
             }
         }
         if (x >= canvas.width / 2 - this.getScoreWidth() / 2 && x < canvas.width / 2 + this.getScoreWidth() / 2) {
             if (y >= this.getScoreYPos() && y < this.getScoreYPos() + this.getMenuFontHeight()) {
-                this.startTransition();
+                this.startTransition(function() {
+                    StateManager.setState(null);
+                });
             }
         }
     };
@@ -74,7 +78,7 @@ var StaticTitleScreen = function() {
         }
     };
 
-    this.startTransition = function() {
+    this.startTransition = function(callback) {
         this.transitionStartTime = Date.now();
 
         for (var y = 0; y < this.getTitleFontHeight(); y += this.getLineHeight() - 1) {
@@ -88,10 +92,12 @@ var StaticTitleScreen = function() {
         for (var y = 0; y < this.getMenuFontHeight(); y += this.getLineHeight() - 1) {
             this.transitionLineList.push(new TitleLine(true, 1.0, this.getScoreYPos() / canvas.height + y / canvas.height));
         }
+
+        setTimeout(callback, this.getTransitionTime());
     };
 
-    this.isTransitionOver = function() {
-        return this.transitionStartTime !== 0 && (Date.now() - this.transitionStartTime) * Constants.DELTA_SCALE * this.LINE_BASE_TRANSITION_SPEED >= 1.0;
+    this.getTransitionTime = function() {
+        return 1.0 / (Constants.DELTA_SCALE * this.LINE_BASE_TRANSITION_SPEED);
     };
 
     // title methods

@@ -3,6 +3,7 @@
  */
 
 var StaticGame = function() {
+    this.paddleAngles = [];
     this.update = function(delta) {
 
     };
