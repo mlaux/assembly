@@ -11,8 +11,6 @@ var StaticTitleScreen = function() {
     this.lineList = [];
     this.transitionLineList = [];
 
-    this.transitionStartTime = 0;
-
     this.update = function(delta) {
         if (this.createLineCountdown <= 0 && this.lineList.length < this.MAX_LINE_COUNT) {
             this.lineList.push(new TitleLine());
@@ -34,11 +32,7 @@ var StaticTitleScreen = function() {
     };
 
     this.render = function() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        ctx.fillStyle = '#' + Constants.COLOR_WHITE;
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'top';
+        GuiUtils.initializeContextForGui();
 
         ctx.font = this._getTitleFontSize() + 'px Begok';
         ctx.fillText('assembly', canvas.width / 2, this.getTitleYPos());
@@ -67,7 +61,7 @@ var StaticTitleScreen = function() {
         if (x >= canvas.width / 2 - this.getScoreWidth() / 2 && x < canvas.width / 2 + this.getScoreWidth() / 2) {
             if (y >= this.getScoreYPos() && y < this.getScoreYPos() + this.getMenuFontHeight()) {
                 this.startTransition(function() {
-                    StateManager.setState(null);
+                    StateManager.setState(StateManager.STATE_SCORES);
                 });
             }
         }
