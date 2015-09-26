@@ -31,10 +31,6 @@ var StaticTitleScreen = function() {
         for (var i = 0; i < this.transitionLineList.length; i++) {
             this.transitionLineList[i].update(delta);
         }
-
-        if (this.isTransitionOver()) {
-            StateManager.setState(StateManager.STATE_SCORES);
-        }
     };
 
     this.render = function() {
@@ -63,6 +59,7 @@ var StaticTitleScreen = function() {
         if (x >= canvas.width / 2 - this.getPlayWidth() / 2 && x < canvas.width / 2 + this.getPlayWidth() / 2) {
             if (y >= this.getPlayYPos() && y < this.getPlayYPos() + this.getMenuFontHeight()) {
                 this.startTransition(function() {
+                    Game.init();
                     StateManager.setState(StateManager.STATE_GAME);
                 });
             }

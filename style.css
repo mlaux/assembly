@@ -14,3 +14,8 @@ canvas {
     font-family: 'Begok';
     src: url('assets/fonts/begok.ttf');
 }
+
+@font-face {
+    font-family: 'PirulenRg-Regular';
+    src: url('assets/fonts/pirulen.regular.ttf');
+}
