@@ -14,6 +14,7 @@ var Graphics = new StaticGraphics();
 var Logic = new StaticLogic();
 var StateManager = new StaticStateManager();
 var TitleScreen = new StaticTitleScreen();
+var ScoresScreen = new StaticScoresScreen();
 
 var resize = function() {
     canvas.width = window.innerWidth;
