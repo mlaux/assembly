@@ -53,14 +53,16 @@ var StaticTitleScreen = function() {
         for (var i = 0; i < this.transitionLineList.length; i++) {
             this.transitionLineList[i].render();
         }
-
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        ctx.fillRect(canvas.width / 2 - this.getScoreWidth() / 2, this.getScoreYPos(), this.getScoreWidth(), this.getMenuFontHeight());
     };
 
     this.click = function(x, y) {
         if (x >= canvas.width / 2 - this.getPlayWidth() / 2 && x < canvas.width / 2 + this.getPlayWidth() / 2) {
             if (y >= this.getPlayYPos() && y < this.getPlayYPos() + this.getMenuFontHeight()) {
+                this.startTransition();
+            }
+        }
+        if (x >= canvas.width / 2 - this.getScoreWidth() / 2 && x < canvas.width / 2 + this.getScoreWidth() / 2) {
+            if (y >= this.getScoreYPos() && y < this.getScoreYPos() + this.getMenuFontHeight()) {
                 this.startTransition();
             }
         }
