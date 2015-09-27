@@ -391,6 +391,7 @@ var StaticGame = function() {
             } else {
                 setTimeout(this.init.bind(this), 1000);
                 var username = document.getElementById('username-field').value;
+                username = username.toLowerCase();
                 if (username && this.score > 0) {
                     Network.sendHiscore(username, this.score);
                 }
