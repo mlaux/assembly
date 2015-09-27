@@ -4,7 +4,7 @@
 
 var StaticGame = function() {
     this.BALL_DIAMETER = 0.1;
-    this.PADDLE_GAP = 0.16;
+    this.PADDLE_GAP = 0.12;
     this.PADDLE_THICKNESS = 0.04;
     this.CIRCLE_DIAMETER = 0.85;
     this.ROTATE_ACCEL = 0.0005;
@@ -34,15 +34,52 @@ var StaticGame = function() {
 
         this.paddleAddAngle += this.rotateSpeed * delta;
 
-        var collisionPaddles = this.getCollisionPaddles();
-        this.updateBall(delta, collisionPaddles);
+        this.updateBall(delta);
     };
 
-    this.updateBall = function(delta, collisionPaddles) {
+    this.updateBall = function(delta) {
+        var baseSize = Math.min(canvas.width, canvas.height);
         if (this.desiredBallSpeed - this.ballSpeed <= this.BALL_ACCEL * delta) {
             this.ballSpeed = this.desiredBallSpeed;
         } else {
             this.ballSpeed += this.BALL_ACCEL * delta;
+        }
+
+        var collisionPaddles = this.getCollisionPaddles();
+        var collidedPaddleIndices = [];
+
+        var collided = true;
+        while (collided) {
+            var canvasBallPos = [
+                canvas.width / 2 + this.ballPos[0] * baseSize,
+                canvas.height / 2 + this.ballPos[1] * baseSize
+            ];
+            var newCanvasBallPos = [
+                canvas.width / 2 + (this.ballPos[0] + this.ballSpeed * Math.cos(this.ballAngle)) * baseSize,
+                canvas.height / 2 + (this.ballPos[1] + this.ballSpeed * Math.sin(this.ballAngle)) * baseSize
+            ];
+
+            var ballLine = [canvasBallPos, newCanvasBallPos];
+
+            for (var i = 0; i < collisionPaddles.length; i++) {
+                // if u already collided then freakin skip it
+                if (_.contains(collidedPaddleIndices, i)) {
+                    continue;
+                }
+                var collisionLine = collisionPaddles[i];
+
+                var intersectPoint = [0, 0];
+                if (MathUtils.intersectLines2D(intersectPoint, ballLine, collisionLine)) {
+                    collidedPaddleIndices.push(i);
+                    var dx = intersectPoint[0] - newCanvasBallPos[0];
+                    var dy = intersectPoint[1] - newCanvasBallPos[1];
+                    var remainingDistance = Math.sqrt(dx * dx + dy * dy);
+                    this.ballAngle =  -(this.ballAngle + MathUtils.radiansBetweenTwoAngles(this.ballAngle, this.paddleAngles[i]) * 2);
+
+                    break;
+                }
+            }
+            collided = false;
         }
 
         this.ballPos[0] += this.ballSpeed * Math.cos(this.ballAngle);
@@ -74,8 +111,8 @@ var StaticGame = function() {
         var paddleThickness = baseSize * this.PADDLE_THICKNESS;
         var radius = baseSize * this.CIRCLE_DIAMETER / 2;
 
-        var outerPaddleAngle = Math.PI * 2 * (this.paddleAngles.length - 2) / this.paddleAngles.length;
-        var innerPaddleAngle = Math.PI * 2 - outerPaddleAngle;
+        var outerPaddleAngle = Math.PI * (this.paddleAngles.length - 2) / this.paddleAngles.length;
+        var innerPaddleAngle = Math.PI - outerPaddleAngle;
 
         var fakePoint1 = [
             Math.cos(0) * radius,
@@ -179,24 +216,24 @@ var StaticGame = function() {
 
     this.getPaddleLength = function(sides) {
         var baseSize = Math.min(canvas.width, canvas.height);
-        var angle = Math.PI * 2 * (sides - 2) / sides;
-        var innerAngle = Math.PI * 2 - angle;
-
         var radius = baseSize * this.CIRCLE_DIAMETER / 2;
-        var point1 = [
+        var outerPaddleAngle = Math.PI * (sides - 2) / sides;
+        var innerPaddleAngle = Math.PI - outerPaddleAngle;
+
+        var fakePoint1 = [
             Math.cos(0) * radius,
             Math.sin(0) * radius
         ];
-        var point2 = [
-            Math.cos(innerAngle) * radius,
-            Math.sin(innerAngle) * radius
+        var fakePoint2 = [
+            Math.cos(innerPaddleAngle) * radius,
+            Math.sin(innerPaddleAngle) * radius
         ];
 
-        var dx = point2[0] - point1[0];
-        var dy = point2[1] - point1[1];
-        var distance = Math.sqrt(dx * dx + dy * dy);
+        var fakeMiddlePoint = [(fakePoint1[0] + fakePoint2[0]) / 2, (fakePoint1[1] + fakePoint2[1]) / 2];
+        radius = Math.sqrt(fakeMiddlePoint[0] * fakeMiddlePoint[0] + fakeMiddlePoint[1] * fakeMiddlePoint[1]);
+        var paddleHalfWidth = radius * Math.tan(innerPaddleAngle / 2);
 
-        return distance - baseSize * this.PADDLE_GAP;
+        return paddleHalfWidth * 2 - baseSize * this.PADDLE_GAP;
     };
 
     this.getCollisionPaddles = function() {
@@ -207,8 +244,8 @@ var StaticGame = function() {
         var paddleThickness = baseSize * this.PADDLE_THICKNESS;
         var radius = baseSize * this.CIRCLE_DIAMETER / 2;
 
-        var outerPaddleAngle = Math.PI * 2 * (this.paddleAngles.length - 2) / this.paddleAngles.length;
-        var innerPaddleAngle = Math.PI * 2 - outerPaddleAngle;
+        var outerPaddleAngle = Math.PI * (this.paddleAngles.length - 2) / this.paddleAngles.length;
+        var innerPaddleAngle = Math.PI - outerPaddleAngle;
 
         var fakePoint1 = [
             Math.cos(0) * radius,
