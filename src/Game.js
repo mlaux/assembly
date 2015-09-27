@@ -29,9 +29,15 @@ var StaticGame = function() {
 
     this.lastCollisionPoint = [0, 0];
 
+    this.clickToContinueOpacity = 0;
+
     this.loser = false;
 
     this.update = function(delta) {
+        if (this.clickToContinueOpacity > 0) {
+            this.clickToContinueOpacity += 0.03 * delta;
+            this.clickToContinueOpacity = Math.min(1.0, this.clickToContinueOpacity);
+        }
         if (this.loser) {
             return;
         }
@@ -199,10 +205,29 @@ var StaticGame = function() {
         this.renderBall();
 
         if (this.loser) {
-            if (Math.floor(Date.now() / 600) % 2 === 0) {
-                this.renderLoser();
-            }
+            ctx.fillStyle = 'rgba(0, 0, 0, ' + (this.clickToContinueOpacity * 0.75) + ')';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            this.renderLoser();
+            this.renderLoserScore();
         }
+        if (this.clickToContinueOpacity > 0) {
+            this.renderClickToContinue();
+        }
+    };
+
+    this.renderLoserScore = function() {
+        var baseSize = Math.min(canvas.width, canvas.height);
+        var padding = baseSize * 0.1;
+
+        ctx.fillStyle = 'rgba(255, 255, 255, 1)';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+        ctx.font = (this._getLoserFontSize() / 5) + 'px PirulenRg-Regular';
+        ctx.fillText('score:   ', canvas.width / 2, canvas.height / 2 + padding);
+
+        ctx.textAlign = 'left';
+        ctx.font = (this._getLoserFontSize() / 5) + 'px PirulenRg-Regular';
+        ctx.fillText('' + this.score, canvas.width / 2 + canvas.width / 10, canvas.height / 2 + padding - canvas.width / 1600);
     };
 
     this.renderBall = function() {
@@ -323,9 +348,22 @@ var StaticGame = function() {
     this.renderLoser = function() {
         ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
         ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
+        ctx.textBaseline = 'alphabetic';
         ctx.font = this._getLoserFontSize() + 'px PirulenRg-Regular';
         ctx.fillText('loser', canvas.width / 2, canvas.height / 2);
+    };
+
+    this.renderClickToContinue = function() {
+        var baseSize = Math.min(canvas.width, canvas.height);
+        var padding = baseSize * 0.1;
+
+        var fontHeight = this._getLoserFontHeight() / 5;
+
+        ctx.fillStyle = 'rgba(255, 255, 255, ' + this.clickToContinueOpacity + ')';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+        ctx.font = (this._getLoserFontSize() / 5) + 'px PirulenRg-Regular';
+        ctx.fillText('click to try again', canvas.width / 2, canvas.height / 2 + padding + fontHeight);
     };
 
     this.renderScore = function() {
@@ -341,7 +379,9 @@ var StaticGame = function() {
 
     this.click = function(x, y) {
         if (this.loser) {
-            this.init();
+            if (this.clickToContinueOpacity > 0) {
+                this.init();
+            }
             return;
         }
 
@@ -407,7 +447,6 @@ var StaticGame = function() {
                 this.score++;
                 this.selectedPaddleIndex = -1;
             } else {
-                //setTimeout(this.init.bind(this), 1000);
                 var username = document.getElementById('username-field').value;
                 username = username.toLowerCase();
                 if (username && this.score > 0) {
@@ -419,6 +458,7 @@ var StaticGame = function() {
                     AdInitialize.show();
                 }
                 this.loser = true;
+                setTimeout(this.clickToContinue.bind(this), 2000);
             }
         }
     };
@@ -526,8 +566,17 @@ var StaticGame = function() {
         return canvas.width / 12;
     };
 
+    this._getLoserFontHeight = function() {
+        return canvas.width * 0.25;
+    };
+
     this._getLoserFontSize = function() {
         return canvas.width / 5;
+    };
+
+    // dont know if this is accurate
+    this._getLoserFontHeight = function() {
+        return canvas.width * 0.25;
     };
 
     this._getPaddleColor = function(index) {
@@ -542,6 +591,10 @@ var StaticGame = function() {
         hue /= 360;
 
         return GuiUtils.hslToRgb(hue, saturation, brightness);
+    };
+
+    this.clickToContinue = function() {
+        this.clickToContinueOpacity = 0.01;
     };
 
     this.init = function() {
@@ -562,6 +615,7 @@ var StaticGame = function() {
         this.ballAngle = Math.PI * 2 * Math.random();
 
         this.loser = false;
+        this.clickToContinueOpacity = 0;
 
         this.PADDLE_GAP = 0.12;
 

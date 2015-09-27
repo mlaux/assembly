@@ -100,7 +100,7 @@ var StaticTitleScreen = function() {
 
     // menu methods
     this._getMenuFontSize = function() {
-        return canvas.width / 22.5;
+        return canvas.width / 22.5 * 1.5;
     };
 
     this.getPlayYPos = function() {
@@ -108,7 +108,7 @@ var StaticTitleScreen = function() {
     };
 
     this.getPlayWidth = function() {
-        return canvas.width / 22.5 * 4;
+        return canvas.width / 22.5 * 4 * 1.5;
     };
 
     this.getScoreYPos = function() {
@@ -116,11 +116,11 @@ var StaticTitleScreen = function() {
     };
 
     this.getScoreWidth = function() {
-        return canvas.width / 22.5 * 6;
+        return canvas.width / 22.5 * 6 * 1.5;
     };
 
     this.getMenuFontHeight = function() {
-        return canvas.width * 0.05;
+        return canvas.width * 0.05 * 1.5;
     };
 
     // other methods
