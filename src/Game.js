@@ -273,17 +273,22 @@ var StaticGame = function() {
 
             if (this.selectedPaddleIndex === i) {
                 ctx.fillStyle = '#ffffff';
-                ctx.strokeStyle = '#ffffff';
-                ctx.lineWidth = 2;
-                ctx.beginPath();
-                ctx.moveTo(strokePoint1[0], strokePoint1[1]);
-                ctx.lineTo(strokePoint2[0], strokePoint2[1]);
-                ctx.lineTo(strokePoint3[0], strokePoint3[1]);
-                ctx.lineTo(strokePoint4[0], strokePoint4[1]);
-                ctx.closePath();
-                ctx.stroke();
+                //ctx.strokeStyle = '#ffffff';
+                //ctx.lineWidth = 2;
+                //ctx.beginPath();
+                //ctx.moveTo(strokePoint1[0], strokePoint1[1]);
+                //ctx.lineTo(strokePoint2[0], strokePoint2[1]);
+                //ctx.lineTo(strokePoint3[0], strokePoint3[1]);
+                //ctx.lineTo(strokePoint4[0], strokePoint4[1]);
+                //ctx.closePath();
+                //ctx.stroke();
             } else if (mouseOverIndex === i) {
-                ctx.fillStyle = '#ffffff';
+                var color = this._getPaddleColor(i);
+                var r = color[0];
+                var g = color[1];
+                var b = color[2];
+                var colorScale = 1.5;
+                ctx.fillStyle = 'rgb(' + Math.floor(Math.min(255, r * colorScale)) + ', ' + Math.floor(Math.min(255, g * colorScale)) + ', ' + Math.floor(Math.min(255, b * colorScale)) + ')';
             } else {
                 var color = this._getPaddleColor(i);
                 ctx.fillStyle = 'rgb(' + color[0] + ', ' + color[1] + ', ' + color[2] + ')';
@@ -335,6 +340,9 @@ var StaticGame = function() {
     };
 
     this._getPaddleByMousePos = function(x, y) {
+        if (x === -1 && y === -1) {
+            return -1;
+        }
         var clickAngle = Math.atan2(y - canvas.height / 2, x - canvas.width / 2);
         var clickUnitVector = [Math.cos(clickAngle), Math.sin(clickAngle)];
 
