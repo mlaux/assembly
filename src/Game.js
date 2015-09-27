@@ -126,7 +126,6 @@ var StaticGame = function() {
         var fakeMiddlePoint = [(fakePoint1[0] + fakePoint2[0]) / 2, (fakePoint1[1] + fakePoint2[1]) / 2];
         radius = Math.sqrt(fakeMiddlePoint[0] * fakeMiddlePoint[0] + fakeMiddlePoint[1] * fakeMiddlePoint[1]);
 
-
         for (var i = 0; i < this.paddleAngles.length; i++) {
             var angle = this.paddleAngles[i] + this.paddleAddAngle;
 
@@ -181,7 +180,7 @@ var StaticGame = function() {
         var clickAngle = Math.atan2(y - canvas.height / 2, x - canvas.width / 2);
         var clickUnitVector = [Math.cos(clickAngle), Math.sin(clickAngle)];
 
-        var smallestDistance = 2147483648;
+        var smallestDistance = 2147483647;
         var smallestDistanceIndex = -1;
         for (var i = 0; i < this.paddleAngles.length; i++) {
             var paddleAngle = this.paddleAngles[i] + this.paddleAddAngle;
@@ -201,9 +200,20 @@ var StaticGame = function() {
             if (smallestDistanceIndex === this.selectedPaddleIndex) {
                 this.selectedPaddleIndex = -1;
             } else {
+                this.breakPaddle(this.selectedPaddleIndex);
                 this.selectedPaddleIndex = smallestDistanceIndex;
             }
         }
+    };
+
+    this.breakPaddle = function(selectedPaddleIndex) {
+        var oldSpacing = Math.PI * 2 / this.paddleAngles.length;
+        var newSpacing = Math.PI * 2 / (this.paddleAngles.length + 1);
+        var diff = newSpacing - oldSpacing;
+        for (var k = 1; k < this.paddleAngles.length; k++) {
+            this.paddleAngles[k] += k * diff;
+        }
+        this.paddleAngles.push(this.paddleAngles[0] + newSpacing * this.paddleAngles.length);
     };
 
     // paddle functions
@@ -270,7 +280,6 @@ var StaticGame = function() {
 
             var pos = [canvas.width / 2 + Math.cos(angle) * radius, canvas.height / 2 + Math.sin(angle) * radius];
 
-            var unitVector = [Math.cos(angle), Math.sin(angle)];
             var orthogonalUnitVector = this.getOrthogonalUnitVector(angle);
 
             var point1 = [
@@ -299,9 +308,7 @@ var StaticGame = function() {
         this.rotateSpeed = 0;
 
         this.paddleAngles = [
-            -Math.PI * 3 / 2,
-            -Math.PI * 13 / 6,
-            -Math.PI * 17 / 6
+            0, 2 * Math.PI / 3, 4 * Math.PI / 3
         ];
 
         this.score = 0;
