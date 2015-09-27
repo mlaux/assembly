@@ -1,2 +1,2 @@
-# assembly
-JavaScript game for HackTX 2015
+# centrifuge
+Try to guess which side of the shape the ball will hit next.
