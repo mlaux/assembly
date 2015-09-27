@@ -382,6 +382,7 @@ var StaticGame = function() {
                 this.selectedPaddleIndex = -1;
             } else {
                 setTimeout(this.init.bind(this), 1000);
+                Network.sendHiscore('testuser', this.score);
                 this.loser = true;
             }
         }
