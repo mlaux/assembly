@@ -3,12 +3,13 @@
  */
 
 var StaticGameInput = function() {
-    this.mousePos = [0, 0];
+    this.mousePos = [-1, -1];
     this.mobilePhone = false;
 
     this.init = function() {
         canvas.addEventListener('touchend', function(e) {
             this.mobilePhone = true;
+            this.mousePos = [-1, -1];
             StateManager.getState().click(e.clientX, e.clientY);
         }.bind(this));
         canvas.addEventListener('touchmove', function(e) {
@@ -35,5 +36,12 @@ var StaticGameInput = function() {
             this.mousePos[0] = e.clientX;
             this.mousePos[1] = e.clientY;
         }.bind(this));
+        canvas.addEventListener('mouseout', function(e) {
+            if (this.mobilePhone) {
+                return;
+            }
+            this.mousePos[0] = -1;
+            this.mousePos[1] = -1;
+        }.bind(this))
     };
 };
