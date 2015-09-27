@@ -17,6 +17,7 @@ var StaticGame = function() {
     this.paddleAngles = [];
     this.paddleAddAngle = 0;
     this.selectedPaddleIndex = -1;
+    this.greenPaddleIndex = -1;
 
     this.desiredRotateSpeed = 0;
     this.rotateSpeed = 0;
@@ -26,6 +27,9 @@ var StaticGame = function() {
     this.desiredBallSpeed = 0;
 
     this.lastCollisionPoint = [0, 0];
+
+    this.loser = false;
+    this.loserAngle = 0;
 
     this.update = function(delta) {
         if (this.desiredRotateSpeed - this.rotateSpeed <= this.ROTATE_ACCEL * delta) {
@@ -159,9 +163,27 @@ var StaticGame = function() {
     this.render = function() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        this.renderScore();
+        if (!this.loser) {
+            this.renderScore();
+        }
+        if (this.loser) {
+            ctx.translate(canvas.width / 2, canvas.height / 2);
+            ctx.rotate(-this.paddleAddAngle + this.loserAngle);
+            ctx.translate(-canvas.width / 2, -canvas.height / 2);
+        }
+
         this.renderPaddles();
         this.renderBall();
+
+        if (this.loser) {
+            ctx.translate(canvas.width / 2, canvas.height / 2);
+            ctx.rotate(this.paddleAddAngle - this.loserAngle);
+            ctx.translate(-canvas.width / 2, -canvas.height / 2);
+        }
+
+        if (this.loser) {
+            this.renderLoser();
+        }
     };
 
     this.renderBall = function() {
@@ -223,7 +245,13 @@ var StaticGame = function() {
                 pos[1] - paddleWidth / 2 * orthogonalUnitVector[1] + paddleThickness / 2 * unitVector[1]
             ];
 
-            ctx.fillStyle = this.selectedPaddleIndex === i ? '#660000' : '#ffffff';
+            if (this.selectedPaddleIndex === i) {
+                ctx.fillStyle = '#660000';
+            } else if (this.greenPaddleIndex === i) {
+                ctx.fillStyle = '#006600';
+            } else {
+                ctx.fillStyle = '#ffffff';
+            }
 
             ctx.beginPath();
             ctx.moveTo(point1[0], point1[1]);
@@ -233,6 +261,14 @@ var StaticGame = function() {
             ctx.closePath();
             ctx.fill();
         }
+    };
+
+    this.renderLoser = function() {
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.font = this._getLoserFontSize() + 'px PirulenRg-Regular';
+        ctx.fillText('loser', canvas.width / 2, canvas.height / 2);
     };
 
     this.renderScore = function() {
@@ -247,6 +283,10 @@ var StaticGame = function() {
     };
 
     this.click = function(x, y) {
+        if (this.loser) {
+            return;
+        }
+
         var clickAngle = Math.atan2(y - canvas.height / 2, x - canvas.width / 2);
         var clickUnitVector = [Math.cos(clickAngle), Math.sin(clickAngle)];
 
@@ -284,18 +324,27 @@ var StaticGame = function() {
         }
         this.paddleAngles.push(this.paddleAngles[0] + newSpacing * this.paddleAngles.length);
         this.PADDLE_GAP *= 0.75;
+        this.desiredRotateSpeed += 0.5 / (2 * this.desiredRotateSpeed) / 8000;
+        this.desiredBallSpeed += 0.5 / (2 * this.desiredBallSpeed + 0.015) / 8000;
     };
 
     this.collided = function(index) {
+        if (this.loser) {
+            return;
+        }
+
         if (this.selectedPaddleIndex !== -1) {
             if (this.selectedPaddleIndex === index) {
                 this.breakPaddle(this.selectedPaddleIndex);
                 this.score++;
+                this.selectedPaddleIndex = -1;
             } else {
                 Network.sendHiscore('testuser', this.score);
-                this.init();
+                setTimeout(this.init.bind(this), 2000);
+                this.loser = true;
+                this.loserAngle = this.paddleAddAngle;
+                this.greenPaddleIndex = index;
             }
-            this.selectedPaddleIndex = -1;
         }
     };
 
@@ -384,12 +433,21 @@ var StaticGame = function() {
         return canvas.width / 12;
     };
 
+    this._getLoserFontSize = function() {
+        return canvas.width / 5;
+    };
+
     this.init = function() {
         this.ballPos = [0, 0];
         this.ballSpeed = 0;
-        this.desiredBallSpeed = 0.015;
+        this.desiredBallSpeed = 0.01;
         this.rotateSpeed = 0;
-        this.desiredRotateSpeed = 0.04;
+        this.desiredRotateSpeed = 0.02;
+
+        this.selectedPaddleIndex = -1;
+        this.greenPaddleIndex = -1;
+
+        this.loser = false;
 
         this.ballAngle = Math.PI * 2 * Math.random();
 
