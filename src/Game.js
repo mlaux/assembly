@@ -214,6 +214,7 @@ var StaticGame = function() {
             this.paddleAngles[k] += k * diff;
         }
         this.paddleAngles.push(this.paddleAngles[0] + newSpacing * this.paddleAngles.length);
+        this.PADDLE_GAP *= 0.75;
     };
 
     // paddle functions
