@@ -12,7 +12,7 @@ var StaticGame = function() {
 
     this.score = 0;
 
-    this.ballPos = [0.1, 0];
+    this.ballPos = [0, 0];
 
     this.paddleAngles = [];
     this.paddleAddAngle = 0;
@@ -27,7 +27,7 @@ var StaticGame = function() {
 
     this.lastCollisionPoint = [0, 0];
 
-    this.update = function(delta) { 
+    this.update = function(delta) {
         if (this.desiredRotateSpeed - this.rotateSpeed <= this.ROTATE_ACCEL * delta) {
             this.rotateSpeed = this.desiredRotateSpeed;
         } else {
@@ -101,6 +101,8 @@ var StaticGame = function() {
                     this.ballPos[0] = (intersectPoint[0] - canvas.width / 2) / baseSize;
                     this.ballPos[1] = (intersectPoint[1] - canvas.height / 2) / baseSize;
 
+                    this.collided(i);
+
                     break;
                 } else if (MathUtils.isPointInPolygon2D(collisionPolygon, newBallPos)) {
                     var newBallLine = [
@@ -141,6 +143,8 @@ var StaticGame = function() {
                         ballPos[1] = intersectPoint[1];
                         this.ballPos[0] = (intersectPoint[0] - canvas.width / 2) / baseSize;
                         this.ballPos[1] = (intersectPoint[1] - canvas.height / 2) / baseSize;
+
+                        this.collided(i);
 
                         break;
                     }
@@ -266,7 +270,6 @@ var StaticGame = function() {
             if (smallestDistanceIndex === this.selectedPaddleIndex) {
                 this.selectedPaddleIndex = -1;
             } else {
-                this.breakPaddle(this.selectedPaddleIndex);
                 this.selectedPaddleIndex = smallestDistanceIndex;
             }
         }
@@ -281,6 +284,18 @@ var StaticGame = function() {
         }
         this.paddleAngles.push(this.paddleAngles[0] + newSpacing * this.paddleAngles.length);
         this.PADDLE_GAP *= 0.75;
+    };
+
+    this.collided = function(index) {
+        if (this.selectedPaddleIndex !== -1) {
+            if (this.selectedPaddleIndex === index) {
+                this.breakPaddle(this.selectedPaddleIndex);
+                this.score++;
+            } else {
+                this.init();
+            }
+            this.selectedPaddleIndex = -1;
+        }
     };
 
     // paddle functions
@@ -369,11 +384,15 @@ var StaticGame = function() {
     };
 
     this.init = function() {
+        this.ballPos = [0, 0];
+        this.ballSpeed = 0;
         this.desiredBallSpeed = 0.015;
-        this.desiredRotateSpeed = 0.04;
         this.rotateSpeed = 0;
+        this.desiredRotateSpeed = 0.04;
 
-        this.ballAngle = 45 / (360 / (Math.PI * 2));
+        this.ballAngle = Math.PI * 2 * Math.random();
+
+        this.PADDLE_GAP = 0.12;
 
         this.paddleAngles = [
             0,
