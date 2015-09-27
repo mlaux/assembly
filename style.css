@@ -10,6 +10,26 @@ canvas {
     left: 0;
 }
 
+#username-field {
+    position: absolute;
+    width: 350px;
+    top: 90%;
+    left: calc(50% - 175px);
+    vertical-align: bottom;
+    z-index: 1;
+
+    background: #232323;
+    border: 1px solid white;
+    padding: 5px;
+    color: #fff;
+    font-size: 24pt;
+    outline: 0;
+}
+
+::-webkit-input-placeholder {
+    color: white;
+}
+
 @font-face {
     font-family: 'Begok';
     src: url('assets/fonts/begok.ttf');

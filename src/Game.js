@@ -405,7 +405,11 @@ var StaticGame = function() {
                 this.selectedPaddleIndex = -1;
             } else {
                 setTimeout(this.init.bind(this), 1000);
-                Network.sendHiscore('testuser', this.score);
+                var username = document.getElementById('username-field').value;
+                username = username.toLowerCase();
+                if (username && this.score > 0) {
+                    Network.sendHiscore(username, this.score);
+                }
                 this.loser = true;
             }
         }
