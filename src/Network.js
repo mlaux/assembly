@@ -3,7 +3,7 @@
  */
 var StaticNetwork = function() {
 
-    this._HISCORE_ENDPOINT = 'http://localhost:5000/assembly/api/hiscores';
+    this._HISCORE_ENDPOINT = 'http://localhost:5000/centrifuge/api/hiscores';
 
     this.httpGet = function(endpoint, callback) {
         var xhr = new XMLHttpRequest();
