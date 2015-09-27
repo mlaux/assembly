@@ -411,6 +411,7 @@ var StaticGame = function() {
                     Network.sendHiscore(username, this.score);
                 }
                 this.loser = true;
+                AdInitialize.show();
             }
         }
     };
@@ -550,6 +551,8 @@ var StaticGame = function() {
         this.loser = false;
 
         this.PADDLE_GAP = 0.12;
+
+        AdInitialize.hide();
 
         this.paddleAngles = [
             0,

@@ -10,6 +10,13 @@ canvas {
     left: 0;
 }
 
+.adContainer {
+    position: relative;
+    top: -10000px;
+
+    text-align: center;
+}
+
 #username-field {
     position: absolute;
     width: 350px;

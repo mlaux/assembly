@@ -7,6 +7,7 @@ var canvas = null;
 var ctx = null;
 var time = Date.now();
 
+var AdInitialize = new StaticAdInitialize();
 var Constants = new StaticConstants();
 var Game = new StaticGame();
 var GameInput = new StaticGameInput();
@@ -30,12 +31,15 @@ var resize = function() {
     canvas.height = window.innerHeight;
     canvas.style.width = canvas.width + 'px';
     canvas.style.height = canvas.height + 'px';
+
+    AdInitialize.resize();
 };
 
 var loop = function() {
     var delta = (Date.now() - time) * Constants.DELTA_SCALE;
     time = Date.now();
 
+    AdInitialize.update(delta);
     var state = StateManager.getState();
     state.update(delta);
     state.render();
@@ -46,6 +50,10 @@ var loop = function() {
 window.onload = function() {
     canvas = document.getElementById('canvas');
     ctx = canvas.getContext('2d');
+
+    if (!window.AdInterface) {
+        AdInitialize.init();
+    }
 
     resize();
     loop();
