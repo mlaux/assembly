@@ -27,6 +27,13 @@ var StaticGameInput = function() {
             e.preventDefault();
         }.bind(this));
 
+
+        canvas.addEventListener('mousedown', function(e) {
+            if (this.mobilePhone) {
+                return;
+            }
+            e.preventDefault();
+        }.bind(this));
         canvas.addEventListener('mouseup', function(e) {
             if (this.mobilePhone) {
                 return;
@@ -46,6 +53,16 @@ var StaticGameInput = function() {
             }
             this.mousePos[0] = -1;
             this.mousePos[1] = -1;
-        }.bind(this))
+        }.bind(this));
+        canvas.addEventListener('dblclick', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
+        });
+        canvas.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
+        });
     };
 };
