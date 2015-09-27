@@ -20,7 +20,29 @@ var StaticNetwork = function() {
         xhr.send();
     };
 
+    this.httpSend = function(method, endpoint, obj, callback) {
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4) {
+                if (xhr.status == 200) {
+                    callback(JSON.parse(xhr.responseText));
+                } else {
+                    callback(null);
+                }
+            }
+        };
+        xhr.open(method, endpoint);
+        xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+        xhr.send(JSON.stringify(obj));
+    };
+
     this.queryHiscores = function(callback) {
         this.httpGet(this._HISCORE_ENDPOINT, callback);
     };
+
+    this.sendHiscore = function(user, num) {
+        this.httpSend('PUT', this._HISCORE_ENDPOINT, {username: user, score: num}, function(response) {
+            console.log('score sent ' + response);
+        });
+    }
 };
