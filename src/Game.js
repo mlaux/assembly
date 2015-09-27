@@ -199,7 +199,9 @@ var StaticGame = function() {
         this.renderBall();
 
         if (this.loser) {
-            this.renderLoser();
+            if (Math.floor(Date.now() / 600) % 2 === 0) {
+                this.renderLoser();
+            }
         }
     };
 
@@ -411,8 +413,10 @@ var StaticGame = function() {
                 if (username && this.score > 0) {
                     Network.sendHiscore(username, this.score);
                 }
-                if (AdInterface) {
+                if (window.AdInterface) {
                     AdInterface.showAd();
+                } else {
+                    AdInitialize.show();
                 }
                 this.loser = true;
             }
@@ -541,8 +545,10 @@ var StaticGame = function() {
     };
 
     this.init = function() {
-        if (AdInterface) {
+        if (window.AdInterface) {
             AdInterface.hideAd();
+        } else {
+            AdInitialize.hide();
         }
 
         this.ballPos = [0, 0];
@@ -558,6 +564,8 @@ var StaticGame = function() {
         this.loser = false;
 
         this.PADDLE_GAP = 0.12;
+
+        this.sparkles = [];
 
         this.paddleAngles = [
             0,

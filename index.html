@@ -8,6 +8,7 @@
 
     <script type='text/javascript' src="libs/underscore.js"></script>
 
+    <script type='text/javascript' src="src/AdInitialize.js"></script>
     <script type='text/javascript' src="src/Constants.js"></script>
     <script type='text/javascript' src="src/Game.js"></script>
     <script type='text/javascript' src="src/GameInput.js"></script>
@@ -30,5 +31,23 @@
 <body>
     <canvas id="canvas"></canvas>
     <input style="display:none" type="text" id="username-field" name="username" placeholder="Username for Hiscores" />
+    <div class="adContainer" id="ad-container">
+        <script type="text/javascript">
+            if (!window.AdInterface) {
+                document.write(
+                    '<scr' + 'ipt async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></scr' + 'ipt>\n' +
+                    '<ins class="adsbygoogle"\n' +
+                    '    id="advert"\n' +
+                    '    style="display:block;"\n' +
+                    '    data-ad-client="ca-pub-9057446241707031"\n' +
+                    '    data-ad-slot="8893071619"\n' +
+                    '    data-ad-format="auto"></ins>\n' +
+                    '<scr' + 'ipt>\n' +
+                    '    (adsbygoogle = window.adsbygoogle || []).push({});\n' +
+                    '</scr' + 'ipt>\n'
+                );
+            }
+        </script>
+    </div>
 </body>
 </html>
