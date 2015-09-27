@@ -48,6 +48,9 @@ var StaticNetwork = function() {
     };
 
     this.reportError = function(message, url, line, col) {
+        if (window.location.href.indexOf('file') == 0) {
+            return;
+        }
         var errorObj = {message: message, url: url, line: line, column: col};
         this.httpSend('PUT', this._ERROR_ENDPOINT, errorObj, function(response) {
             console.log('logged error ' + response);
