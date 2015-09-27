@@ -15,7 +15,6 @@ var Sparkle = function(x, y) {
     this.render = function() {
         var baseSize = Math.min(canvas.width, canvas.height);
         var radius = baseSize * 0.01;
-        console.log(this.pos[0] * baseSize - radius, this.pos[1] * baseSize - radius);
         ctx.drawImage(globalSparkle, this.pos[0] * baseSize + canvas.width / 2 - radius, this.pos[1] * baseSize + canvas.height / 2 - radius, radius * 2, radius * 2);
     };
 

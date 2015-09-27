@@ -537,7 +537,6 @@ var StaticGame = function() {
     };
 
     this.init = function() {
-        console.log('test');
         this.ballPos = [0, 0];
         this.ballSpeed = 0;
         this.desiredBallSpeed = 0.01;
