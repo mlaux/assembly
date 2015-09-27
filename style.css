@@ -46,3 +46,13 @@ canvas {
     font-family: 'PirulenRg-Regular';
     src: url('assets/fonts/pirulen.regular.ttf');
 }
+
+@viewport{
+    zoom: 1.0;
+    width: device-width;
+}
+
+@-ms-viewport{
+    zoom: 1.0;
+    width: device-width;
+}
