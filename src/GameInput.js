@@ -9,8 +9,12 @@ var StaticGameInput = function() {
     this.init = function() {
         canvas.addEventListener('touchend', function(e) {
             this.mobilePhone = true;
+            var touch = e.changedTouches[0];
+            if (!touch) {
+                return;
+            }
             this.mousePos = [-1, -1];
-            StateManager.getState().click(e.clientX, e.clientY);
+            StateManager.getState().click(touch.pageX, touch.pageY);
         }.bind(this));
         canvas.addEventListener('touchmove', function(e) {
             this.mobilePhone = true;
