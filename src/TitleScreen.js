@@ -35,7 +35,7 @@ var StaticTitleScreen = function() {
         GuiUtils.initializeContextForGui();
 
         ctx.font = this._getTitleFontSize() + 'px Begok';
-        ctx.fillText('assembly', canvas.width / 2, this.getTitleYPos());
+        ctx.fillText('centrifuge', canvas.width / 2, this.getTitleYPos());
 
         ctx.font = this._getMenuFontSize() + 'px Begok';
         ctx.fillText('play', canvas.width / 2, this.getPlayYPos());
