@@ -19,6 +19,12 @@ var StateManager = new StaticStateManager();
 var TitleScreen = new StaticTitleScreen();
 var ScoresScreen = new StaticScoresScreen();
 
+var globalSparkle = document.createElement('img');
+globalSparkle.src = 'assets/sparkle.png';
+globalSparkle.id = 'globalSparkle';
+globalSparkle.width = '16';
+globalSparkle.height = '16';
+
 var resize = function() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;

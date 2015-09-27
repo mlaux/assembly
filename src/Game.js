@@ -10,6 +10,8 @@ var StaticGame = function() {
     this.ROTATE_ACCEL = 0.00025;
     this.BALL_ACCEL = 0.0005;
 
+    this.sparkles = [];
+
     this.score = 0;
 
     this.ballPos = [0, 0];
@@ -45,6 +47,14 @@ var StaticGame = function() {
         this.updateBall(delta);
 
         this.checkBallBoundaries();
+
+        for (var i = 0; i < this.sparkles.length; i++) {
+            this.sparkles[i].update(delta);
+            if (this.sparkles[i].isDead()) {
+                this.sparkles.splice(i, 1);
+                i--;
+            }
+        }
     };
 
     this.updateBall = function(delta) {
@@ -179,6 +189,10 @@ var StaticGame = function() {
 
         if (!this.loser) {
             this.renderScore();
+        }
+
+        for (var i = 0; i < this.sparkles.length; i++) {
+            this.sparkles[i].render();
         }
 
         this.renderPaddles();
@@ -385,6 +399,7 @@ var StaticGame = function() {
 
         if (this.selectedPaddleIndex !== -1) {
             if (this.selectedPaddleIndex === index) {
+                this.createSparkles(index);
                 this.breakPaddle(this.selectedPaddleIndex);
                 this.score++;
                 this.selectedPaddleIndex = -1;
@@ -393,6 +408,24 @@ var StaticGame = function() {
                 Network.sendHiscore('testuser', this.score);
                 this.loser = true;
             }
+        }
+    };
+
+    this.createSparkles = function(index) {
+        var baseSize = Math.min(canvas.width, canvas.height);
+        var radius = baseSize * this.CIRCLE_DIAMETER / 2;
+
+        var collisionPaddles = this.getCollisionPaddles(radius);
+        var paddle = collisionPaddles[index];
+
+        var dir = [paddle[1][0] - paddle[0][0], paddle[1][1] - paddle[1][0]];
+        var start = paddle[0];
+
+        for (var i = 0; i < 200; i++) {
+            var dist = Math.random();
+
+            var pos = [start[0] + dir[0] * dist, start[1] + dir[1] * dist];
+            this.sparkles.push(new Sparkle(this.ballPos[0], this.ballPos[1]));
         }
     };
 
