@@ -54,3 +54,4 @@ window.onload = function() {
     TitleScreen.init();
 };
 window.onresize = resize;
+window.onerror = Network.reportError;
