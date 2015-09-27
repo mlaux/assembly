@@ -339,6 +339,7 @@ var StaticGame = function() {
 
     this.click = function(x, y) {
         if (this.loser) {
+            this.init();
             return;
         }
 
@@ -404,11 +405,14 @@ var StaticGame = function() {
                 this.score++;
                 this.selectedPaddleIndex = -1;
             } else {
-                setTimeout(this.init.bind(this), 1000);
+                //setTimeout(this.init.bind(this), 1000);
                 var username = document.getElementById('username-field').value;
                 username = username.toLowerCase();
                 if (username && this.score > 0) {
                     Network.sendHiscore(username, this.score);
+                }
+                if (AdInterface) {
+                    AdInterface.showAd();
                 }
                 this.loser = true;
                 AdInitialize.show();
@@ -538,6 +542,10 @@ var StaticGame = function() {
     };
 
     this.init = function() {
+        if (AdInterface) {
+            AdInterface.hideAd();
+        }
+
         this.ballPos = [0, 0];
         this.ballSpeed = 0;
         this.desiredBallSpeed = 0.01;

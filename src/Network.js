@@ -4,6 +4,7 @@
 var StaticNetwork = function() {
 
     this._HISCORE_ENDPOINT = 'http://198.91.90.100:5000/centrifuge/api/hiscores';
+    this._ERROR_ENDPOINT = 'http://198.91.90.100:5000/centrifuge/api/errors';
 
     this.httpGet = function(endpoint, callback) {
         var xhr = new XMLHttpRequest();
@@ -44,5 +45,12 @@ var StaticNetwork = function() {
         this.httpSend('PUT', this._HISCORE_ENDPOINT, {username: user, score: num}, function(response) {
             console.log('score sent ' + response);
         });
-    }
+    };
+
+    this.reportError = function(message, url, line, col) {
+        var errorObj = {message: message, url: url, line: line, column: col};
+        this.httpSend('PUT', this._ERROR_ENDPOINT, errorObj, function(response) {
+            console.log('logged error ' + response);
+        });
+    }.bind(this);
 };
