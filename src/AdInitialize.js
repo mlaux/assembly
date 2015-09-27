@@ -19,7 +19,6 @@ var StaticAdInitialize = function() {
             this.percentDown = 1.0 - this.remainingTransitionTime / this.TRANSITION_TIME;
 
             if (this.ins.style.display !== 'block') {
-                console.log('display set to block');
                 this.ins.style.display = 'block';
             }
         } else {
@@ -27,7 +26,6 @@ var StaticAdInitialize = function() {
 
             if (this.percentDown === 0.0) {
                 if (this.ins.style.display !== 'none') {
-                    console.log('display set to none');
                     this.ins.style.display = 'none';
                 }
             }

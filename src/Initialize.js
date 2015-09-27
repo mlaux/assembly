@@ -32,14 +32,18 @@ var resize = function() {
     canvas.style.width = canvas.width + 'px';
     canvas.style.height = canvas.height + 'px';
 
-    AdInitialize.resize();
+    if (!window.AdInterface) {
+        AdInitialize.resize();
+    }
 };
 
 var loop = function() {
     var delta = (Date.now() - time) * Constants.DELTA_SCALE;
     time = Date.now();
 
-    AdInitialize.update(delta);
+    if (!window.AdInterface) {
+        AdInitialize.update(delta);
+    }
     var state = StateManager.getState();
     state.update(delta);
     state.render();
