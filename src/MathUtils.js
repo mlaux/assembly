@@ -45,14 +45,53 @@ var StaticMathUtils = function() {
         return true;
     };
 
+    /**
+     * Determines whether or not the given point is inside the given polygon
+     * @param polygon
+     * @param point
+     * @returns {Boolean} whether or not the point lies inside the polygon
+     */
+    this.isPointInPolygon2D = function(polygon, point) {
+        var j = polygon.length - 1;
+        var oddNodes = false;
+
+        for (var i = 0; i < polygon.length; i++) {
+            if ((polygon[i][1] < point[1] && polygon[j][1] >= point[1]
+                || polygon[j][1] < point[1] && polygon[i][1] >= point[1])
+                && (polygon[i][0] <= point[0] || polygon[j][0] <= point[0])) {
+                if (polygon[i][0] + (point[1] - polygon[i][1]) / (polygon[j][1] - polygon[i][1])
+                    * (polygon[j][0] - polygon[i][0]) < point[0]) {
+                    oddNodes = !oddNodes;
+                }
+            }
+            j = i;
+        }
+
+        return oddNodes;
+    };
+
     this.radiansBetweenTwoAngles = function(angleFrom, angleTo) {
-        angleFrom %= Math.PI * 2;
-        angleTo %= Math.PI * 2;
+        angleFrom = angleFrom % (Math.PI * 2);
+        angleTo = angleTo % (Math.PI * 2);
+
+        if (angleFrom < -Math.PI) {
+            angleFrom = Math.PI * 2 + angleFrom;
+        }
         if (angleFrom > Math.PI) {
             angleFrom = -(Math.PI * 2 - angleFrom);
         }
+        if (angleTo < -Math.PI) {
+            angleTo = Math.PI * 2 + angleTo;
+        }
         if (angleTo > Math.PI) {
             angleTo = -(Math.PI * 2 - angleTo);
+        }
+
+        if (angleFrom > Math.PI || angleFrom < -Math.PI) {
+            console.error('Error: angleFrom not in bounds of [-Math.PI, Math.PI]. angleFrom: ' + angleFrom);
+        }
+        if (angleTo > Math.PI || angleTo < -Math.PI) {
+            console.error('Error: angleTo not in bounds of [-Math.PI, Math.PI]. angleTo: ' + angleTo);
         }
 
         if (angleTo < angleFrom) {
@@ -68,5 +107,9 @@ var StaticMathUtils = function() {
                 return angleTo - angleFrom;
             }
         }
-    }
+    };
+
+    this.mod = function(a, n) {
+        return a - Math.floor(a / n) * n;
+    };
 };

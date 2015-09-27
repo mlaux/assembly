@@ -7,12 +7,12 @@ var StaticGame = function() {
     this.PADDLE_GAP = 0.12;
     this.PADDLE_THICKNESS = 0.04;
     this.CIRCLE_DIAMETER = 0.85;
-    this.ROTATE_ACCEL = 0.0005;
-    this.BALL_ACCEL = 0.00025;
+    this.ROTATE_ACCEL = 0.00025;
+    this.BALL_ACCEL = 0.0005;
 
     this.score = 0;
 
-    this.ballPos = [0, 0];
+    this.ballPos = [0.1, 0];
 
     this.paddleAngles = [];
     this.paddleAddAngle = 0;
@@ -21,9 +21,11 @@ var StaticGame = function() {
     this.desiredRotateSpeed = 0;
     this.rotateSpeed = 0;
 
-    this.ballAngle = Math.PI * 2 * Math.random();
+    this.ballAngle = 0;
     this.ballSpeed = 0;
     this.desiredBallSpeed = 0;
+
+    this.lastCollisionPoint = [0, 0];
 
     this.update = function(delta) {
         if (this.desiredRotateSpeed - this.rotateSpeed <= this.ROTATE_ACCEL * delta) {
@@ -45,45 +47,109 @@ var StaticGame = function() {
             this.ballSpeed += this.BALL_ACCEL * delta;
         }
 
-        var collisionPaddles = this.getCollisionPaddles();
-        var collidedPaddleIndices = [];
+        var collisionPaddles = this.getCollisionPaddles(baseSize * this.CIRCLE_DIAMETER / 2);
+        var outerCollisionPaddles = this.getCollisionPaddles(baseSize * this.CIRCLE_DIAMETER / 2 + baseSize * 0.2);
+
+        var ballPos = [
+            canvas.width / 2 + this.ballPos[0] * baseSize,
+            canvas.height / 2 + this.ballPos[1] * baseSize
+        ];
+        var newBallPos = [0, 0];
+        var remainingDistance = this.ballSpeed * delta * baseSize;
 
         var collided = true;
         while (collided) {
-            var canvasBallPos = [
-                canvas.width / 2 + this.ballPos[0] * baseSize,
-                canvas.height / 2 + this.ballPos[1] * baseSize
+            collided = false;
+            newBallPos = [
+                canvas.width / 2 + this.ballPos[0] * baseSize + remainingDistance * Math.cos(this.ballAngle),
+                canvas.height / 2 + this.ballPos[1] * baseSize + remainingDistance * Math.sin(this.ballAngle)
             ];
-            var newCanvasBallPos = [
-                canvas.width / 2 + (this.ballPos[0] + this.ballSpeed * Math.cos(this.ballAngle)) * baseSize,
-                canvas.height / 2 + (this.ballPos[1] + this.ballSpeed * Math.sin(this.ballAngle)) * baseSize
-            ];
+            var dirUnitVector = [newBallPos[0] - ballPos[0], newBallPos[1] - ballPos[1]];
+            var length = Math.sqrt(dirUnitVector[0] * dirUnitVector[0] + dirUnitVector[1] * dirUnitVector[1]);
+            dirUnitVector[0] /= length;
+            dirUnitVector[1] /= length;
 
-            var ballLine = [canvasBallPos, newCanvasBallPos];
+            var ballLine = [ballPos, newBallPos];
 
             for (var i = 0; i < collisionPaddles.length; i++) {
-                // if u already collided then freakin skip it
-                if (_.contains(collidedPaddleIndices, i)) {
-                    continue;
-                }
                 var collisionLine = collisionPaddles[i];
+                var collisionPolygon = [
+                    outerCollisionPaddles[i][1],
+                    outerCollisionPaddles[i][0],
+                    collisionLine[0],
+                    collisionLine[1]
+                ];
 
                 var intersectPoint = [0, 0];
                 if (MathUtils.intersectLines2D(intersectPoint, ballLine, collisionLine)) {
-                    collidedPaddleIndices.push(i);
-                    var dx = intersectPoint[0] - newCanvasBallPos[0];
-                    var dy = intersectPoint[1] - newCanvasBallPos[1];
-                    var remainingDistance = Math.sqrt(dx * dx + dy * dy);
-                    this.ballAngle =  -(this.ballAngle + MathUtils.radiansBetweenTwoAngles(this.ballAngle, this.paddleAngles[i]) * 2);
+                    var collisionDX = intersectPoint[0] - this.lastCollisionPoint[0];
+                    var collisionDY = intersectPoint[1] - this.lastCollisionPoint[1];
+                    if (Math.sqrt(collisionDX * collisionDX + collisionDY * collisionDY) <= 0.01) {
+                        continue;
+                    }
+                    collided = true;
+                    var dx = intersectPoint[0] - newBallPos[0];
+                    var dy = intersectPoint[1] - newBallPos[1];
+                    remainingDistance = Math.sqrt(dx * dx + dy * dy);
+                    var angleDiff = MathUtils.radiansBetweenTwoAngles(this.ballAngle, this.paddleAngles[i] + this.paddleAddAngle);
+                    this.ballAngle = Math.PI + (this.paddleAngles[i] + this.paddleAddAngle) + angleDiff;
+
+                    this.lastCollisionPoint[0] = intersectPoint[0];
+                    this.lastCollisionPoint[1] = intersectPoint[1];
+                    ballPos[0] = intersectPoint[0];
+                    ballPos[1] = intersectPoint[1];
+                    this.ballPos[0] = (intersectPoint[0] - canvas.width / 2) / baseSize;
+                    this.ballPos[1] = (intersectPoint[1] - canvas.height / 2) / baseSize;
 
                     break;
+                } else if (MathUtils.isPointInPolygon2D(collisionPolygon, newBallPos)) {
+                    var newBallLine = [
+                        [
+                            ballLine[0][0] - dirUnitVector[0] * 500,
+                            ballLine[0][1] - dirUnitVector[1] * 500
+                        ], [
+                            ballLine[1][0],
+                            ballLine[1][1]
+                        ]
+                    ];
+
+                    var collisionLineVector = [collisionLine[1][0] - collisionLine[0][0], collisionLine[1][1] - collisionLine[0][1]];
+                    var collisionLineLength = Math.sqrt(collisionLineVector[0] * collisionLineVector[0] + collisionLineVector[1] * collisionLineVector[1]);
+                    collisionLineVector[0] /= collisionLineLength;
+                    collisionLineVector[1] /= collisionLineLength;
+                    var newCollisionLine = [
+                        [collisionLine[0][0] - collisionLineVector[0], collisionLine[0][1] - collisionLineVector[1]],
+                        [collisionLine[1][0] + collisionLineVector[0], collisionLine[1][1] + collisionLineVector[1]]
+                    ];
+
+                    if (MathUtils.intersectLines2D(intersectPoint, newBallLine, newCollisionLine)) {
+                        var collisionDX = intersectPoint[0] - this.lastCollisionPoint[0];
+                        var collisionDY = intersectPoint[1] - this.lastCollisionPoint[1];
+                        if (Math.sqrt(collisionDX * collisionDX + collisionDY * collisionDY) <= 0.01) {
+                            continue;
+                        }
+                        collided = true;
+                        var dx = intersectPoint[0] - newBallPos[0];
+                        var dy = intersectPoint[1] - newBallPos[1];
+                        remainingDistance = Math.sqrt(dx * dx + dy * dy);
+                        var angleDiff = MathUtils.radiansBetweenTwoAngles(this.ballAngle, this.paddleAngles[i] + this.paddleAddAngle);
+                        this.ballAngle = Math.PI + (this.paddleAngles[i] + this.paddleAddAngle) + angleDiff;
+
+                        this.lastCollisionPoint[0] = intersectPoint[0];
+                        this.lastCollisionPoint[1] = intersectPoint[1];
+                        ballPos[0] = intersectPoint[0];
+                        ballPos[1] = intersectPoint[1];
+                        this.ballPos[0] = (intersectPoint[0] - canvas.width / 2) / baseSize;
+                        this.ballPos[1] = (intersectPoint[1] - canvas.height / 2) / baseSize;
+
+                        break;
+                    }
                 }
             }
-            collided = false;
         }
 
-        this.ballPos[0] += this.ballSpeed * Math.cos(this.ballAngle);
-        this.ballPos[1] += this.ballSpeed * Math.sin(this.ballAngle);
+        this.ballPos[0] = (newBallPos[0] - canvas.width / 2) / baseSize;
+        this.ballPos[1] = (newBallPos[1] - canvas.height / 2) / baseSize;
     };
 
     this.render = function() {
@@ -236,13 +302,12 @@ var StaticGame = function() {
         return paddleHalfWidth * 2 - baseSize * this.PADDLE_GAP;
     };
 
-    this.getCollisionPaddles = function() {
+    this.getCollisionPaddles = function(radius) {
         this.returnPaddleLines = [];
 
         var baseSize = Math.min(canvas.width, canvas.height);
         var ballRadius = baseSize * this.BALL_DIAMETER / 2;
         var paddleThickness = baseSize * this.PADDLE_THICKNESS;
-        var radius = baseSize * this.CIRCLE_DIAMETER / 2;
 
         var outerPaddleAngle = Math.PI * (this.paddleAngles.length - 2) / this.paddleAngles.length;
         var innerPaddleAngle = Math.PI - outerPaddleAngle;
@@ -294,14 +359,17 @@ var StaticGame = function() {
     };
 
     this.init = function() {
-        this.desiredBallSpeed = 0.01;
-        this.desiredRotateSpeed = 0.05;
+        this.desiredBallSpeed = 0.015;
+        this.desiredRotateSpeed = 0.04;
         this.rotateSpeed = 0;
 
+        this.ballAngle = 45 / (360 / (Math.PI * 2));
+
         this.paddleAngles = [
-            -Math.PI * 3 / 2,
-            -Math.PI * 13 / 6,
-            -Math.PI * 17 / 6
+            0,
+            Math.PI / 2,
+            Math.PI,
+            Math.PI * 3 / 2
         ];
 
         this.score = 0;
