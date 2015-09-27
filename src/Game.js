@@ -17,7 +17,6 @@ var StaticGame = function() {
     this.paddleAngles = [];
     this.paddleAddAngle = 0;
     this.selectedPaddleIndex = -1;
-    this.greenPaddleIndex = -1;
 
     this.desiredRotateSpeed = 0;
     this.rotateSpeed = 0;
@@ -29,9 +28,12 @@ var StaticGame = function() {
     this.lastCollisionPoint = [0, 0];
 
     this.loser = false;
-    this.loserAngle = 0;
 
     this.update = function(delta) {
+        if (this.loser) {
+            return;
+        }
+
         if (this.desiredRotateSpeed - this.rotateSpeed <= this.ROTATE_ACCEL * delta) {
             this.rotateSpeed = this.desiredRotateSpeed;
         } else {
@@ -41,6 +43,8 @@ var StaticGame = function() {
         this.paddleAddAngle += this.rotateSpeed * delta;
 
         this.updateBall(delta);
+
+        this.checkBallBoundaries();
     };
 
     this.updateBall = function(delta) {
@@ -160,26 +164,25 @@ var StaticGame = function() {
         this.ballPos[1] = (newBallPos[1] - canvas.height / 2) / baseSize;
     };
 
+    this.checkBallBoundaries = function() {
+        var baseSize = Math.min(canvas.width, canvas.height);
+        var ballPosX = this.ballPos[0] * baseSize + canvas.width / 2;
+        var ballPosY = this.ballPos[1] * baseSize + canvas.height / 2;
+        if (ballPosX < 0 || ballPosX > canvas.width || ballPosY < 0 || ballPosY > canvas.height) {
+            this.ballPos[0] = 0;
+            this.ballPos[1] = 0;
+        }
+    };
+
     this.render = function() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         if (!this.loser) {
             this.renderScore();
         }
-        if (this.loser) {
-            ctx.translate(canvas.width / 2, canvas.height / 2);
-            ctx.rotate(-this.paddleAddAngle + this.loserAngle);
-            ctx.translate(-canvas.width / 2, -canvas.height / 2);
-        }
 
         this.renderPaddles();
         this.renderBall();
-
-        if (this.loser) {
-            ctx.translate(canvas.width / 2, canvas.height / 2);
-            ctx.rotate(this.paddleAddAngle - this.loserAngle);
-            ctx.translate(-canvas.width / 2, -canvas.height / 2);
-        }
 
         if (this.loser) {
             this.renderLoser();
@@ -205,6 +208,11 @@ var StaticGame = function() {
 
         var outerPaddleAngle = Math.PI * (this.paddleAngles.length - 2) / this.paddleAngles.length;
         var innerPaddleAngle = Math.PI - outerPaddleAngle;
+
+        var mouseOverIndex = this._getPaddleByMousePos(GameInput.mousePos[0], GameInput.mousePos[1]);
+        if (this.loser) {
+            mouseOverIndex = -1;
+        }
 
         var fakePoint1 = [
             Math.cos(0) * radius,
@@ -245,12 +253,40 @@ var StaticGame = function() {
                 pos[1] - paddleWidth / 2 * orthogonalUnitVector[1] + paddleThickness / 2 * unitVector[1]
             ];
 
+            var STROKE_WIDTH = 4;
+            var strokePoint1 = [
+                pos[0] - paddleWidth / 2 * orthogonalUnitVector[0] - orthogonalUnitVector[0] * STROKE_WIDTH - paddleThickness / 2 * unitVector[0] - unitVector[0] * STROKE_WIDTH,
+                pos[1] - paddleWidth / 2 * orthogonalUnitVector[1] - orthogonalUnitVector[1] * STROKE_WIDTH - paddleThickness / 2 * unitVector[1] - unitVector[1] * STROKE_WIDTH
+            ];
+            var strokePoint2 = [
+                pos[0] + paddleWidth / 2 * orthogonalUnitVector[0] + orthogonalUnitVector[0] * STROKE_WIDTH - paddleThickness / 2 * unitVector[0] - unitVector[0] * STROKE_WIDTH,
+                pos[1] + paddleWidth / 2 * orthogonalUnitVector[1] + orthogonalUnitVector[1] * STROKE_WIDTH - paddleThickness / 2 * unitVector[1] - unitVector[1] * STROKE_WIDTH
+            ];
+            var strokePoint3 = [
+                pos[0] + paddleWidth / 2 * orthogonalUnitVector[0] + orthogonalUnitVector[0] * STROKE_WIDTH + paddleThickness / 2 * unitVector[0] + unitVector[0] * STROKE_WIDTH,
+                pos[1] + paddleWidth / 2 * orthogonalUnitVector[1] + orthogonalUnitVector[1] * STROKE_WIDTH + paddleThickness / 2 * unitVector[1] + unitVector[1] * STROKE_WIDTH
+            ];
+            var strokePoint4 = [
+                pos[0] - paddleWidth / 2 * orthogonalUnitVector[0] - orthogonalUnitVector[0] * STROKE_WIDTH + paddleThickness / 2 * unitVector[0] + unitVector[0] * STROKE_WIDTH,
+                pos[1] - paddleWidth / 2 * orthogonalUnitVector[1] - orthogonalUnitVector[1] * STROKE_WIDTH + paddleThickness / 2 * unitVector[1] + unitVector[1] * STROKE_WIDTH
+            ];
+
             if (this.selectedPaddleIndex === i) {
-                ctx.fillStyle = '#660000';
-            } else if (this.greenPaddleIndex === i) {
-                ctx.fillStyle = '#006600';
-            } else {
                 ctx.fillStyle = '#ffffff';
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(strokePoint1[0], strokePoint1[1]);
+                ctx.lineTo(strokePoint2[0], strokePoint2[1]);
+                ctx.lineTo(strokePoint3[0], strokePoint3[1]);
+                ctx.lineTo(strokePoint4[0], strokePoint4[1]);
+                ctx.closePath();
+                ctx.stroke();
+            } else if (mouseOverIndex === i) {
+                ctx.fillStyle = '#ffffff';
+            } else {
+                var color = this._getPaddleColor(i);
+                ctx.fillStyle = 'rgb(' + color[0] + ', ' + color[1] + ', ' + color[2] + ')';
             }
 
             ctx.beginPath();
@@ -287,6 +323,18 @@ var StaticGame = function() {
             return;
         }
 
+        var smallestDistanceIndex = this._getPaddleByMousePos(x, y);
+
+        if (smallestDistanceIndex !== -1) {
+            if (smallestDistanceIndex === this.selectedPaddleIndex) {
+                this.selectedPaddleIndex = -1;
+            } else {
+                this.selectedPaddleIndex = smallestDistanceIndex;
+            }
+        }
+    };
+
+    this._getPaddleByMousePos = function(x, y) {
         var clickAngle = Math.atan2(y - canvas.height / 2, x - canvas.width / 2);
         var clickUnitVector = [Math.cos(clickAngle), Math.sin(clickAngle)];
 
@@ -306,13 +354,7 @@ var StaticGame = function() {
             }
         }
 
-        if (smallestDistanceIndex !== -1) {
-            if (smallestDistanceIndex === this.selectedPaddleIndex) {
-                this.selectedPaddleIndex = -1;
-            } else {
-                this.selectedPaddleIndex = smallestDistanceIndex;
-            }
-        }
+        return smallestDistanceIndex;
     };
 
     this.breakPaddle = function(selectedPaddleIndex) {
@@ -339,10 +381,8 @@ var StaticGame = function() {
                 this.score++;
                 this.selectedPaddleIndex = -1;
             } else {
-                setTimeout(this.init.bind(this), 2000);
+                setTimeout(this.init.bind(this), 1000);
                 this.loser = true;
-                this.loserAngle = this.paddleAddAngle;
-                this.greenPaddleIndex = index;
             }
         }
     };
@@ -436,7 +476,22 @@ var StaticGame = function() {
         return canvas.width / 5;
     };
 
+    this._getPaddleColor = function(index) {
+        var brightness = 0.71;
+        var saturation = 0.66;
+        var hue = Math.floor(index / 3) * 30;
+        if ((index + 1) % 3 === 0) {
+            hue += 120;
+        } else if ((index + 1) % 2 === 0 ) {
+            hue += 240;
+        }
+        hue /= 360;
+
+        return GuiUtils.hslToRgb(hue, saturation, brightness);
+    };
+
     this.init = function() {
+        console.log('test');
         this.ballPos = [0, 0];
         this.ballSpeed = 0;
         this.desiredBallSpeed = 0.01;
@@ -444,11 +499,10 @@ var StaticGame = function() {
         this.desiredRotateSpeed = 0.02;
 
         this.selectedPaddleIndex = -1;
-        this.greenPaddleIndex = -1;
-
-        this.loser = false;
 
         this.ballAngle = Math.PI * 2 * Math.random();
+
+        this.loser = false;
 
         this.PADDLE_GAP = 0.12;
 
