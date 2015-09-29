@@ -534,9 +534,9 @@ var StaticGame = function() {
                     AdInterface.showAd();
                 } else {
                     AdInitialize.show();
+                    AdInitialize.refreshAd();
                 }
                 this.loser = true;
-                AdInitialize.refreshAd();
                 setTimeout(this.clickToContinue.bind(this), 1400);
             }
         }
