@@ -242,7 +242,6 @@ var StaticGame = function() {
 
                 newBallPos[0] = returnPoint[0];
                 newBallPos[1] = returnPoint[1];
-                console.log('fixed glitch');
             }
         }
 
