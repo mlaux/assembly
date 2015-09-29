@@ -70,6 +70,37 @@ var StaticMathUtils = function() {
         return oddNodes;
     };
 
+    /**
+     * Determines the closest point on the given line to the given point. The
+     * closest point may be the end points.
+     * @param returnPoint
+     * @param line
+     * @param point
+     */
+    this.nearestLinePoint2D = function(returnPoint, line, point) {
+        var length2 = vec2.sqrDist(line[0], line[1]);
+        if (length2 == 0) {
+            returnPoint[0] = line[0][0];
+            returnPoint[1] = line[0][1];
+            return;
+        }
+
+        var t = ((point[0] - line[0][0]) * (line[1][0] - line[0][0]) + (point[1] - line[0][1]) * (line[1][1] - line[0][1])) / length2;
+        if (t < 0) {
+            returnPoint[0] = line[0][0];
+            returnPoint[1] = line[0][1];
+            return;
+        }
+        if (t > 1) {
+            returnPoint[0] = line[1][0];
+            returnPoint[1] = line[1][1];
+            return;
+        }
+
+        returnPoint[0] = line[0][0] + t * (line[1][0] - line[0][0]);
+        returnPoint[1] = line[0][1] + t * (line[1][1] - line[0][1]);
+    };
+
     this.radiansBetweenTwoAngles = function(angleFrom, angleTo) {
         angleFrom = angleFrom % (Math.PI * 2);
         angleTo = angleTo % (Math.PI * 2);
