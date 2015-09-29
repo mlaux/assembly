@@ -51,7 +51,7 @@ var StaticAdInitialize = function() {
     };
 
     this.resize = function() {
-        var height = window.getComputedStyle(this.ins, null).getPropertyValue('height');
+        var height = window.getComputedStyle(this.ins).getPropertyValue('height');
         height = parseInt(height.substring(0, height.length - 2));
 
         this.container.style.top = '-' + Math.floor(height * (1.0 - this.percentDown)) + 'px';
