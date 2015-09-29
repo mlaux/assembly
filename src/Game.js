@@ -10,6 +10,9 @@ var StaticGame = function() {
     this.ROTATE_ACCEL = 0.00025;
     this.BALL_ACCEL = 0.0004;
 
+    this.BALL_GLOW_RADIUS_PERCENT = 1.96875;
+    this.BALL_GLOW_DECREASE_SPEED = 0.02;
+
     this.sparkles = [];
 
     this.score = 0;
@@ -30,6 +33,8 @@ var StaticGame = function() {
     this.lastCollisionPoint = [0, 0];
 
     this.clickToContinueOpacity = 0;
+
+    this.ballGlowOpacity = 0;
 
     this.loser = false;
 
@@ -70,6 +75,8 @@ var StaticGame = function() {
         } else {
             this.ballSpeed += this.BALL_ACCEL * delta;
         }
+
+        this.ballGlowOpacity = Math.max(0, this.ballGlowOpacity - this.BALL_GLOW_DECREASE_SPEED * delta);
 
         var collisionPaddles = this.getCollisionPaddles(baseSize * this.CIRCLE_DIAMETER / 2);
         var outerCollisionPaddles = this.getCollisionPaddles(baseSize * this.CIRCLE_DIAMETER / 2 + baseSize * 0.2);
@@ -305,6 +312,19 @@ var StaticGame = function() {
 
         ctx.fillStyle = '#ffffff';
 
+        if (this.ballGlowOpacity > 0) {
+            ctx.globalAlpha = this.ballGlowOpacity;
+            var diameter = ballRadius * 2 * this.BALL_GLOW_RADIUS_PERCENT;
+            ctx.drawImage(
+                globalBallGlow,
+                canvas.width / 2 + this.ballPos[0] * baseSize - diameter / 2,
+                canvas.height / 2 + this.ballPos[1] * baseSize - diameter / 2,
+                diameter,
+                diameter
+            );
+            ctx.globalAlpha = 1;
+        }
+
         ctx.beginPath();
         ctx.arc(canvas.width / 2 + this.ballPos[0] * baseSize, canvas.height / 2 + this.ballPos[1] * baseSize, ballRadius, Math.PI * 2, false);
         ctx.closePath();
@@ -510,6 +530,7 @@ var StaticGame = function() {
                     this.breakPaddle(this.selectedPaddleIndex);
                 }
                 this.increaseSpeed();
+                this.ballGlowOpacity = 1;
                 this.score++;
                 this.selectedPaddleIndex = -1;
             } else {
@@ -679,6 +700,8 @@ var StaticGame = function() {
         this.clickToContinueOpacity = 0;
 
         this.PADDLE_GAP = 0.12;
+
+        this.ballGlowOpacity = 0;
 
         this.sparkles = [];
 

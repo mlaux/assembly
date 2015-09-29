@@ -26,6 +26,12 @@ globalSparkle.id = 'globalSparkle';
 globalSparkle.width = '16';
 globalSparkle.height = '16';
 
+var globalBallGlow = document.createElement('img');
+globalBallGlow.src = 'assets/ball-glow.png';
+globalBallGlow.id = 'globalBallGlow';
+globalBallGlow.width = '128';
+globalBallGlow.height = '128';
+
 var resize = function() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
