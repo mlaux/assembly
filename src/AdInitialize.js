@@ -6,29 +6,28 @@ var StaticAdInitialize = function() {
     this.TRANSITION_TIME = 300;
 
     this.container = null;
-    this.ins = null;
+    this.adFrame = null;
 
     this.visible = false;
     this.remainingTransitionTime = 0;
-    this.percentDown = 1.0;
+    this.percentDown = 0.0;
+
+    this.userRequestedRefresh = false;
 
     this.update = function(delta) {
+        if (!this.adFrame || this.adFrame.contentWindow.document.readyState !== 'complete') {
+            return;
+        }
         this.remainingTransitionTime = Math.max(0, this.remainingTransitionTime - delta / Constants.DELTA_SCALE);
+
 
         if (this.visible) {
             this.percentDown = 1.0 - this.remainingTransitionTime / this.TRANSITION_TIME;
-
-            if (this.ins.style.display !== 'block') {
-                this.ins.style.display = 'block';
-            }
         } else {
-            this.percentDown = this.remainingTransitionTime / this.TRANSITION_TIME;
-
-            if (this.percentDown === 0.0) {
-                if (this.ins.style.display !== 'none') {
-                    this.ins.style.display = 'none';
-                }
+            if (this.remainingTransitionTime === 0 && this.percentDown !== 0) {
+                this.clearAd();
             }
+            this.percentDown = this.remainingTransitionTime / this.TRANSITION_TIME;
         }
 
         this.resize();
@@ -46,19 +45,44 @@ var StaticAdInitialize = function() {
         if (this.visible) {
             return;
         }
+        this.userRequestedRefresh = true;
         this.visible = true;
         this.remainingTransitionTime = this.TRANSITION_TIME - this.remainingTransitionTime;
     };
 
-    this.resize = function() {
-        var height = window.getComputedStyle(this.ins).getPropertyValue('height');
-        height = parseInt(height.substring(0, height.length - 2));
+    this.refreshAd = function() {
+        this.adFrame.contentWindow.location.replace('adPage.html');
+    };
 
+    this.clearAd = function() {
+        this.adFrame.contentWindow.location.replace('about:blank');
+    };
+
+    this.resize = function() {
+        if (!this.adFrame || !this.adFrame.contentWindow || !this.adFrame.contentWindow.document || this.adFrame.contentWindow.document.readyState !== 'complete') {
+            return;
+        }
+        var adFrameAdContainer = this.adFrame.contentWindow.document.getElementById('adFrameAdContainer');
+        if (!adFrameAdContainer) {
+            return;
+        }
+        var width = this.adFrame.contentWindow.getComputedStyle(adFrameAdContainer).getPropertyValue('width');
+        width = width.substring(0, width.length - 2);
+        var height = this.adFrame.contentWindow.getComputedStyle(adFrameAdContainer).getPropertyValue('height');
+        height = height.substring(0, height.length - 2);
+
+        this.adFrame.style.width = width + 'px';
+        this.adFrame.style.height = height + 'px';
         this.container.style.top = '-' + Math.floor(height * (1.0 - this.percentDown)) + 'px';
     };
 
     this.init = function() {
+        if (window.AdInterface) {
+            return;
+        }
         this.container = document.getElementById('ad-container');
-        this.ins = document.getElementById('advert');
+        this.adFrame = document.getElementById('ad-frame');
+
+        this.resize();
     };
 };

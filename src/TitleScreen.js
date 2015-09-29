@@ -112,7 +112,7 @@ var StaticTitleScreen = function() {
     };
 
     this.getScoreYPos = function() {
-        return this.getPlayYPos() + this.getMenuFontHeight() * 2;
+        return this.getPlayYPos() + this.getMenuFontHeight() * 1.1;
     };
 
     this.getScoreWidth = function() {
