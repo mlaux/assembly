@@ -33,11 +33,11 @@ var StaticScoresScreen = function() {
 
             ctx.textAlign = 'right';
             ctx.font = this._getScoreFontSize() + 'px Begok';
-            ctx.fillText(score['username'], canvas.width * 3 / 2 - canvas.width / 100, y);
+            ctx.fillText(score['username'], canvas.width / 2 - canvas.width / 50 + canvas.width / 10, y);
 
             ctx.textAlign = 'left';
             ctx.font = this._getScoreFontSize() + 'px PirulenRg-Regular';
-            ctx.fillText(score['score'], canvas.width * 3 / 2 + canvas.width / 100, y - canvas.width / 240);
+            ctx.fillText(score['score'], canvas.width / 2 + canvas.width / 50 + canvas.width / 10, y - canvas.width / 240);
             y += this._getScoreFontSize();
         }
     };
