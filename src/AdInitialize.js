@@ -24,6 +24,9 @@ var StaticAdInitialize = function() {
         if (this.visible) {
             this.percentDown = 1.0 - this.remainingTransitionTime / this.TRANSITION_TIME;
         } else {
+            if (this.remainingTransitionTime === 0 && this.percentDown !== 0) {
+                this.clearAd();
+            }
             this.percentDown = this.remainingTransitionTime / this.TRANSITION_TIME;
         }
 
@@ -49,6 +52,10 @@ var StaticAdInitialize = function() {
 
     this.refreshAd = function() {
         this.adFrame.contentWindow.location.replace('adPage.html');
+    };
+
+    this.clearAd = function() {
+        this.adFrame.contentWindow.location.replace('about:blank');
     };
 
     this.resize = function() {

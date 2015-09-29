@@ -459,7 +459,7 @@ var StaticGame = function() {
                 }
                 this.loser = true;
                 AdInitialize.refreshAd();
-                setTimeout(this.clickToContinue.bind(this), 1200);
+                setTimeout(this.clickToContinue.bind(this), 1400);
             }
         }
     };
