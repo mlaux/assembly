@@ -443,7 +443,9 @@ var StaticGame = function() {
         if (this.selectedPaddleIndex !== -1) {
             if (this.selectedPaddleIndex === index) {
                 this.createSparkles(index);
-                this.breakPaddle(this.selectedPaddleIndex);
+                if (this.paddleAngles.length < 12) {
+                    this.breakPaddle(this.selectedPaddleIndex);
+                }
                 this.score++;
                 this.selectedPaddleIndex = -1;
             } else {
