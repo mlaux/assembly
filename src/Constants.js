@@ -3,7 +3,7 @@
  */
 
 var StaticConstants = function() {
-    this.COLOR_WHITE = 'e6e7e8';
+    this.COLOR_WHITE = 'ffffff';
     this.COLOR_DARK_GRAY = '232323';
     this.COLOR_GRAY = '868687';
 
