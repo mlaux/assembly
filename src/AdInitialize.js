@@ -37,6 +37,11 @@ var StaticAdInitialize = function() {
         if (!this.visible) {
             return;
         }
+        if (this.adFrame.contentWindow.stop !== undefined) {
+            this.adFrame.contentWindow.stop();
+        } else {
+            this.adFrame.contentWindow.document.execCommand('Stop');
+        }
         this.visible = false;
         this.remainingTransitionTime = this.TRANSITION_TIME - this.remainingTransitionTime;
     };
