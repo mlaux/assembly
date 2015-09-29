@@ -525,7 +525,7 @@ var StaticGame = function() {
                     AdInitialize.refreshAd();
                 }
                 this.loser = true;
-                setTimeout(this.clickToContinue.bind(this), 1400);
+                setTimeout(this.clickToContinue.bind(this), 1600);
             }
         }
     };
@@ -650,14 +650,6 @@ var StaticGame = function() {
         var brightness = 0.71;
         var saturation = 0.66;
         var hue = ((index * 150) % 360) / 360;
-        //var hue = Math.floor(index / 3) * 30;
-        //if ((index + 1) % 3 === 0) {
-        //    hue += 130;
-        //} else if ((index + 1) % 2 === 0 ) {
-        //    hue += 260;
-        //}
-        //hue %= 360;
-        // hue /= 360;
 
         return GuiUtils.hslToRgb(hue, saturation, brightness);
     };
