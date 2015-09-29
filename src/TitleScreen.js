@@ -31,10 +31,10 @@ var StaticTitleScreen = function() {
     this.render = function() {
         GuiUtils.initializeContextForGui();
 
-        ctx.font = this._getTitleFontSize() + 'px Begok';
+        ctx.font = this._getTitleFontSize() + 'px begokregular';
         ctx.fillText('centrifuge', canvas.width / 2, this.getTitleYPos());
 
-        ctx.font = this._getMenuFontSize() + 'px Begok';
+        ctx.font = this._getMenuFontSize() + 'px begokregular';
         ctx.fillStyle = '#' + (this._mouseOverPlay(GameInput.mousePos[0], GameInput.mousePos[1]) ? Constants.COLOR_LIGHT_GRAY : Constants.COLOR_WHITE);
         ctx.fillText('play', canvas.width / 2, this.getPlayYPos());
         ctx.fillStyle = '#' + (this._mouseOverScores(GameInput.mousePos[0], GameInput.mousePos[1]) ? Constants.COLOR_LIGHT_GRAY : Constants.COLOR_WHITE);
