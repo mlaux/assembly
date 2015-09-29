@@ -10,12 +10,12 @@ var StaticAdInitialize = function() {
 
     this.visible = false;
     this.remainingTransitionTime = 0;
-    this.percentDown = 1.0;
+    this.percentDown = 0.0;
 
     this.userRequestedRefresh = false;
 
     this.update = function(delta) {
-        if (!this.adFrame) {
+        if (!this.adFrame || this.adFrame.contentWindow.document.readyState !== 'complete') {
             return;
         }
         this.remainingTransitionTime = Math.max(0, this.remainingTransitionTime - delta / Constants.DELTA_SCALE);
@@ -25,11 +25,6 @@ var StaticAdInitialize = function() {
             this.percentDown = 1.0 - this.remainingTransitionTime / this.TRANSITION_TIME;
         } else {
             this.percentDown = this.remainingTransitionTime / this.TRANSITION_TIME;
-
-            if (this.remainingTransitionTime === 0 && this.userRequestedRefresh) {
-                this.adFrame.contentWindow.location.reload(true);
-                this.userRequestedRefresh = false;
-            }
         }
 
         this.resize();
@@ -52,11 +47,18 @@ var StaticAdInitialize = function() {
         this.remainingTransitionTime = this.TRANSITION_TIME - this.remainingTransitionTime;
     };
 
+    this.refreshAd = function() {
+        this.adFrame.contentWindow.location.replace('adPage.html');
+    };
+
     this.resize = function() {
         if (!this.adFrame || !this.adFrame.contentWindow || !this.adFrame.contentWindow.document || this.adFrame.contentWindow.document.readyState !== 'complete') {
             return;
         }
         var adFrameAdContainer = this.adFrame.contentWindow.document.getElementById('adFrameAdContainer');
+        if (!adFrameAdContainer) {
+            return;
+        }
         var width = this.adFrame.contentWindow.getComputedStyle(adFrameAdContainer, null).getPropertyValue('width');
         width = width.substring(0, width.length - 2);
         var height = this.adFrame.contentWindow.getComputedStyle(adFrameAdContainer, null).getPropertyValue('height');
