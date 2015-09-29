@@ -27,9 +27,6 @@ var StaticScoresScreen = function() {
         var y = 2 * this._getScoreFontSize();
         for (var k = 0; k < this.scores.length; k++) {
             var score = this.scores[k];
-            var nameWidth = ctx.measureText(score['username']).width;
-            var scoreWidth = ctx.measureText(score['score']).width;
-            var totalWidth = nameWidth + scoreWidth;
 
             ctx.textAlign = 'right';
             ctx.font = this._getScoreFontSize() + 'px Begok';
