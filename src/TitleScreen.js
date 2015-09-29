@@ -35,7 +35,9 @@ var StaticTitleScreen = function() {
         ctx.fillText('centrifuge', canvas.width / 2, this.getTitleYPos());
 
         ctx.font = this._getMenuFontSize() + 'px Begok';
+        ctx.fillStyle = '#' + (this._mouseOverPlay(GameInput.mousePos[0], GameInput.mousePos[1]) ? Constants.COLOR_LIGHT_GRAY : Constants.COLOR_WHITE);
         ctx.fillText('play', canvas.width / 2, this.getPlayYPos());
+        ctx.fillStyle = '#' + (this._mouseOverScores(GameInput.mousePos[0], GameInput.mousePos[1]) ? Constants.COLOR_LIGHT_GRAY : Constants.COLOR_WHITE);
         ctx.fillText('scores', canvas.width / 2, this.getScoreYPos());
 
         for (var i = 0; i < this.lineList.length; i++) {
@@ -47,22 +49,36 @@ var StaticTitleScreen = function() {
     };
 
     this.click = function(x, y) {
+        if (this._mouseOverPlay(x, y)) {
+            this.startTransition(function() {
+                Game.init();
+                StateManager.setState(StateManager.STATE_GAME);
+            });
+        }
+        if (this._mouseOverScores(x, y)) {
+            ScoresScreen.init();
+            this.startTransition(function() {
+                StateManager.setState(StateManager.STATE_SCORES);
+            });
+        }
+    };
+
+    this._mouseOverPlay = function(x, y) {
         if (x >= canvas.width / 2 - this.getPlayWidth() / 2 && x < canvas.width / 2 + this.getPlayWidth() / 2) {
             if (y >= this.getPlayYPos() && y < this.getPlayYPos() + this.getMenuFontHeight()) {
-                this.startTransition(function() {
-                    Game.init();
-                    StateManager.setState(StateManager.STATE_GAME);
-                });
+                return true;
             }
         }
+        return false;
+    };
+
+    this._mouseOverScores = function(x, y) {
         if (x >= canvas.width / 2 - this.getScoreWidth() / 2 && x < canvas.width / 2 + this.getScoreWidth() / 2) {
             if (y >= this.getScoreYPos() && y < this.getScoreYPos() + this.getMenuFontHeight()) {
-                ScoresScreen.init();
-                this.startTransition(function() {
-                    StateManager.setState(StateManager.STATE_SCORES);
-                });
+                return true;
             }
         }
+        return false;
     };
 
     this.init = function() {

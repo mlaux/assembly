@@ -8,7 +8,7 @@ var StaticGame = function() {
     this.PADDLE_THICKNESS = 0.04;
     this.CIRCLE_DIAMETER = 0.85;
     this.ROTATE_ACCEL = 0.00025;
-    this.BALL_ACCEL = 0.0005;
+    this.BALL_ACCEL = 0.0004;
 
     this.sparkles = [];
 
@@ -491,15 +491,11 @@ var StaticGame = function() {
         }
         this.paddleAngles.push(this.paddleAngles[0] + newSpacing * this.paddleAngles.length);
         this.PADDLE_GAP *= 0.75;
-        this.increaseSpeed();
     };
 
     this.increaseSpeed = function() {
-        this.desiredRotateSpeed += 0.5 / (2 * this.desiredRotateSpeed) / 8000;
-        this.desiredBallSpeed += 0.5 / (2 * this.desiredBallSpeed + 0.015) / 8000;
-
-        this.desiredRotateSpeed = Math.min(this.desiredRotateSpeed, 0.08182065337126981);
-        this.desiredBallSpeed = Math.min(this.desiredBallSpeed, 0.07377135360272376);
+        this.desiredRotateSpeed += 0.000003 / Math.pow(this.desiredRotateSpeed, 1.2) + 0.002;
+        this.desiredBallSpeed += 0.0000625 / (2 * Math.pow(this.desiredBallSpeed, 1.2) + 0.02);
     };
 
     this.collided = function(index) {
@@ -513,6 +509,7 @@ var StaticGame = function() {
                 if (this.paddleAngles.length < 12) {
                     this.breakPaddle(this.selectedPaddleIndex);
                 }
+                this.increaseSpeed();
                 this.score++;
                 this.selectedPaddleIndex = -1;
             } else {
@@ -652,14 +649,15 @@ var StaticGame = function() {
     this._getPaddleColor = function(index) {
         var brightness = 0.71;
         var saturation = 0.66;
-        var hue = Math.floor(index / 3) * 30;
-        if ((index + 1) % 3 === 0) {
-            hue += 120;
-        } else if ((index + 1) % 2 === 0 ) {
-            hue += 240;
-        }
-        hue %= 360;
-        hue /= 360;
+        var hue = ((index * 150) % 360) / 360;
+        //var hue = Math.floor(index / 3) * 30;
+        //if ((index + 1) % 3 === 0) {
+        //    hue += 130;
+        //} else if ((index + 1) % 2 === 0 ) {
+        //    hue += 260;
+        //}
+        //hue %= 360;
+        // hue /= 360;
 
         return GuiUtils.hslToRgb(hue, saturation, brightness);
     };
