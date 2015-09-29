@@ -66,9 +66,9 @@ var StaticAdInitialize = function() {
         if (!adFrameAdContainer) {
             return;
         }
-        var width = this.adFrame.contentWindow.getComputedStyle(adFrameAdContainer, null).getPropertyValue('width');
+        var width = this.adFrame.contentWindow.getComputedStyle(adFrameAdContainer).getPropertyValue('width');
         width = width.substring(0, width.length - 2);
-        var height = this.adFrame.contentWindow.getComputedStyle(adFrameAdContainer, null).getPropertyValue('height');
+        var height = this.adFrame.contentWindow.getComputedStyle(adFrameAdContainer).getPropertyValue('height');
         height = height.substring(0, height.length - 2);
 
         this.adFrame.style.width = width + 'px';
