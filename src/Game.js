@@ -383,15 +383,6 @@ var StaticGame = function() {
 
             if (this.selectedPaddleIndex === i) {
                 ctx.fillStyle = '#ffffff';
-                //ctx.strokeStyle = '#ffffff';
-                //ctx.lineWidth = 2;
-                //ctx.beginPath();
-                //ctx.moveTo(strokePoint1[0], strokePoint1[1]);
-                //ctx.lineTo(strokePoint2[0], strokePoint2[1]);
-                //ctx.lineTo(strokePoint3[0], strokePoint3[1]);
-                //ctx.lineTo(strokePoint4[0], strokePoint4[1]);
-                //ctx.closePath();
-                //ctx.stroke();
             } else if (mouseOverIndex === i) {
                 var color = this._getPaddleColor(i);
                 var r = color[0];
@@ -667,6 +658,7 @@ var StaticGame = function() {
         } else if ((index + 1) % 2 === 0 ) {
             hue += 240;
         }
+        hue %= 360;
         hue /= 360;
 
         return GuiUtils.hslToRgb(hue, saturation, brightness);
@@ -701,16 +693,10 @@ var StaticGame = function() {
         this.sparkles = [];
 
         this.paddleAngles = [
-            Math.PI * 3 / 2,
-            Math.PI * 13 / 6,
-            Math.PI * 17 / 6
+            Math.PI * 3 / 2 - Math.PI / 3,
+            Math.PI * 13 / 6 - Math.PI / 3,
+            Math.PI * 17 / 6 - Math.PI / 3
         ];
-        //this.paddleAngles = [
-        //    0,
-        //    Math.PI / 2,
-        //    Math.PI,
-        //    Math.PI * 3 / 2
-        //];
 
         this.score = 0;
     };
