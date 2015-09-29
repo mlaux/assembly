@@ -56,10 +56,11 @@ window.onload = function() {
     ctx = canvas.getContext('2d');
 
     resize();
-    loop();
 
     GameInput.init();
     TitleScreen.init();
+
+    loop();
 };
 window.onresize = resize;
 window.onerror = Network.reportError;

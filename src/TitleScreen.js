@@ -7,16 +7,13 @@ var StaticTitleScreen = function() {
     this.LINE_CREATE_TIME = 400;
     this.LINE_BASE_TRANSITION_SPEED = 0.01;
 
-    this.createLineCountdown = this.LINE_CREATE_TIME;
     this.lineList = [];
     this.transitionLineList = [];
 
     this.update = function(delta) {
-        if (this.createLineCountdown <= 0 && this.lineList.length < this.MAX_LINE_COUNT) {
-            this.lineList.push(new TitleLine());
-            this.createLineCountdown = this.LINE_CREATE_TIME;
+        while (this.lineList.length < this.MAX_LINE_COUNT) {
+            this.lineList.push(new TitleLine(false, 1.0 - Math.random() * Math.min(1.0, delta / 100)));
         }
-        this.createLineCountdown -= delta / Constants.DELTA_SCALE;
 
         for (var i = 0; i < this.lineList.length; i++) {
             this.lineList[i].update(delta);
@@ -69,7 +66,7 @@ var StaticTitleScreen = function() {
     };
 
     this.init = function() {
-        for (var i = 0; i < this.MAX_LINE_COUNT; i++) {
+        while (this.lineList.length < this.MAX_LINE_COUNT) {
             this.lineList.push(new TitleLine(false, Math.random()));
         }
     };

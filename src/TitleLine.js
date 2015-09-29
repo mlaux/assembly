@@ -3,8 +3,8 @@
  */
 
 var TitleLine = function(transitionLine, x, y) {
-    this.pos = [_.isNumber(x) ? x : 1.0, _.isNumber(y) ? y : TitleScreen.getTitleYPos() / canvas.height + TitleScreen.getTitleFontHeight() / canvas.height * Math.random()];
     this.width = transitionLine ? 10 : Math.random() * 0.4 + 0.2;
+    this.pos = [_.isNumber(x) ? x * (1 + this.width) - this.width : 1.0, _.isNumber(y) ? y : TitleScreen.getTitleYPos() / canvas.height + TitleScreen.getTitleFontHeight() / canvas.height * Math.random()];
     this.speed = transitionLine ? Math.random() * 0.01 + TitleScreen.LINE_BASE_TRANSITION_SPEED : Math.random() * 0.006 + 0.001;
 
     this.update = function(delta) {
