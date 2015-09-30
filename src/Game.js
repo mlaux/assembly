@@ -31,6 +31,7 @@ var StaticGame = function() {
     this.ballSpeed = 0;
     this.desiredBallSpeed = 0;
 
+    this.firstCollisionPoint = [0, 0];
     this.lastCollisionPoint = [0, 0];
 
     this.clickToContinueOpacity = 0;
@@ -274,6 +275,8 @@ var StaticGame = function() {
                 this.ballPos[1] = (ballPos[1] - canvas.height / 2) / baseSize;
 
                 if (collidedIndex === -1) {
+                    this.firstCollisionPoint[0] = this.lastCollisionPoint[0];
+                    this.firstCollisionPoint[1] = this.lastCollisionPoint[1];
                     collidedIndex = closestCollisionIndex;
                 }
             }
@@ -305,8 +308,8 @@ var StaticGame = function() {
         this.ballPos[1] = (newBallPos[1] - canvas.height / 2) / baseSize;
 
         if (this.loser) {
-            this.ballPos[0] = (this.lastCollisionPoint[0] - canvas.width / 2) / baseSize;
-            this.ballPos[1] = (this.lastCollisionPoint[1] - canvas.height / 2) / baseSize;
+            this.ballPos[0] = (this.firstCollisionPoint[0] - canvas.width / 2) / baseSize;
+            this.ballPos[1] = (this.firstCollisionPoint[1] - canvas.height / 2) / baseSize;
         }
     };
 
