@@ -5,7 +5,7 @@
 var Sparkle = function(x, y) {
     this.pos = [x, y];
     this.angle = Math.random() * Math.PI * 2;
-    this.speed = 0.01 + Math.random() * 0.01;
+    this.speed = Game.ballSpeed * 1.5 + Math.random() * 0.02;
 
     this.update = function(delta) {
         this.pos[0] += Math.cos(this.angle) * delta * this.speed;

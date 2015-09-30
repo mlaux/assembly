@@ -303,6 +303,11 @@ var StaticGame = function() {
 
         this.ballPos[0] = (newBallPos[0] - canvas.width / 2) / baseSize;
         this.ballPos[1] = (newBallPos[1] - canvas.height / 2) / baseSize;
+
+        if (this.loser) {
+            this.ballPos[0] = (this.lastCollisionPoint[0] - canvas.width / 2) / baseSize;
+            this.ballPos[1] = (this.lastCollisionPoint[1] - canvas.height / 2) / baseSize;
+        }
     };
 
     this.shakeScreen = function(intensity) {
@@ -593,7 +598,7 @@ var StaticGame = function() {
                 }
                 this.increaseSpeed();
                 this.ballGlowOpacity = 1;
-                this.shakeScreen(1);
+                this.shakeScreen(this.ballSpeed * 60);
                 this.score++;
                 this.selectedPaddleIndex = -1;
             } else {
