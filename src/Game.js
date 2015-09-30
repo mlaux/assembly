@@ -10,6 +10,7 @@ var StaticGame = function() {
     this.ROTATE_ACCEL = 0.00025;
     this.BALL_ACCEL = 0.0004;
 
+    // the width of the ball glow png divided by the width of the actual ball inside that png
     this.BALL_GLOW_RADIUS_PERCENT = 1.96875;
     this.BALL_GLOW_DECREASE_SPEED = 0.02;
 
@@ -36,6 +37,13 @@ var StaticGame = function() {
 
     this.ballGlowOpacity = 0;
 
+    this.screenShakeDesiredAmount = [0, 0];
+    this.screenShakeIntensity = 0;
+    this.screenShakeAmount = [0, 0];
+    this.screenShakeStartRemainingTime = 0;
+    this.screenShakeRemainingTime = 0;
+    this.screenShakeMaxVel = 1;
+
     this.loser = false;
 
     this.update = function(delta) {
@@ -59,12 +67,53 @@ var StaticGame = function() {
 
         this.checkBallBoundaries();
 
+        this.updateScreenShake(delta);
+
         for (var i = 0; i < this.sparkles.length; i++) {
             this.sparkles[i].update(delta);
             if (this.sparkles[i].isDead()) {
                 this.sparkles.splice(i, 1);
                 i--;
             }
+        }
+    };
+
+    this.updateScreenShake = function(delta) {
+        this.screenShakeRemainingTime = Math.max(0, this.screenShakeRemainingTime - delta / Constants.DELTA_SCALE);
+
+        var scaledIntensity = this.screenShakeIntensity * (this.screenShakeRemainingTime / this.screenShakeStartRemainingTime);
+
+        if (this.screenShakeRemainingTime > 0 && this.screenShakeAmount[0] === this.screenShakeDesiredAmount[0] && this.screenShakeAmount[1] === this.screenShakeDesiredAmount[1]) {
+            // select a new desired amount
+            var currentAngle = Math.atan2(this.screenShakeAmount[1], this.screenShakeAmount[0]);
+            var newAngle = currentAngle - Math.PI + Math.random() * Math.PI - Math.PI / 2;
+
+            this.screenShakeDesiredAmount = [
+                Math.cos(newAngle) * scaledIntensity,
+                Math.sin(newAngle) * scaledIntensity
+            ];
+        } else if (this.screenShakeRemainingTime === 0 && (this.screenShakeAmount[0] !== 0 || this.screenShakeAmount[1] !== 0)) {
+            this.screenShakeDesiredAmount = [0, 0];
+        }
+
+        var velDirVector = [
+            this.screenShakeDesiredAmount[0] - this.screenShakeAmount[0],
+            this.screenShakeDesiredAmount[1] - this.screenShakeAmount[1]
+        ];
+        var velDirLength = Math.sqrt(velDirVector[0] * velDirVector[0] + velDirVector[1] * velDirVector[1]);
+        velDirVector[0] = velDirVector[0] / velDirLength;
+        velDirVector[1] = velDirVector[1] / velDirLength;
+
+        var toDesiredDX = this.screenShakeDesiredAmount[0] - this.screenShakeAmount[0];
+        var toDesiredDY = this.screenShakeDesiredAmount[1] - this.screenShakeAmount[1];
+        var distanceToDesired = Math.sqrt(toDesiredDX * toDesiredDX + toDesiredDY * toDesiredDY);
+
+        if (distanceToDesired < this.screenShakeMaxVel * delta) {
+            this.screenShakeAmount[0] = this.screenShakeDesiredAmount[0];
+            this.screenShakeAmount[1] = this.screenShakeDesiredAmount[1];
+        } else {
+            this.screenShakeAmount[0] += velDirVector[0] * this.screenShakeMaxVel * delta;
+            this.screenShakeAmount[1] += velDirVector[1] * this.screenShakeMaxVel * delta;
         }
     };
 
@@ -256,6 +305,13 @@ var StaticGame = function() {
         this.ballPos[1] = (newBallPos[1] - canvas.height / 2) / baseSize;
     };
 
+    this.shakeScreen = function(intensity) {
+        this.screenShakeIntensity = intensity / 50;
+        this.screenShakeMaxVel = intensity / 100;
+        this.screenShakeRemainingTime = 300 * (this.screenShakeIntensity / (1 / 50));
+        this.screenShakeStartRemainingTime = this.screenShakeRemainingTime;
+    };
+
     this.checkBallBoundaries = function() {
         var baseSize = Math.min(canvas.width, canvas.height);
         var ballPosX = this.ballPos[0] * baseSize + canvas.width / 2;
@@ -268,6 +324,10 @@ var StaticGame = function() {
 
     this.render = function() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+        var baseSize = Math.min(canvas.width, canvas.height);
+        var currentScreenShake = [this.screenShakeAmount[0], this.screenShakeAmount[1]];
+
+        ctx.translate(currentScreenShake[0] * baseSize, currentScreenShake[1] * baseSize);
 
         if (!this.loser) {
             this.renderScore();
@@ -289,6 +349,8 @@ var StaticGame = function() {
         if (this.clickToContinueOpacity > 0) {
             this.renderClickToContinue();
         }
+
+        ctx.translate(-currentScreenShake[0] * baseSize, -currentScreenShake[1] * baseSize);
     };
 
     this.renderLoserScore = function() {
@@ -531,6 +593,7 @@ var StaticGame = function() {
                 }
                 this.increaseSpeed();
                 this.ballGlowOpacity = 1;
+                this.shakeScreen(1);
                 this.score++;
                 this.selectedPaddleIndex = -1;
             } else {

@@ -4,22 +4,6 @@ html, body {
     background-color: #232323;
 }
 
-#preloadfontbegok {
-    font-family: begokregular, Arial, Helvetica, sans-serif;
-    opacity: 0;
-    height: 0;
-    width: 0;
-    display: inline-block;
-}
-
-#preloadfontpirulen {
-    font-family: pirulenregular, Arial, Helvetica, sans-serif;
-    opacity: 0;
-    height: 0;
-    width: 0;
-    display: inline-block;
-}
-
 canvas {
     position: absolute;
     top: 0;
