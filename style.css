@@ -40,6 +40,16 @@ canvas {
     color: white;
 }
 
+@font-face {
+    font-family: 'Begok';
+    src: url('assets/fonts/begok.ttf');
+}
+
+@font-face {
+    font-family: 'PirulenRg-Regular';
+    src: url('assets/fonts/pirulen.regular.ttf');
+}
+
 @viewport{
     zoom: 1.0;
     width: device-width;

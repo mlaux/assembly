@@ -365,11 +365,11 @@ var StaticGame = function() {
         ctx.fillStyle = 'rgba(255, 255, 255, 1)';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'top';
-        ctx.font = (this._getLoserFontSize() / 5) + 'px pirulenregular';
+        ctx.font = (this._getLoserFontSize() / 5) + 'px PirulenRg-Regular';
         ctx.fillText('score:   ', canvas.width / 2, canvas.height / 2 + padding);
 
         ctx.textAlign = 'left';
-        ctx.font = (this._getLoserFontSize() / 5) + 'px pirulenregular';
+        ctx.font = (this._getLoserFontSize() / 5) + 'px PirulenRg-Regular';
         ctx.fillText('' + this.score, canvas.width / 2 + canvas.width / 10, canvas.height / 2 + padding - canvas.width / 1600);
     };
 
@@ -496,7 +496,7 @@ var StaticGame = function() {
         ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'alphabetic';
-        ctx.font = this._getLoserFontSize() + 'px pirulenregular';
+        ctx.font = this._getLoserFontSize() + 'px PirulenRg-Regular';
         ctx.fillText('loser', canvas.width / 2, canvas.height / 2);
     };
 
@@ -509,7 +509,7 @@ var StaticGame = function() {
         ctx.fillStyle = 'rgba(255, 255, 255, ' + this.clickToContinueOpacity + ')';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'top';
-        ctx.font = (this._getLoserFontSize() / 5) + 'px pirulenregular';
+        ctx.font = (this._getLoserFontSize() / 5) + 'px PirulenRg-Regular';
         ctx.fillText('click to try again', canvas.width / 2, canvas.height / 2 + padding + fontHeight);
     };
 
@@ -517,7 +517,7 @@ var StaticGame = function() {
         ctx.fillStyle = '#' + Constants.COLOR_GRAY;
         ctx.textAlign = canvas.height > canvas.width ? 'center' : 'left';
         ctx.textBaseline = canvas.height > canvas.width ? 'top' : 'middle';
-        ctx.font = this._getScoreFontSize() + 'px pirulenregular';
+        ctx.font = this._getScoreFontSize() + 'px PirulenRg-Regular';
 
         ctx.fillText('' + this.score,
             canvas.height > canvas.width ? canvas.width / 2 : canvas.width * 0.1,
