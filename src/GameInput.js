@@ -11,8 +11,12 @@ var StaticGameInput = function() {
 
     this.scrollAmount = 0;
     this.scrollVel = 0;
+    this.scrollVels = [];
 
     this.update = function(delta) {
+        while (this.scrollVels.length > 0 && time - this.scrollVels[0].time > 50) {
+            this.scrollVels.splice(0, 1);
+        }
         if (Math.abs(this.scrollVel) < this.SCROLL_ACCEL * delta) {
             this.scrollVel = 0;
         } else {
@@ -48,8 +52,13 @@ var StaticGameInput = function() {
             var dx = this.downMousePos[0] - touch.pageX;
             var dy = this.downMousePos[1] - touch.pageY;
             var dist = Math.sqrt(dx * dx + dy * dy);
-            console.log(dist / baseSize);
             this.mousePos = [-1, -1];
+            this.scrollVel = 0;
+            for (var i = 0; i < this.scrollVels.length; i++) {
+                if (Math.abs(this.scrollVels[i].vel) > Math.abs(this.scrollVel)) {
+                    this.scrollVel = this.scrollVels[i].vel;
+                }
+            }
             if (dist / baseSize <= 0.025) {
                 this._dispatchClick(touch.pageX, touch.pageY);
             }
@@ -66,9 +75,7 @@ var StaticGameInput = function() {
                 var dy = touch.pageY - this.mousePos[1];
                 this.scrollAmount += dy;
                 if (Math.abs(dy) > baseSize * 0.01) {
-                    this.scrollVel = dy;
-                } else {
-                    this.scrollVel = 0;
+                    this.scrollVels.push({'vel': dy, 'time': time});
                 }
                 this.scrollAmount = Math.min(0, this.scrollAmount);
             }
