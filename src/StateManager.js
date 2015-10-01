@@ -5,7 +5,8 @@
 var StaticStateManager = function() {
     this.STATE_TITLE_SCREEN = 0;
     this.STATE_GAME = 1;
-    this.STATE_SCORES = 2;
+    this.STATE_INSTRUCTIONS = 2;
+    this.STATE_SCORES = 3;
 
     this.lastState = 0;
     this.state = 0;
@@ -21,6 +22,8 @@ var StaticStateManager = function() {
                 return TitleScreen;
             case this.STATE_GAME:
                 return Game;
+            case this.STATE_INSTRUCTIONS:
+                return Instructions;
             case this.STATE_SCORES:
                 return ScoresScreen;
         }

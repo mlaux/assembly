@@ -8,6 +8,20 @@ var StaticInstructions = function() {
     };
 
     this.render = function() {
+        ButtonManager.renderBackButton();
 
+        this.renderTitle();
+    };
+
+    this.renderTitle = function() {
+
+    };
+
+    this.click = function(x, y) {
+        if (ButtonManager.isPointInsideBackButton(x, y)) {
+            TransitionManager.startTransition(function() {
+                StateManager.setState(StateManager.lastState);
+            });
+        }
     };
 };

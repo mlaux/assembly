@@ -24,7 +24,7 @@ var StaticScoresScreen = function() {
         ctx.font = this._getScoreFontSize() * 2 + 'px Begok';
         ctx.fillText('hiscores', canvas.width / 2, canvas.height * 0.1);
 
-        var y = 2 * this._getScoreFontSize() + canvas.height * 0.1;
+        var y = 2 * this._getScoreFontSize() + canvas.height * 0.2;
         for (var k = 0; k < this.scores.length; k++) {
             var score = this.scores[k];
 
