@@ -48,9 +48,13 @@ var StaticGame = function() {
     this.screenShakeMaxVel = 1;
 
     this.loser = false;
-    this.loserStartTime = 0;
+
+    this.showingInstructions = false;
 
     this.update = function(delta) {
+        if (this.showingInstructions) {
+            return;
+        }
         if (this.clickToContinueOpacity > 0) {
             this.clickToContinueOpacity += 0.03 * delta;
             this.clickToContinueOpacity = Math.min(1.0, this.clickToContinueOpacity);
@@ -375,6 +379,15 @@ var StaticGame = function() {
             ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
             ctx.globalAlpha = 1;
         }
+
+        if (this.showingInstructions) {
+            ctx.globalAlpha = 0.8;
+            ctx.fillStyle = '#' + Constants.COLOR_DARK_GRAY;
+            ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
+            ctx.globalAlpha = 1;
+
+            Instructions.renderOverlayWithClickToContinue();
+        }
     };
 
     this.renderBackButton = function() {
@@ -564,6 +577,11 @@ var StaticGame = function() {
             return;
         }
 
+        if (this.showingInstructions) {
+            this.showingInstructions = false;
+            return;
+        }
+
         if (globalScoreDialog.style.display === 'block') {
             globalScoreDialog.style.display = 'none';
             return;
@@ -599,7 +617,7 @@ var StaticGame = function() {
     };
 
     this._getPaddleByMousePos = function(x, y) {
-        if (x === -1 && y === -1 || TransitionManager.isTransitioning()) {
+        if (x === -1 && y === -1 || TransitionManager.isTransitioning() || this.showingInstructions) {
             return -1;
         }
         var clickAngle = Math.atan2(y - window.innerHeight / 2, x - window.innerWidth / 2);
@@ -804,6 +822,10 @@ var StaticGame = function() {
             AdInterface.hideAd();
         } else {
             AdInitialize.hide();
+        }
+
+        if (!Instructions.haveSeenInstructions) {
+            this.showingInstructions = true;
         }
 
         this.ballPos = [0, 0];

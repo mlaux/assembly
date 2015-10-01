@@ -3,7 +3,7 @@
  */
 
 var StaticGameInput = function() {
-    this.SCROLL_ACCEL = 1;
+    this.SCROLL_ACCEL = 2;
 
     this.mousePos = [-1, -1];
     this.mobilePhone = false;
