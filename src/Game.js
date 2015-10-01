@@ -620,7 +620,7 @@ var StaticGame = function() {
                     return;
                 }
                 if (this._isPointInsideSubmitButton(GameInput.mousePos[0], GameInput.mousePos[1])) {
-                    // submit stuff
+                    globalScoreDialog.style.display = 'block';
                     return;
                 }
 
@@ -700,7 +700,6 @@ var StaticGame = function() {
                 this.score++;
                 this.selectedPaddleIndex = -1;
             } else {
-                globalScoreDialog.style.display = 'block';
                 if (window.AdInterface) {
                     AdInterface.showAd();
                 } else {
