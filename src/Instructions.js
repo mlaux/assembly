@@ -13,7 +13,7 @@ var StaticInstructions = function() {
     this.globalInstructionsPaddleRedSelected = null;
 
     this.haveSeenInstructions = window.localStorage ?
-        window.localStorage.getItem('centrifuge-have-seen-instructions3') ? true : false
+        window.localStorage.getItem('centrifuge-have-seen-instructions') ? true : false
     : true;
 
     this.update = function(delta) {
@@ -34,7 +34,7 @@ var StaticInstructions = function() {
     this.renderOverlay = function(clickToContinue) {
         if (!this.haveSeenInstructions) {
             this.haveSeenInstructions = true;
-            window.localStorage.setItem('centrifuge-have-seen-instructions3', true);
+            window.localStorage.setItem('centrifuge-have-seen-instructions', true);
         }
         var allowableScrollAmount = this._getCreditsPosition()[1] + this._getTextFontHeight() / 1.5 * 2 + this._getPadding();
         allowableScrollAmount = canvas.height - allowableScrollAmount;
@@ -137,7 +137,7 @@ var StaticInstructions = function() {
     this.renderCheckOutAetherPass = function() {
         var pos = this._getAetherPassPosition();
         ctx.textAlign = 'center';
-        ctx.font = (this._getTextFontSize() * 1.5) + 'px Cambria';
+        ctx.font = (this._getTextFontSize() * 1.5) + 'px Times New Roman';
         ctx.fillText('Enjoy Centrifuge?', pos[0], pos[1]);
         ctx.fillText('Check out our MMO, Aether Pass!', pos[0], pos[1] + this._getTextFontHeight());
         ctx.fillText('http://aetherpass.com/', pos[0], pos[1] + this._getTextFontHeight() * 2);
@@ -145,7 +145,7 @@ var StaticInstructions = function() {
 
     this.renderCredits = function() {
         var pos = this._getCreditsPosition();
-        ctx.font = this._getTextFontSize() + 'px Cambria';
+        ctx.font = this._getTextFontSize() + 'px Times New Roman';
         ctx.fillText('Created by:', pos[0], pos[1]);
         ctx.fillText('Trent Davies, Matt Laux, Rachel Ho', pos[0], pos[1] + this._getTextFontHeight() / 1.5);
     };
