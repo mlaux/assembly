@@ -51,8 +51,7 @@ var StaticGameInput = function() {
             if (this.mobilePhone) {
                 return;
             }
-            this.mousePos[0] = -1;
-            this.mousePos[1] = -1;
+            this.mousePos = [-1, -1]
         }.bind(this));
         canvas.addEventListener('dblclick', function(e) {
             e.preventDefault();

@@ -46,6 +46,7 @@ var StaticGame = function() {
     this.screenShakeMaxVel = 1;
 
     this.loser = false;
+    this.loserStartTime = 0;
 
     this.update = function(delta) {
         if (this.clickToContinueOpacity > 0) {
@@ -352,6 +353,7 @@ var StaticGame = function() {
             ctx.globalAlpha = this.clickToContinueOpacity * 0.8;
             ctx.fillStyle = '#' + Constants.COLOR_DARK_GRAY;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.globalAlpha = 1;
             this.renderLoser();
             this.renderLoserScore();
             this.renderBackButton();
@@ -370,7 +372,7 @@ var StaticGame = function() {
         var pos = this._getBackButtonPosition();
         var dimensions = this._getButtonDimensions();
 
-        var hover = this._isPointInsideBackButton(GameInput.mousePos[0], GameInput.mousePos[1]);
+        var hover = this._isPointInsideBackButton(GameInput.mousePos[0], GameInput.mousePos[1]) && !TransitionManager.isTransitioning();
 
         if (hover) {
             ctx.drawImage(
@@ -405,7 +407,7 @@ var StaticGame = function() {
         var pos = this._getSubmitButtonPosition();
         var dimensions = this._getButtonDimensions();
 
-        var hover = this._isPointInsideSubmitButton(GameInput.mousePos[0], GameInput.mousePos[1]);
+        var hover = this._isPointInsideSubmitButton(GameInput.mousePos[0], GameInput.mousePos[1]) && !TransitionManager.isTransitioning();
 
         ctx.translate(pos[0] + dimensions[0] / 2, pos[1] + dimensions[1] / 2);
         ctx.scale(-1, 1);
@@ -613,13 +615,13 @@ var StaticGame = function() {
 
         if (this.loser) {
             if (this.clickToContinueOpacity > 0) {
-                if (this._isPointInsideBackButton(GameInput.mousePos[0], GameInput.mousePos[1])) {
+                if (this._isPointInsideBackButton(x, y)) {
                     TransitionManager.startTransition(function() {
                         StateManager.setState(StateManager.lastState);
                     });
                     return;
                 }
-                if (this._isPointInsideSubmitButton(GameInput.mousePos[0], GameInput.mousePos[1])) {
+                if (this._isPointInsideSubmitButton(x, y)) {
                     // submit stuff
                     return;
                 }
@@ -712,6 +714,7 @@ var StaticGame = function() {
                     AdInitialize.refreshAd();
                 }
                 this.loser = true;
+                this.loserStartTime = Date.now();
                 setTimeout(this.clickToContinue.bind(this), 1600);
             }
         }
@@ -864,7 +867,13 @@ var StaticGame = function() {
         var dim = this._getButtonDimensions();
         dim[1] += this._getButtonFontHeight();
 
-        return x >= pos[0] && x < pos[0] + dim[0] && y >= pos[1] && y < pos[1] + dim[1];
+        // top right point of bounding box
+        var point = [
+            pos[0] + dim[0] + pos[0],
+            pos[1] - (canvas.height - pos[1] - dim[1])
+        ];
+
+        return x < point[0] && y >= point[1];
     };
 
     this._isPointInsideSubmitButton = function(x, y) {
@@ -872,7 +881,13 @@ var StaticGame = function() {
         var dim = this._getButtonDimensions();
         dim[1] += this._getButtonFontHeight();
 
-        return x >= pos[0] && x < pos[0] + dim[0] && y >= pos[1] && y < pos[1] + dim[1];
+        // top left point of bounding box
+        var point = [
+            pos[0] - (canvas.width - pos[0] - dim[0]),
+            pos[1] - (canvas.height - pos[1] - dim[1])
+        ];
+
+        return x >= point[0] && y >= point[1];
     };
 
     // dont know if this is accurate
