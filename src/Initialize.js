@@ -33,6 +33,8 @@ globalBallGlow.id = 'globalBallGlow';
 globalBallGlow.width = '128';
 globalBallGlow.height = '128';
 
+var globalBack = new BackButton();
+
 var resize = function() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -56,6 +58,7 @@ var loop = function() {
     state.update(delta);
     state.render();
     TransitionManager.render();
+    globalBack.render();
 
     window.requestAnimationFrame(loop);
 };
