@@ -96,6 +96,7 @@ window.onload = function() {
     canvas = document.getElementById('canvas');
     ctx = canvas.getContext('2d');
     globalScoreDialog = document.getElementById('submit-score-container');
+    globalScoreDialog.style.display = 'none';
 
     resize();
 
