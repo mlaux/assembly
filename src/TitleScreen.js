@@ -100,7 +100,7 @@ var StaticTitleScreen = function() {
 
     // title methods
     this._getTitleFontSize = function() {
-        return canvas.width / 11.25;
+        return canvas.width / 9;
     };
 
     this.getTitleYPos = function() {
@@ -108,20 +108,20 @@ var StaticTitleScreen = function() {
     };
 
     this.getTitleFontHeight = function() {
-        return canvas.width * 0.1;
+        return canvas.width * 0.125;
     };
 
     // menu methods
     this._getMenuFontSize = function() {
-        return canvas.width / 22.5 * 1.5;
+        return canvas.width / 15 * (canvas.width > canvas.height ? 1 : 1.4);
     };
 
     this.getPlayYPos = function() {
-        return canvas.height * 0.5;
+        return canvas.height * (canvas.width > canvas.height ? 0.4 : 0.5);
     };
 
     this.getPlayWidth = function() {
-        return canvas.width / 22.5 * 4 * 1.5;
+        return canvas.width / 3.75 * (canvas.width > canvas.height ? 1 : 1.4);
     };
 
     this.getScoreYPos = function() {
@@ -129,11 +129,11 @@ var StaticTitleScreen = function() {
     };
 
     this.getScoreWidth = function() {
-        return canvas.width / 22.5 * 6 * 1.5;
+        return canvas.width / 2.5 * (canvas.width > canvas.height ? 1 : 1.4);
     };
 
     this.getMenuFontHeight = function() {
-        return canvas.width * 0.05 * 1.5;
+        return canvas.width * 0.075 * (canvas.width > canvas.height ? 1 : 1.4);
     };
 
     // other methods
