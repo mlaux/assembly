@@ -16,9 +16,10 @@ var GuiUtils = new StaticGuiUtils();
 var Logic = new StaticLogic();
 var MathUtils = new StaticMathUtils();
 var Network = new StaticNetwork();
+var ScoresScreen = new StaticScoresScreen();
 var StateManager = new StaticStateManager();
 var TitleScreen = new StaticTitleScreen();
-var ScoresScreen = new StaticScoresScreen();
+var TransitionManager = new StaticTransitionManager();
 
 var globalSparkle = document.createElement('img');
 globalSparkle.src = 'assets/sparkle.png';
@@ -50,9 +51,11 @@ var loop = function() {
     if (!window.AdInterface) {
         AdInitialize.update(delta);
     }
+    TransitionManager.update(delta);
     var state = StateManager.getState();
     state.update(delta);
     state.render();
+    TransitionManager.render();
 
     window.requestAnimationFrame(loop);
 };

@@ -528,6 +528,10 @@ var StaticGame = function() {
     };
 
     this.click = function(x, y) {
+        if (TransitionManager.isTransitioning()) {
+            return;
+        }
+
         if (this.loser) {
             if (this.clickToContinueOpacity > 0) {
                 this.init();
@@ -547,7 +551,7 @@ var StaticGame = function() {
     };
 
     this._getPaddleByMousePos = function(x, y) {
-        if (x === -1 && y === -1) {
+        if (x === -1 && y === -1 || TransitionManager.isTransitioning()) {
             return -1;
         }
         var clickAngle = Math.atan2(y - canvas.height / 2, x - canvas.width / 2);

@@ -4,11 +4,8 @@
 
 var StaticTitleScreen = function() {
     this.MAX_LINE_COUNT = 20;
-    this.LINE_CREATE_TIME = 400;
-    this.LINE_BASE_TRANSITION_SPEED = 0.01;
 
     this.lineList = [];
-    this.transitionLineList = [];
 
     this.update = function(delta) {
         for (var i = 0; i < this.lineList.length; i++) {
@@ -22,9 +19,6 @@ var StaticTitleScreen = function() {
 
         while (this.lineList.length < this.MAX_LINE_COUNT) {
             this.lineList.push(new TitleLine(false, 1.0 - Math.random() * Math.min(1.0, delta / 200)));
-        }
-        for (var i = 0; i < this.transitionLineList.length; i++) {
-            this.transitionLineList[i].update(delta);
         }
     };
 
@@ -43,27 +37,32 @@ var StaticTitleScreen = function() {
         for (var i = 0; i < this.lineList.length; i++) {
             this.lineList[i].render();
         }
-        for (var i = 0; i < this.transitionLineList.length; i++) {
-            this.transitionLineList[i].render();
-        }
     };
 
     this.click = function(x, y) {
+        if (TransitionManager.isTransitioning()) {
+            return;
+        }
+
         if (this._mouseOverPlay(x, y)) {
-            this.startTransition(function() {
+            TransitionManager.startTransition(function() {
                 Game.init();
                 StateManager.setState(StateManager.STATE_GAME);
             });
         }
         if (this._mouseOverScores(x, y)) {
             ScoresScreen.init();
-            this.startTransition(function() {
+            TransitionManager.startTransition(function() {
                 StateManager.setState(StateManager.STATE_SCORES);
             });
         }
     };
 
     this._mouseOverPlay = function(x, y) {
+        if (TransitionManager.isTransitioning()) {
+            return false;
+        }
+
         if (x >= canvas.width / 2 - this.getPlayWidth() / 2 && x < canvas.width / 2 + this.getPlayWidth() / 2) {
             if (y >= this.getPlayYPos() && y < this.getPlayYPos() + this.getMenuFontHeight()) {
                 return true;
@@ -73,6 +72,10 @@ var StaticTitleScreen = function() {
     };
 
     this._mouseOverScores = function(x, y) {
+        if (TransitionManager.isTransitioning()) {
+            return false;
+        }
+
         if (x >= canvas.width / 2 - this.getScoreWidth() / 2 && x < canvas.width / 2 + this.getScoreWidth() / 2) {
             if (y >= this.getScoreYPos() && y < this.getScoreYPos() + this.getMenuFontHeight()) {
                 return true;
@@ -85,17 +88,6 @@ var StaticTitleScreen = function() {
         while (this.lineList.length < this.MAX_LINE_COUNT) {
             this.lineList.push(new TitleLine(false, Math.random()));
         }
-    };
-
-    this.startTransition = function(callback) {
-        for (var y = 0; y < canvas.height; y += this.getLineHeight() - 1) {
-            this.transitionLineList.push(new TitleLine(true, 1.0, y / canvas.height));
-        }
-        setTimeout(callback, this.getTransitionTime());
-    };
-
-    this.getTransitionTime = function() {
-        return 1.0 / (Constants.DELTA_SCALE * this.LINE_BASE_TRANSITION_SPEED);
     };
 
     // title methods
@@ -134,10 +126,5 @@ var StaticTitleScreen = function() {
 
     this.getMenuFontHeight = function() {
         return canvas.width * 0.075 * (canvas.width > canvas.height ? 1 : 1.4);
-    };
-
-    // other methods
-    this.getLineHeight = function() {
-        return Math.max(canvas.width, canvas.height) * 0.005;
     };
 };
