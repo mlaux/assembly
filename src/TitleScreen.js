@@ -25,6 +25,7 @@ var StaticTitleScreen = function() {
     this.render = function() {
         GuiUtils.initializeContextForGui();
 
+        ctx.textBaseline = 'top';
         ctx.font = this._getTitleFontSize() + 'px Begok';
         ctx.fillText('centrifuge', canvas.width / 2, this.getTitleYPos());
 

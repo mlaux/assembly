@@ -38,6 +38,7 @@ var StaticNetwork = function() {
         if (user.length > 12) {
             user = user.substring(0, 12);
         }
+        user = user.replace(/[^a-z]/, '');
 
         this.httpSend('PUT', this._HISCORE_ENDPOINT, {username: user, score: num}, function(response) {
             console.log('score sent ' + response);
