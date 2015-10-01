@@ -28,7 +28,11 @@ var StaticTransitionManager = function() {
 
     this.startTransition = function(callback) {
         this.transitions.push(new Transition());
-        setTimeout(callback, this.getTransitionTime());
+        var newCallback = function() {
+            GameInput.scrollAmount = 0;
+            callback();
+        };
+        setTimeout(newCallback, this.getTransitionTime());
     };
 
     this.isTransitioning = function() {
