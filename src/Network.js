@@ -27,6 +27,11 @@ var StaticNetwork = function() {
     };
 
     this.sendHiscore = function() {
+        if (Game.sentScores) {
+            return;
+        }
+        Game.sentScores = true;
+
         var user = document.getElementById('username-field').value;
         var num = Game.score;
 

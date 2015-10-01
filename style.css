@@ -26,8 +26,8 @@ canvas {
     display: none;
 
     position: relative;
+    margin: 10% auto 0 auto;
 
-    margin: 0 auto;
     height: 200px;
     width: 40%;
 
@@ -67,6 +67,7 @@ canvas {
 @media all and (max-width: 1024px) {
     #submit-score-container {
         width: 80%;
+        margin-top: 20%;
     }
 }
 
@@ -74,6 +75,7 @@ canvas {
 @media all and (max-width: 768px) {
     #submit-score-container {
         width: 95%;
+        margin-top: 20%;
     }
 }
 

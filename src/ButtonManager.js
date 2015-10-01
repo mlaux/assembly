@@ -9,7 +9,7 @@ var StaticButtonManager = function() {
 
         var hover = this.isPointInsideBackButton(GameInput.mousePos[0], GameInput.mousePos[1]) && !TransitionManager.isTransitioning();
 
-        if (hover) {
+        if (hover && globalScoreDialog.style.display === 'none') {
             ctx.drawImage(
                 globalBackButtonHover,
                 pos[0],
@@ -43,7 +43,7 @@ var StaticButtonManager = function() {
         ctx.translate(pos[0] + dimensions[0] / 2, pos[1] + dimensions[1] / 2);
         ctx.scale(-1, 1);
 
-        if (hover) {
+        if (hover && globalScoreDialog.style.display === 'none') {
             ctx.drawImage(
                 globalBackButtonHover,
                 -dimensions[0] / 2,

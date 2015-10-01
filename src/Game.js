@@ -14,6 +14,8 @@ var StaticGame = function() {
     this.BALL_GLOW_RADIUS_PERCENT = 1.96875;
     this.BALL_GLOW_DECREASE_SPEED = 0.02;
 
+    this.sentScores = false;
+
     this.sparkles = [];
 
     this.score = 0;
@@ -357,13 +359,22 @@ var StaticGame = function() {
             this.renderLoser();
             this.renderLoserScore();
             this.renderBackButton();
-            this.renderSubmitButton();
+            if (!this.sentScores) {
+                this.renderSubmitButton();
+            }
         }
         if (this.clickToContinueOpacity > 0) {
             this.renderClickToContinue();
         }
 
         ctx.translate(-currentScreenShake[0] * baseSize, -currentScreenShake[1] * baseSize);
+
+        if (globalScoreDialog.style.display === 'block') {
+            ctx.globalAlpha = this.clickToContinueOpacity * 0.8;
+            ctx.fillStyle = '#' + Constants.COLOR_DARK_GRAY;
+            ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
+            ctx.globalAlpha = 1;
+        }
     };
 
     this.renderBackButton = function() {
@@ -550,6 +561,11 @@ var StaticGame = function() {
 
     this.click = function(x, y) {
         if (TransitionManager.isTransitioning()) {
+            return;
+        }
+
+        if (globalScoreDialog.style.display === 'block') {
+            globalScoreDialog.style.display = 'none';
             return;
         }
 
@@ -806,6 +822,8 @@ var StaticGame = function() {
         this.PADDLE_GAP = 0.12;
 
         this.ballGlowOpacity = 0;
+
+        this.sentScores = false;
 
         this.sparkles = [];
 

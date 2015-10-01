@@ -57,7 +57,15 @@
         <h1 class="submitScoreTitle">join the high scores</h1>
 
         <div class="submitScoreForm">
-            <input type="text" name="username" id="username-field" maxlength="12" placeholder="Nickname">
+            <input
+                type="text"
+                name="username"
+                id="username-field"
+                maxlength="12"
+                autocapitalize="off"
+                style="text-transform:lowercase;"
+                onkeypress="this.value=this.value.toLowerCase();var f = function() {this.value=this.value.replace(/[^a-z ]/, '')}.bind(this);setTimeout(f, 0);f();"
+                placeholder="Nickname">
             <button type="button" name="submitScore" id="submit-score" onclick="Network.sendHiscore()">Submit</button>
         </div>
     </div>
