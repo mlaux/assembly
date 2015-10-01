@@ -76,6 +76,11 @@ var StaticScoresScreen = function() {
 
     this.click = function(x, y) {
         if (ButtonManager.isPointInsideBackButton(x, y)) {
+            if (window.AdInterface) {
+                AdInterface.hideAd();
+            } else {
+                AdInitialize.hide();
+            }
             TransitionManager.startTransition(function() {
                 StateManager.setState(StateManager.lastState);
             });

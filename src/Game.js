@@ -590,6 +590,11 @@ var StaticGame = function() {
         if (this.loser) {
             if (this.clickToContinueOpacity > 0) {
                 if (ButtonManager.isPointInsideBackButton(x, y)) {
+                    if (window.AdInterface) {
+                        AdInterface.hideAd();
+                    } else {
+                        AdInitialize.hide();
+                    }
                     TransitionManager.startTransition(function() {
                         StateManager.setState(StateManager.lastState);
                     });
