@@ -108,7 +108,7 @@ var StaticTitleScreen = function() {
     };
 
     this.getTitleFontHeight = function() {
-        return canvas.width * 0.125;
+        return canvas.width * 0.12;
     };
 
     // menu methods
