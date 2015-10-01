@@ -6,12 +6,11 @@ var StaticScoresScreen = function() {
     this.scores = [];
 
     this.init = function() {
-        Network.queryHiscores(function(obj) {
+        Network.queryHiscores(0, 20, function(obj) {
             this.scores = obj['hiscores'];
             this.scores.sort(function(a, b) {
                 return b['score'] - a['score'];
             });
-            console.log(this.scores);
         }.bind(this));
     };
 

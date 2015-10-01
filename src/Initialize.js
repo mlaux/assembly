@@ -34,6 +34,16 @@ globalBallGlow.width = '128';
 globalBallGlow.height = '128';
 
 var globalBack = new BackButton();
+var globalScoreDialog = null;
+
+var initUsername = function() {
+    if (window.localStorage) {
+        var item = window.localStorage.getItem('centrifuge-username');
+        if (item !== null) {
+            document.getElementById('username-field').value = item;
+        }
+    }
+};
 
 var resize = function() {
     canvas.width = window.innerWidth;
@@ -66,13 +76,16 @@ var loop = function() {
 window.onload = function() {
     canvas = document.getElementById('canvas');
     ctx = canvas.getContext('2d');
+    globalScoreDialog = document.getElementById('submit-score-container');
 
     resize();
 
     GameInput.init();
     TitleScreen.init();
+    initUsername();
 
     loop();
 };
+
 window.onresize = resize;
 window.onerror = Network.reportError;

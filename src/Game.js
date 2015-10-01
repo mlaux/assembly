@@ -610,11 +610,7 @@ var StaticGame = function() {
                 this.score++;
                 this.selectedPaddleIndex = -1;
             } else {
-                var username = document.getElementById('username-field').value;
-                username = username.toLowerCase();
-                if (username && this.score > 0) {
-                    Network.sendHiscore(username, this.score);
-                }
+                globalScoreDialog.style.display = 'block';
                 if (window.AdInterface) {
                     AdInterface.showAd();
                 } else {
