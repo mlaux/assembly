@@ -41,42 +41,11 @@ var StaticScoresScreen = function() {
     };
 
     this.renderBackButton = function() {
-        ctx.globalAlpha = this.clickToContinueOpacity;
-
-        var pos = this._getBackButtonPosition();
-        var dimensions = this._getButtonDimensions();
-
-        var hover = this._isPointInsideBackButton(GameInput.mousePos[0], GameInput.mousePos[1]) && !TransitionManager.isTransitioning();
-
-        if (hover) {
-            ctx.drawImage(
-                globalBackButtonHover,
-                pos[0],
-                pos[1],
-                dimensions[0],
-                dimensions[1]
-            );
-        } else {
-            ctx.drawImage(
-                globalBackButton,
-                pos[0],
-                pos[1],
-                dimensions[0],
-                dimensions[1]
-            );
-        }
-
-        ctx.fillStyle = hover ? '#' + Constants.COLOR_LIGHT_GRAY : '#' + Constants.COLOR_WHITE;
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'top';
-        ctx.font = this._getButtonFontSize() + 'px Begok ';
-        ctx.fillText('back', pos[0] + dimensions[0] / 2, pos[1] + dimensions[1]);
-
-        ctx.globalAlpha = 1;
+        ButtonManager.renderBackButton();
     };
 
     this.click = function(x, y) {
-        if (this._isPointInsideBackButton(x, y)) {
+        if (ButtonManager.isPointInsideBackButton(x, y)) {
             TransitionManager.startTransition(function() {
                 StateManager.setState(StateManager.lastState);
             });

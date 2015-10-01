@@ -8,6 +8,7 @@ var ctx = null;
 var time = Date.now();
 
 var AdInitialize = new StaticAdInitialize();
+var ButtonManager = new StaticButtonManager();
 var Constants = new StaticConstants();
 var Game = new StaticGame();
 var GameInput = new StaticGameInput();
