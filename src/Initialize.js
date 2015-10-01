@@ -33,6 +33,12 @@ globalBallGlow.id = 'globalBallGlow';
 globalBallGlow.width = '128';
 globalBallGlow.height = '128';
 
+var globalBackButton = document.createElement('img');
+globalBackButton.src = 'assets/back-button.png';
+globalBackButton.id = 'globalBackButton';
+globalBackButton.width = '55';
+globalBackButton.height = '46';
+
 var resize = function() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;

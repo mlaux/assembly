@@ -353,12 +353,30 @@ var StaticGame = function() {
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             this.renderLoser();
             this.renderLoserScore();
+            this.renderBackButton();
         }
         if (this.clickToContinueOpacity > 0) {
             this.renderClickToContinue();
         }
 
         ctx.translate(-currentScreenShake[0] * baseSize, -currentScreenShake[1] * baseSize);
+    };
+
+    this.renderBackButton = function() {
+        ctx.globalAlpha = this.clickToContinueOpacity;
+
+        var pos = this._getBackButtonPosition();
+        var dimensions = this._getBackButtonDimensions();
+        console.log(dimensions);
+        ctx.drawImage(
+            globalBackButton,
+            canvas.width * 0.05,
+            canvas.height - canvas.width * 0.05 - dimensions[1],
+            dimensions[0],
+            dimensions[1]
+        );
+
+        ctx.globalAlpha = 1;
     };
 
     this.renderLoserScore = function() {
@@ -736,6 +754,21 @@ var StaticGame = function() {
 
     this._getLoserFontSize = function() {
         return canvas.width / 5;
+    };
+
+    this._getBackButtonPosition = function() {
+        var dim = this._getBackButtonDimensions();
+        return [
+            canvas.width * 0.05,
+            canvas.height - canvas.width * 0.05 - dim[1]
+        ]
+    };
+
+    this._getBackButtonDimensions = function() {
+        return [
+            canvas.width * 0.0005 * 153,
+            canvas.width * 0.0005 * 128
+        ];
     };
 
     // dont know if this is accurate
