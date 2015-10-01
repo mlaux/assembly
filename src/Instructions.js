@@ -13,7 +13,7 @@ var StaticInstructions = function() {
     this.globalInstructionsPaddleRedSelected = null;
 
     this.haveSeenInstructions = window.localStorage ?
-        window.localStorage.getItem('centrifuge-have-seen-instructions') ? true : false
+        window.localStorage.getItem('centrifuge-have-seen-instructions3') ? true : false
     : true;
 
     this.update = function(delta) {
@@ -34,7 +34,7 @@ var StaticInstructions = function() {
     this.renderOverlay = function(clickToContinue) {
         if (!this.haveSeenInstructions) {
             this.haveSeenInstructions = true;
-            window.localStorage.setItem('centrifuge-have-seen-instructions', true);
+            window.localStorage.setItem('centrifuge-have-seen-instructions3', true);
         }
         var allowableScrollAmount = this._getCreditsPosition()[1] + this._getTextFontHeight() / 1.5 * 2 + this._getPadding();
         allowableScrollAmount = canvas.height - allowableScrollAmount;

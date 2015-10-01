@@ -5,6 +5,7 @@
 var StaticGameInput = function() {
     this.SCROLL_ACCEL = 2;
 
+    this.downMousePos = [0, 0];
     this.mousePos = [-1, -1];
     this.mobilePhone = false;
 
@@ -29,14 +30,29 @@ var StaticGameInput = function() {
     };
 
     this.init = function() {
-        canvas.addEventListener('touchend', function(e) {
+        canvas.addEventListener('touchstart', function(e) {
             this.mobilePhone = true;
             var touch = e.changedTouches[0];
             if (!touch) {
                 return;
             }
+            this.downMousePos = [touch.pageX, touch.pageY];
+        }.bind(this));
+        canvas.addEventListener('touchend', function(e) {
+            this.mobilePhone = true;
+            var baseSize = Math.min(window.innerWidth, window.innerHeight);
+            var touch = e.changedTouches[0];
+            if (!touch) {
+                return;
+            }
+            var dx = this.downMousePos[0] - touch.pageX;
+            var dy = this.downMousePos[1] - touch.pageY;
+            var dist = Math.sqrt(dx * dx + dy * dy);
+            console.log(dist / baseSize);
             this.mousePos = [-1, -1];
-            this._dispatchClick(touch.pageX, touch.pageY);
+            if (dist / baseSize <= 0.025) {
+                this._dispatchClick(touch.pageX, touch.pageY);
+            }
         }.bind(this));
         canvas.addEventListener('touchmove', function(e) {
             var baseSize = Math.min(window.innerWidth, window.innerHeight);
