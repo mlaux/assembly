@@ -82,6 +82,7 @@ var loop = function() {
     if (!window.AdInterface) {
         AdInitialize.update(delta);
     }
+    GameInput.update(delta);
     TransitionManager.update(delta);
     var state = StateManager.getState();
     state.update(delta);

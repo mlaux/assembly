@@ -3,10 +3,30 @@
  */
 
 var StaticGameInput = function() {
+    this.SCROLL_ACCEL = 1;
+
     this.mousePos = [-1, -1];
     this.mobilePhone = false;
 
     this.scrollAmount = 0;
+    this.scrollVel = 0;
+
+    this.update = function(delta) {
+        if (Math.abs(this.scrollVel) < this.SCROLL_ACCEL * delta) {
+            this.scrollVel = 0;
+        } else {
+            if (this.scrollVel > 0) {
+                this.scrollVel -= this.SCROLL_ACCEL * delta;
+            } else {
+                this.scrollVel += this.SCROLL_ACCEL * delta;
+            }
+        }
+
+        if (this.mousePos[0] === -1 && this.mousePos[1] === -1) {
+            this.scrollAmount += this.scrollVel * delta;
+            this.scrollAmount = Math.min(0, this.scrollAmount);
+        }
+    };
 
     this.init = function() {
         canvas.addEventListener('touchend', function(e) {
@@ -19,6 +39,7 @@ var StaticGameInput = function() {
             this._dispatchClick(touch.pageX, touch.pageY);
         }.bind(this));
         canvas.addEventListener('touchmove', function(e) {
+            var baseSize = Math.min(window.innerWidth, window.innerHeight);
             this.mobilePhone = true;
             if (e.targetTouches.length === 0) {
                 return;
@@ -26,7 +47,13 @@ var StaticGameInput = function() {
             var touch = e.targetTouches[0];
 
             if (this.mousePos[1] !== -1) {
-                this.scrollAmount += touch.pageY - this.mousePos[1];
+                var dy = touch.pageY - this.mousePos[1];
+                this.scrollAmount += dy;
+                if (Math.abs(dy) > baseSize * 0.01) {
+                    this.scrollVel = dy;
+                } else {
+                    this.scrollVel = 0;
+                }
                 this.scrollAmount = Math.min(0, this.scrollAmount);
             }
             this.mousePos[0] = touch.pageX;
