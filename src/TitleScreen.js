@@ -138,6 +138,6 @@ var StaticTitleScreen = function() {
 
     // other methods
     this.getLineHeight = function() {
-        return canvas.width * 0.005;
+        return Math.max(canvas.width, canvas.height) * 0.005;
     };
 };

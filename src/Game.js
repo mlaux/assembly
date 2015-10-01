@@ -601,7 +601,8 @@ var StaticGame = function() {
                 }
                 this.increaseSpeed();
                 this.ballGlowOpacity = 1;
-                this.shakeScreen(this.ballSpeed * 60);
+                // desired value is 0.6 when ball speed is 0.01
+                this.shakeScreen(Math.pow(this.ballSpeed, 1.2) * 150.713185891);
                 this.score++;
                 this.selectedPaddleIndex = -1;
             } else {
