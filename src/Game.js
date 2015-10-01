@@ -531,7 +531,7 @@ var StaticGame = function() {
         ctx.textAlign = 'center';
         ctx.textBaseline = 'top';
         ctx.font = (this._getLoserFontSize() / 5) + 'px PirulenRg-Regular';
-        ctx.fillText('click to try again', canvas.width / 2, canvas.height / 2 + padding + fontHeight);
+        ctx.fillText('tap to try again', canvas.width / 2, canvas.height / 2 + padding + fontHeight);
     };
 
     this.renderScore = function() {
