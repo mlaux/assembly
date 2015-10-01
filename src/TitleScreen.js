@@ -25,12 +25,15 @@ var StaticTitleScreen = function() {
     this.render = function() {
         GuiUtils.initializeContextForGui();
 
+        ctx.textBaseline = 'top';
         ctx.font = this._getTitleFontSize() + 'px Begok';
         ctx.fillText('centrifuge', window.innerWidth / 2, this.getTitleYPos());
 
         ctx.font = this._getMenuFontSize() + 'px Begok';
         ctx.fillStyle = '#' + (this._mouseOverPlay(GameInput.mousePos[0], GameInput.mousePos[1]) ? Constants.COLOR_LIGHT_GRAY : Constants.COLOR_WHITE);
         ctx.fillText('play', window.innerWidth / 2, this.getPlayYPos());
+        ctx.fillStyle = '#' + (this._mouseOverInstructions(GameInput.mousePos[0], GameInput.mousePos[1]) ? Constants.COLOR_LIGHT_GRAY : Constants.COLOR_WHITE);
+        ctx.fillText('instructions', window.innerWidth / 2, this.getInstructionsYPos());
         ctx.fillStyle = '#' + (this._mouseOverScores(GameInput.mousePos[0], GameInput.mousePos[1]) ? Constants.COLOR_LIGHT_GRAY : Constants.COLOR_WHITE);
         ctx.fillText('scores', window.innerWidth / 2, this.getScoreYPos());
 
@@ -50,6 +53,11 @@ var StaticTitleScreen = function() {
                 StateManager.setState(StateManager.STATE_GAME);
             });
         }
+        if (this._mouseOverInstructions(x, y)) {
+            TransitionManager.startTransition(function() {
+                StateManager.setState(StateManager.STATE_INSTRUCTIONS);
+            });
+        }
         if (this._mouseOverScores(x, y)) {
             ScoresScreen.init();
             TransitionManager.startTransition(function() {
@@ -65,6 +73,19 @@ var StaticTitleScreen = function() {
 
         if (x >= window.innerWidth / 2 - this.getPlayWidth() / 2 && x < window.innerWidth / 2 + this.getPlayWidth() / 2) {
             if (y >= this.getPlayYPos() && y < this.getPlayYPos() + this.getMenuFontHeight()) {
+                return true;
+            }
+        }
+        return false;
+    };
+
+    this._mouseOverInstructions = function(x, y) {
+        if (TransitionManager.isTransitioning()) {
+            return false;
+        }
+
+        if (x >= window.innerWidth / 2 - this.getInstructionsWidth() / 2 && x < window.innerWidth / 2 + this.getInstructionsWidth() / 2) {
+            if (y >= this.getInstructionsYPos() && y < this.getInstructionsYPos() + this.getMenuFontHeight()) {
                 return true;
             }
         }
@@ -116,8 +137,16 @@ var StaticTitleScreen = function() {
         return window.innerWidth / 3.75 * (window.innerWidth > window.innerHeight ? 1 : 1.4);
     };
 
-    this.getScoreYPos = function() {
+    this.getInstructionsYPos = function() {
         return this.getPlayYPos() + this.getMenuFontHeight() * 1.1;
+    };
+
+    this.getInstructionsWidth = function() {
+        return window.innerWidth / 1.5 * (window.innerWidth > window.innerHeight ? 1 : 1.4);
+    };
+
+    this.getScoreYPos = function() {
+        return this.getInstructionsYPos() + this.getMenuFontHeight() * 1.1;
     };
 
     this.getScoreWidth = function() {

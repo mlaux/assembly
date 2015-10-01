@@ -2,7 +2,6 @@
  * Created by mlaux on 9/26/15.
  */
 var StaticScoresScreen = function() {
-
     this.scores = [];
 
     this.init = function() {
@@ -21,9 +20,11 @@ var StaticScoresScreen = function() {
     this.render = function() {
         GuiUtils.initializeContextForGui();
 
-        ctx.fillText('hiscores', window.innerWidth / 2, 0);
+        ctx.textBaseline = 'top';
+        ctx.font = this._getScoreFontSize() * 2 + 'px Begok';
+        ctx.fillText('hiscores', window.innerWidth / 2, window.innerHeight * 0.1);
 
-        var y = 2 * this._getScoreFontSize();
+        var y = 2 * this._getScoreFontSize() + window.innerHeight * 0.2;
         for (var k = 0; k < this.scores.length; k++) {
             var score = this.scores[k];
 
