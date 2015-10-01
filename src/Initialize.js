@@ -33,7 +33,18 @@ globalBallGlow.id = 'globalBallGlow';
 globalBallGlow.width = '128';
 globalBallGlow.height = '128';
 
-var globalBack = new BackButton();
+var globalBackButton = document.createElement('img');
+globalBackButton.src = 'assets/back-button.png';
+globalBackButton.id = 'globalBackButton';
+globalBackButton.width = '55';
+globalBackButton.height = '46';
+
+var globalBackButtonHover = document.createElement('img');
+globalBackButtonHover.src = 'assets/back-button-hover.png';
+globalBackButtonHover.id = 'globalBackButtonHover';
+globalBackButtonHover.width = '55';
+globalBackButtonHover.height = '46';
+
 var globalScoreDialog = null;
 
 var initUsername = function() {
@@ -68,7 +79,6 @@ var loop = function() {
     state.update(delta);
     state.render();
     TransitionManager.render();
-    globalBack.render();
 
     window.requestAnimationFrame(loop);
 };

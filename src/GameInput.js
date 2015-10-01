@@ -67,8 +67,6 @@ var StaticGameInput = function() {
     };
 
     this._dispatchClick = function(x, y) {
-        if (!globalBack.click(x, y)) {
-            StateManager.getState().click(x, y);
-        }
+        StateManager.getState().click(x, y);
     }
 };
