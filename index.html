@@ -44,7 +44,6 @@
 </head>
 <body>
     <canvas id="canvas"></canvas>
-    <input style="display:none" type="text" id="username-field" name="username" placeholder="Username for Hiscores" />
     <div class="adContainer" id="ad-container">
         <script>
             if (!window.AdInterface) {
@@ -53,6 +52,14 @@
                 );
             }
         </script>
+    </div>
+    <div class="submitScoreContainer" id="submit-score-container">
+        <h1 class="submitScoreTitle">join the high scores</h1>
+
+        <div class="submitScoreForm">
+            <input type="text" name="username" id="username-field" placeholder="Nickname">
+            <button type="button" name="submitScore" id="submit-score" onclick="Network.sendHiscore()">Submit</button>
+        </div>
     </div>
 </body>
 </html>

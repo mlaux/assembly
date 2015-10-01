@@ -622,7 +622,7 @@ var StaticGame = function() {
                     return;
                 }
                 if (this._isPointInsideSubmitButton(x, y)) {
-                    // submit stuff
+                    globalScoreDialog.style.display = 'block';
                     return;
                 }
 
@@ -702,11 +702,6 @@ var StaticGame = function() {
                 this.score++;
                 this.selectedPaddleIndex = -1;
             } else {
-                var username = document.getElementById('username-field').value;
-                username = username.toLowerCase();
-                if (username && this.score > 0) {
-                    Network.sendHiscore(username, this.score);
-                }
                 if (window.AdInterface) {
                     AdInterface.showAd();
                 } else {

@@ -20,20 +20,60 @@ canvas {
     height: 100%;
 }
 
-#username-field {
-    position: absolute;
-    width: 350px;
-    top: 90%;
-    left: calc(50% - 175px);
-    vertical-align: bottom;
-    z-index: 1;
+#submit-score-container {
 
-    background: #232323;
+    display: none;
+
+    position: relative;
+
+    margin: 0 auto;
+    height: 200px;
+    width: 40%;
+
     border: 1px solid white;
-    padding: 5px;
-    color: #fff;
-    font-size: 24pt;
-    outline: 0;
+
+    background-color: black;
+    color: white;
+
+    border-radius: 5px;
+}
+
+#submit-score-container input[type=text], #submit-score-container button {
+    background-color: black;
+    border: 1px solid white;
+    font-size: 20px;
+    color: white;
+}
+
+#submit-score-container input[type=text] {
+    height: 30px;
+}
+
+#submit-score-container button {
+    height: 34px;
+}
+
+.submitScoreTitle {
+    font: 36px Begok;
+    text-align: center;
+}
+
+.submitScoreForm {
+    text-align: center;
+}
+
+/* tablet */
+@media all and (max-width: 1024px) {
+    #submit-score-container {
+        width: 80%;
+    }
+}
+
+/* phone */
+@media all and (max-width: 768px) {
+    #submit-score-container {
+        width: 95%;
+    }
 }
 
 ::-webkit-input-placeholder {
@@ -50,12 +90,12 @@ canvas {
     src: url('assets/fonts/pirulen.regular.ttf');
 }
 
-@viewport{
+@viewport {
     zoom: 1.0;
     width: device-width;
 }
 
-@-ms-viewport{
+@-ms-viewport {
     zoom: 1.0;
     width: device-width;
 }
