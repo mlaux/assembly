@@ -14,7 +14,7 @@ var TitleLine = function(transitionLine, x, y) {
     this.render = function() {
         ctx.fillStyle = '#660000';
         ctx.fillStyle = '#' + Constants.COLOR_DARK_GRAY;
-        ctx.fillRect(this.pos[0] * canvas.width, this.pos[1] * canvas.height, this._getWidth(), this._getHeight());
+        ctx.fillRect(this.pos[0] * window.innerWidth, this.pos[1] * window.innerHeight, this._getWidth(), this._getHeight());
     };
 
     this.isDead = function() {
@@ -22,7 +22,7 @@ var TitleLine = function(transitionLine, x, y) {
     };
 
     this._getWidth = function() {
-        return canvas.width * this.width;
+        return window.innerWidth * this.width;
     };
 
     this._getHeight = function() {
@@ -36,7 +36,7 @@ var TitleLine = function(transitionLine, x, y) {
     this.init = function() {
         this.speed = transitionLine ? Math.random() * TransitionManager.LINE_BASE_TRANSITION_SPEED + TransitionManager.LINE_BASE_TRANSITION_SPEED : Math.random() * 0.006 + 0.001;
         this.width = transitionLine ? this._calculateTransitionWidth() : Math.random() * 0.4 + 0.2;
-        this.pos = [_.isNumber(x) ? x * (1 + this.width) - this.width : 1.0, _.isNumber(y) ? y : TitleScreen.getTitleYPos() / canvas.height + TitleScreen.getTitleFontHeight() / canvas.height * Math.random()];
+        this.pos = [_.isNumber(x) ? x * (1 + this.width) - this.width : 1.0, _.isNumber(y) ? y : TitleScreen.getTitleYPos() / window.innerHeight + TitleScreen.getTitleFontHeight() / window.innerHeight * Math.random()];
     };
     this.init();
 };

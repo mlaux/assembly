@@ -27,15 +27,15 @@ var StaticTitleScreen = function() {
 
         ctx.textBaseline = 'top';
         ctx.font = this._getTitleFontSize() + 'px Begok';
-        ctx.fillText('centrifuge', canvas.width / 2, this.getTitleYPos());
+        ctx.fillText('centrifuge', window.innerWidth / 2, this.getTitleYPos());
 
         ctx.font = this._getMenuFontSize() + 'px Begok';
         ctx.fillStyle = '#' + (this._mouseOverPlay(GameInput.mousePos[0], GameInput.mousePos[1]) ? Constants.COLOR_LIGHT_GRAY : Constants.COLOR_WHITE);
-        ctx.fillText('play', canvas.width / 2, this.getPlayYPos());
+        ctx.fillText('play', window.innerWidth / 2, this.getPlayYPos());
         ctx.fillStyle = '#' + (this._mouseOverInstructions(GameInput.mousePos[0], GameInput.mousePos[1]) ? Constants.COLOR_LIGHT_GRAY : Constants.COLOR_WHITE);
-        ctx.fillText('instructions', canvas.width / 2, this.getInstructionsYPos());
+        ctx.fillText('instructions', window.innerWidth / 2, this.getInstructionsYPos());
         ctx.fillStyle = '#' + (this._mouseOverScores(GameInput.mousePos[0], GameInput.mousePos[1]) ? Constants.COLOR_LIGHT_GRAY : Constants.COLOR_WHITE);
-        ctx.fillText('scores', canvas.width / 2, this.getScoreYPos());
+        ctx.fillText('scores', window.innerWidth / 2, this.getScoreYPos());
 
         for (var i = 0; i < this.lineList.length; i++) {
             this.lineList[i].render();
@@ -71,7 +71,7 @@ var StaticTitleScreen = function() {
             return false;
         }
 
-        if (x >= canvas.width / 2 - this.getPlayWidth() / 2 && x < canvas.width / 2 + this.getPlayWidth() / 2) {
+        if (x >= window.innerWidth / 2 - this.getPlayWidth() / 2 && x < window.innerWidth / 2 + this.getPlayWidth() / 2) {
             if (y >= this.getPlayYPos() && y < this.getPlayYPos() + this.getMenuFontHeight()) {
                 return true;
             }
@@ -84,7 +84,7 @@ var StaticTitleScreen = function() {
             return false;
         }
 
-        if (x >= canvas.width / 2 - this.getInstructionsWidth() / 2 && x < canvas.width / 2 + this.getInstructionsWidth() / 2) {
+        if (x >= window.innerWidth / 2 - this.getInstructionsWidth() / 2 && x < window.innerWidth / 2 + this.getInstructionsWidth() / 2) {
             if (y >= this.getInstructionsYPos() && y < this.getInstructionsYPos() + this.getMenuFontHeight()) {
                 return true;
             }
@@ -97,7 +97,7 @@ var StaticTitleScreen = function() {
             return false;
         }
 
-        if (x >= canvas.width / 2 - this.getScoreWidth() / 2 && x < canvas.width / 2 + this.getScoreWidth() / 2) {
+        if (x >= window.innerWidth / 2 - this.getScoreWidth() / 2 && x < window.innerWidth / 2 + this.getScoreWidth() / 2) {
             if (y >= this.getScoreYPos() && y < this.getScoreYPos() + this.getMenuFontHeight()) {
                 return true;
             }
@@ -113,28 +113,28 @@ var StaticTitleScreen = function() {
 
     // title methods
     this._getTitleFontSize = function() {
-        return canvas.width / 9;
+        return window.innerWidth / 9;
     };
 
     this.getTitleYPos = function() {
-        return canvas.height * 0.1;
+        return window.innerHeight * 0.1;
     };
 
     this.getTitleFontHeight = function() {
-        return canvas.width * 0.12;
+        return window.innerWidth * 0.12;
     };
 
     // menu methods
     this._getMenuFontSize = function() {
-        return canvas.width / 15 * (canvas.width > canvas.height ? 1 : 1.4);
+        return window.innerWidth / 15 * (window.innerWidth > window.innerHeight ? 1 : 1.4);
     };
 
     this.getPlayYPos = function() {
-        return canvas.height * (canvas.width > canvas.height ? 0.4 : 0.5);
+        return window.innerHeight * (window.innerWidth > window.innerHeight ? 0.4 : 0.5);
     };
 
     this.getPlayWidth = function() {
-        return canvas.width / 3.75 * (canvas.width > canvas.height ? 1 : 1.4);
+        return window.innerWidth / 3.75 * (window.innerWidth > window.innerHeight ? 1 : 1.4);
     };
 
     this.getInstructionsYPos = function() {
@@ -142,7 +142,7 @@ var StaticTitleScreen = function() {
     };
 
     this.getInstructionsWidth = function() {
-        return canvas.width / 1.5 * (canvas.width > canvas.height ? 1 : 1.4);
+        return window.innerWidth / 1.5 * (window.innerWidth > window.innerHeight ? 1 : 1.4);
     };
 
     this.getScoreYPos = function() {
@@ -150,10 +150,10 @@ var StaticTitleScreen = function() {
     };
 
     this.getScoreWidth = function() {
-        return canvas.width / 2.5 * (canvas.width > canvas.height ? 1 : 1.4);
+        return window.innerWidth / 2.5 * (window.innerWidth > window.innerHeight ? 1 : 1.4);
     };
 
     this.getMenuFontHeight = function() {
-        return canvas.width * 0.075 * (canvas.width > canvas.height ? 1 : 1.4);
+        return window.innerWidth * 0.075 * (window.innerWidth > window.innerHeight ? 1 : 1.4);
     };
 };

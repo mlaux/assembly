@@ -3,7 +3,7 @@
  */
 var StaticGuiUtils = function() {
     this.initializeContextForGui = function() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
         ctx.fillStyle = '#' + Constants.COLOR_WHITE;
         ctx.textAlign = 'center';

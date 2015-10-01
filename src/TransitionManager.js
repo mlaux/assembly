@@ -50,6 +50,6 @@ var StaticTransitionManager = function() {
 
     // other methods
     this.getLineHeight = function() {
-        return Math.max(canvas.width, canvas.height) * 0.005;
+        return Math.max(window.innerWidth, window.innerHeight) * 0.005;
     };
 };
