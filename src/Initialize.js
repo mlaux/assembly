@@ -57,7 +57,7 @@ var initUsername = function() {
 };
 
 var resize = function() {
-    if (window.devicePixelRatio) {
+    if (window.devicePixelRatio && window.AdInterface) {
         canvas.width = window.innerWidth * window.devicePixelRatio;
         canvas.height = window.innerHeight * window.devicePixelRatio;
 
