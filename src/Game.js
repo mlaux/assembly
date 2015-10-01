@@ -349,11 +349,13 @@ var StaticGame = function() {
         this.renderBall();
 
         if (this.loser) {
-            ctx.fillStyle = 'rgba(0, 0, 0, ' + (this.clickToContinueOpacity * 0.75) + ')';
+            ctx.globalAlpha = this.clickToContinueOpacity * 0.8;
+            ctx.fillStyle = '#' + Constants.COLOR_DARK_GRAY;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             this.renderLoser();
             this.renderLoserScore();
             this.renderBackButton();
+            this.renderSubmitButton();
         }
         if (this.clickToContinueOpacity > 0) {
             this.renderClickToContinue();
@@ -366,15 +368,74 @@ var StaticGame = function() {
         ctx.globalAlpha = this.clickToContinueOpacity;
 
         var pos = this._getBackButtonPosition();
-        var dimensions = this._getBackButtonDimensions();
-        console.log(dimensions);
-        ctx.drawImage(
-            globalBackButton,
-            canvas.width * 0.05,
-            canvas.height - canvas.width * 0.05 - dimensions[1],
-            dimensions[0],
-            dimensions[1]
-        );
+        var dimensions = this._getButtonDimensions();
+
+        var hover = this._isPointInsideBackButton(GameInput.mousePos[0], GameInput.mousePos[1]);
+
+        if (hover) {
+            ctx.drawImage(
+                globalBackButtonHover,
+                pos[0],
+                pos[1],
+                dimensions[0],
+                dimensions[1]
+            );
+        } else {
+            ctx.drawImage(
+                globalBackButton,
+                pos[0],
+                pos[1],
+                dimensions[0],
+                dimensions[1]
+            );
+        }
+
+        ctx.fillStyle = hover ? '#' + Constants.COLOR_LIGHT_GRAY : '#' + Constants.COLOR_WHITE;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+        ctx.font = this._getButtonFontSize() + 'px Begok ';
+        ctx.fillText('back', pos[0] + dimensions[0] / 2, pos[1] + dimensions[1]);
+
+        ctx.globalAlpha = 1;
+    };
+
+    this.renderSubmitButton = function() {
+        ctx.globalAlpha = this.clickToContinueOpacity;
+
+        var pos = this._getSubmitButtonPosition();
+        var dimensions = this._getButtonDimensions();
+
+        var hover = this._isPointInsideSubmitButton(GameInput.mousePos[0], GameInput.mousePos[1]);
+
+        ctx.translate(pos[0] + dimensions[0] / 2, pos[1] + dimensions[1] / 2);
+        ctx.scale(-1, 1);
+
+        if (hover) {
+            ctx.drawImage(
+                globalBackButtonHover,
+                -dimensions[0] / 2,
+                -dimensions[1] / 2,
+                dimensions[0],
+                dimensions[1]
+            );
+        } else {
+            ctx.drawImage(
+                globalBackButton,
+                -dimensions[0] / 2,
+                -dimensions[1] / 2,
+                dimensions[0],
+                dimensions[1]
+            );
+        }
+
+        ctx.scale(-1, 1);
+        ctx.translate(-pos[0] - dimensions[0] / 2, -pos[1] - dimensions[1] / 2);
+
+        ctx.fillStyle = hover ? '#' + Constants.COLOR_LIGHT_GRAY : '#' + Constants.COLOR_WHITE;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+        ctx.font = this._getButtonFontSize() + 'px Begok ';
+        ctx.fillText('submit', pos[0] + dimensions[0] / 2, pos[1] + dimensions[1]);
 
         ctx.globalAlpha = 1;
     };
@@ -552,6 +613,17 @@ var StaticGame = function() {
 
         if (this.loser) {
             if (this.clickToContinueOpacity > 0) {
+                if (this._isPointInsideBackButton(GameInput.mousePos[0], GameInput.mousePos[1])) {
+                    TransitionManager.startTransition(function() {
+                        StateManager.setState(StateManager.lastState);
+                    });
+                    return;
+                }
+                if (this._isPointInsideSubmitButton(GameInput.mousePos[0], GameInput.mousePos[1])) {
+                    // submit stuff
+                    return;
+                }
+
                 this.init();
             }
             return;
@@ -757,18 +829,50 @@ var StaticGame = function() {
     };
 
     this._getBackButtonPosition = function() {
-        var dim = this._getBackButtonDimensions();
+        var dim = this._getButtonDimensions();
         return [
             canvas.width * 0.05,
             canvas.height - canvas.width * 0.05 - dim[1]
         ]
     };
 
-    this._getBackButtonDimensions = function() {
+    this._getSubmitButtonPosition = function() {
+        var dim = this._getButtonDimensions();
+        return [
+            canvas.width - canvas.width * 0.05 - dim[0],
+            canvas.height - canvas.width * 0.05 - dim[1]
+        ]
+    };
+
+    this._getButtonDimensions = function() {
         return [
             canvas.width * 0.0005 * 153,
             canvas.width * 0.0005 * 128
         ];
+    };
+
+    this._getButtonFontSize = function() {
+        return canvas.width * 0.0175;
+    };
+
+    this._getButtonFontHeight = function() {
+        return canvas.width * 0.018;
+    };
+
+    this._isPointInsideBackButton = function(x, y) {
+        var pos = this._getBackButtonPosition();
+        var dim = this._getButtonDimensions();
+        dim[1] += this._getButtonFontHeight();
+
+        return x >= pos[0] && x < pos[0] + dim[0] && y >= pos[1] && y < pos[1] + dim[1];
+    };
+
+    this._isPointInsideSubmitButton = function(x, y) {
+        var pos = this._getSubmitButtonPosition();
+        var dim = this._getButtonDimensions();
+        dim[1] += this._getButtonFontHeight();
+
+        return x >= pos[0] && x < pos[0] + dim[0] && y >= pos[1] && y < pos[1] + dim[1];
     };
 
     // dont know if this is accurate

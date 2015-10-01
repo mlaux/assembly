@@ -39,6 +39,12 @@ globalBackButton.id = 'globalBackButton';
 globalBackButton.width = '55';
 globalBackButton.height = '46';
 
+var globalBackButtonHover = document.createElement('img');
+globalBackButtonHover.src = 'assets/back-button-hover.png';
+globalBackButtonHover.id = 'globalBackButtonHover';
+globalBackButtonHover.width = '55';
+globalBackButtonHover.height = '46';
+
 var resize = function() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
