@@ -9,6 +9,10 @@ var StaticTransitionManager = function() {
 
     this.update = function(delta) {
         for (var i = 0; i < this.transitions.length; i++) {
+            if (this.transitions[i].shouldCallback()) {
+                this.transitions[i].callback();
+                this.transitions[i].callback = null;
+            }
             if (this.transitions[i].isDone()) {
                 this.transitions.splice(i, 1);
                 i--;
@@ -27,12 +31,11 @@ var StaticTransitionManager = function() {
     };
 
     this.startTransition = function(callback) {
-        this.transitions.push(new Transition());
         var newCallback = function() {
             GameInput.scrollAmount = 0;
             callback();
         };
-        setTimeout(newCallback, this.getTransitionTime());
+        this.transitions.push(new Transition(newCallback));
     };
 
     this.isTransitioning = function() {

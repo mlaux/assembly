@@ -12,7 +12,7 @@ var TitleLine = function(transitionLine, x, y) {
     };
 
     this.render = function() {
-        ctx.fillStyle = '#660000';
+        // ctx.fillStyle = '#660000';
         ctx.fillStyle = '#' + Constants.COLOR_DARK_GRAY;
         ctx.fillRect(this.pos[0] * window.innerWidth, this.pos[1] * window.innerHeight, this._getWidth(), this._getHeight());
     };

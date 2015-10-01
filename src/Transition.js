@@ -2,9 +2,10 @@
  * Created by Trent on 9/30/2015.
  */
 
-var Transition = function() {
+var Transition = function(callback) {
     this.transitionLineList = [];
     this.startTransitionTime = time;
+    this.callback = callback;
 
     this.update = function(delta) {
         for (var i = 0; i < this.transitionLineList.length; i++) {
@@ -18,6 +19,10 @@ var Transition = function() {
         for (var i = 0; i < this.transitionLineList.length; i++) {
             this.transitionLineList[i].render();
         }
+    };
+
+    this.shouldCallback = function() {
+        return this.callback && time - this.startTransitionTime >= 1 * TransitionManager.getTransitionTime();
     };
 
     this.isTransitioning = function() {
