@@ -13,18 +13,18 @@ var Sparkle = function(x, y) {
     };
 
     this.render = function() {
-        var baseSize = Math.min(canvas.width, canvas.height);
+        var baseSize = Math.min(window.innerWidth, window.innerHeight);
         var radius = baseSize * 0.01;
-        ctx.drawImage(globalSparkle, this.pos[0] * baseSize + canvas.width / 2 - radius, this.pos[1] * baseSize + canvas.height / 2 - radius, radius * 2, radius * 2);
+        ctx.drawImage(globalSparkle, this.pos[0] * baseSize + window.innerWidth / 2 - radius, this.pos[1] * baseSize + window.innerHeight / 2 - radius, radius * 2, radius * 2);
     };
 
     this.isDead = function() {
-        var baseSize = Math.min(canvas.width, canvas.height);
+        var baseSize = Math.min(window.innerWidth, window.innerHeight);
         var radius = baseSize * 0.01;
-        var x = this.pos[0] * baseSize + canvas.width / 2 - radius;
-        var y = this.pos[1] * baseSize + canvas.height / 2 - radius;
+        var x = this.pos[0] * baseSize + window.innerWidth / 2 - radius;
+        var y = this.pos[1] * baseSize + window.innerHeight / 2 - radius;
 
-        if (x < 0 || x > canvas.width || y < 0 || y > canvas.height) {
+        if (x < 0 || x > window.innerWidth || y < 0 || y > window.innerHeight) {
             return true;
         }
         return false;

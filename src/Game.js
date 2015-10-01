@@ -120,7 +120,7 @@ var StaticGame = function() {
     };
 
     this.updateBall = function(delta) {
-        var baseSize = Math.min(canvas.width, canvas.height);
+        var baseSize = Math.min(window.innerWidth, window.innerHeight);
         if (this.desiredBallSpeed - this.ballSpeed <= this.BALL_ACCEL * delta) {
             this.ballSpeed = this.desiredBallSpeed;
         } else {
@@ -133,8 +133,8 @@ var StaticGame = function() {
         var outerCollisionPaddles = this.getCollisionPaddles(baseSize * this.CIRCLE_DIAMETER / 2 + baseSize * 0.2);
 
         var ballPos = [
-            canvas.width / 2 + this.ballPos[0] * baseSize,
-            canvas.height / 2 + this.ballPos[1] * baseSize
+            window.innerWidth / 2 + this.ballPos[0] * baseSize,
+            window.innerHeight / 2 + this.ballPos[1] * baseSize
         ];
         var newBallPos = [0, 0];
         var remainingDistance = this.ballSpeed * delta * baseSize;
@@ -151,8 +151,8 @@ var StaticGame = function() {
             var closestCollisionResultAngle = 0;
 
             newBallPos = [
-                canvas.width / 2 + this.ballPos[0] * baseSize + closestCollisionRemainingDistance * Math.cos(this.ballAngle),
-                canvas.height / 2 + this.ballPos[1] * baseSize + closestCollisionRemainingDistance * Math.sin(this.ballAngle)
+                window.innerWidth / 2 + this.ballPos[0] * baseSize + closestCollisionRemainingDistance * Math.cos(this.ballAngle),
+                window.innerHeight / 2 + this.ballPos[1] * baseSize + closestCollisionRemainingDistance * Math.sin(this.ballAngle)
             ];
             var ballDirUnitVector = [newBallPos[0] - ballPos[0], newBallPos[1] - ballPos[1]];
             var length = Math.sqrt(ballDirUnitVector[0] * ballDirUnitVector[0] + ballDirUnitVector[1] * ballDirUnitVector[1]);
@@ -180,8 +180,8 @@ var StaticGame = function() {
                     collided = true;
 
                     // check closest collision stuff
-                    var closestDistanceDX = intersectPoint[0] - canvas.width / 2;
-                    var closestDistanceDY = intersectPoint[1] - canvas.height / 2;
+                    var closestDistanceDX = intersectPoint[0] - window.innerWidth / 2;
+                    var closestDistanceDY = intersectPoint[1] - window.innerHeight / 2;
                     var closestDistance = Math.sqrt(closestDistanceDX * closestDistanceDX + closestDistanceDY * closestDistanceDY);
                     if (closestDistance >= closestCollisionDistance) {
                         continue;
@@ -236,8 +236,8 @@ var StaticGame = function() {
                         collided = true;
 
                         // check closest distance stuff
-                        var closestDistanceDX = intersectPoint[0] - canvas.width / 2;
-                        var closestDistanceDY = intersectPoint[1] - canvas.height / 2;
+                        var closestDistanceDX = intersectPoint[0] - window.innerWidth / 2;
+                        var closestDistanceDY = intersectPoint[1] - window.innerHeight / 2;
                         var closestDistance = Math.sqrt(closestDistanceDX * closestDistanceDX + closestDistanceDY * closestDistanceDY);
                         if (closestDistance >= closestCollisionDistance) {
                             continue;
@@ -272,8 +272,8 @@ var StaticGame = function() {
                 this.lastCollisionPoint[1] = closestCollisionPoint[1];
                 ballPos[0] = closestCollisionPoint[0] + Math.cos(this.ballAngle) * closestCollisionRemainingDistance;
                 ballPos[1] = closestCollisionPoint[1] + Math.sin(this.ballAngle) * closestCollisionRemainingDistance;
-                this.ballPos[0] = (ballPos[0] - canvas.width / 2) / baseSize;
-                this.ballPos[1] = (ballPos[1] - canvas.height / 2) / baseSize;
+                this.ballPos[0] = (ballPos[0] - window.innerWidth / 2) / baseSize;
+                this.ballPos[1] = (ballPos[1] - window.innerHeight / 2) / baseSize;
 
                 if (collidedIndex === -1) {
                     this.firstCollisionPoint[0] = this.lastCollisionPoint[0];
@@ -305,12 +305,12 @@ var StaticGame = function() {
             }
         }
 
-        this.ballPos[0] = (newBallPos[0] - canvas.width / 2) / baseSize;
-        this.ballPos[1] = (newBallPos[1] - canvas.height / 2) / baseSize;
+        this.ballPos[0] = (newBallPos[0] - window.innerWidth / 2) / baseSize;
+        this.ballPos[1] = (newBallPos[1] - window.innerHeight / 2) / baseSize;
 
         if (this.loser) {
-            this.ballPos[0] = (this.firstCollisionPoint[0] - canvas.width / 2) / baseSize;
-            this.ballPos[1] = (this.firstCollisionPoint[1] - canvas.height / 2) / baseSize;
+            this.ballPos[0] = (this.firstCollisionPoint[0] - window.innerWidth / 2) / baseSize;
+            this.ballPos[1] = (this.firstCollisionPoint[1] - window.innerHeight / 2) / baseSize;
         }
     };
 
@@ -322,18 +322,18 @@ var StaticGame = function() {
     };
 
     this.checkBallBoundaries = function() {
-        var baseSize = Math.min(canvas.width, canvas.height);
-        var ballPosX = this.ballPos[0] * baseSize + canvas.width / 2;
-        var ballPosY = this.ballPos[1] * baseSize + canvas.height / 2;
-        if (ballPosX < 0 || ballPosX > canvas.width || ballPosY < 0 || ballPosY > canvas.height) {
+        var baseSize = Math.min(window.innerWidth, window.innerHeight);
+        var ballPosX = this.ballPos[0] * baseSize + window.innerWidth / 2;
+        var ballPosY = this.ballPos[1] * baseSize + window.innerHeight / 2;
+        if (ballPosX < 0 || ballPosX > window.innerWidth || ballPosY < 0 || ballPosY > window.innerHeight) {
             this.ballPos[0] = 0;
             this.ballPos[1] = 0;
         }
     };
 
     this.render = function() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        var baseSize = Math.min(canvas.width, canvas.height);
+        ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+        var baseSize = Math.min(window.innerWidth, window.innerHeight);
         var currentScreenShake = [this.screenShakeAmount[0], this.screenShakeAmount[1]];
 
         ctx.translate(currentScreenShake[0] * baseSize, currentScreenShake[1] * baseSize);
@@ -352,7 +352,7 @@ var StaticGame = function() {
         if (this.loser) {
             ctx.globalAlpha = this.clickToContinueOpacity * 0.8;
             ctx.fillStyle = '#' + Constants.COLOR_DARK_GRAY;
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
             ctx.globalAlpha = 1;
             this.renderLoser();
             this.renderLoserScore();
@@ -383,22 +383,22 @@ var StaticGame = function() {
     };
 
     this.renderLoserScore = function() {
-        var baseSize = Math.min(canvas.width, canvas.height);
+        var baseSize = Math.min(window.innerWidth, window.innerHeight);
         var padding = baseSize * 0.1;
 
         ctx.fillStyle = 'rgba(255, 255, 255, 1)';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'top';
         ctx.font = (this._getLoserFontSize() / 5) + 'px PirulenRg-Regular';
-        ctx.fillText('score:   ', canvas.width / 2, canvas.height / 2 + padding);
+        ctx.fillText('score:   ', window.innerWidth / 2, window.innerHeight / 2 + padding);
 
         ctx.textAlign = 'left';
         ctx.font = (this._getLoserFontSize() / 5) + 'px PirulenRg-Regular';
-        ctx.fillText('' + this.score, canvas.width / 2 + canvas.width / 10, canvas.height / 2 + padding - canvas.width / 1600);
+        ctx.fillText('' + this.score, window.innerWidth / 2 + window.innerWidth / 10, window.innerHeight / 2 + padding - window.innerWidth / 1600);
     };
 
     this.renderBall = function() {
-        var baseSize = Math.min(canvas.width, canvas.height);
+        var baseSize = Math.min(window.innerWidth, window.innerHeight);
         var ballRadius = baseSize * this.BALL_DIAMETER / 2;
 
         ctx.fillStyle = '#ffffff';
@@ -408,8 +408,8 @@ var StaticGame = function() {
             var diameter = ballRadius * 2 * this.BALL_GLOW_RADIUS_PERCENT;
             ctx.drawImage(
                 globalBallGlow,
-                canvas.width / 2 + this.ballPos[0] * baseSize - diameter / 2,
-                canvas.height / 2 + this.ballPos[1] * baseSize - diameter / 2,
+                window.innerWidth / 2 + this.ballPos[0] * baseSize - diameter / 2,
+                window.innerHeight / 2 + this.ballPos[1] * baseSize - diameter / 2,
                 diameter,
                 diameter
             );
@@ -417,13 +417,13 @@ var StaticGame = function() {
         }
 
         ctx.beginPath();
-        ctx.arc(canvas.width / 2 + this.ballPos[0] * baseSize, canvas.height / 2 + this.ballPos[1] * baseSize, ballRadius, Math.PI * 2, false);
+        ctx.arc(window.innerWidth / 2 + this.ballPos[0] * baseSize, window.innerHeight / 2 + this.ballPos[1] * baseSize, ballRadius, Math.PI * 2, false);
         ctx.closePath();
         ctx.fill();
     };
 
     this.renderPaddles = function() {
-        var baseSize = Math.min(canvas.width, canvas.height);
+        var baseSize = Math.min(window.innerWidth, window.innerHeight);
         var paddleThickness = baseSize * this.PADDLE_THICKNESS;
         var radius = baseSize * this.CIRCLE_DIAMETER / 2;
 
@@ -450,7 +450,7 @@ var StaticGame = function() {
         for (var i = 0; i < this.paddleAngles.length; i++) {
             var angle = this.paddleAngles[i] + this.paddleAddAngle;
 
-            var pos = [canvas.width / 2 + Math.cos(angle) * radius, canvas.height / 2 + Math.sin(angle) * radius];
+            var pos = [window.innerWidth / 2 + Math.cos(angle) * radius, window.innerHeight / 2 + Math.sin(angle) * radius];
 
             var unitVector = [Math.cos(angle), Math.sin(angle)];
             var orthogonalUnitVector = this.getOrthogonalUnitVector(angle);
@@ -521,11 +521,11 @@ var StaticGame = function() {
         ctx.textAlign = 'center';
         ctx.textBaseline = 'alphabetic';
         ctx.font = this._getLoserFontSize() + 'px PirulenRg-Regular';
-        ctx.fillText('loser', canvas.width / 2, canvas.height / 2);
+        ctx.fillText('loser', window.innerWidth / 2, window.innerHeight / 2);
     };
 
     this.renderClickToContinue = function() {
-        var baseSize = Math.min(canvas.width, canvas.height);
+        var baseSize = Math.min(window.innerWidth, window.innerHeight);
         var padding = baseSize * 0.1;
 
         var fontHeight = this._getLoserFontHeight() / 5;
@@ -534,18 +534,18 @@ var StaticGame = function() {
         ctx.textAlign = 'center';
         ctx.textBaseline = 'top';
         ctx.font = (this._getLoserFontSize() / 5) + 'px PirulenRg-Regular';
-        ctx.fillText('tap to try again', canvas.width / 2, canvas.height / 2 + padding + fontHeight);
+        ctx.fillText('tap to try again', window.innerWidth / 2, window.innerHeight / 2 + padding + fontHeight);
     };
 
     this.renderScore = function() {
         ctx.fillStyle = '#' + Constants.COLOR_GRAY;
-        ctx.textAlign = canvas.height > canvas.width ? 'center' : 'left';
-        ctx.textBaseline = canvas.height > canvas.width ? 'top' : 'middle';
+        ctx.textAlign = window.innerHeight > window.innerWidth ? 'center' : 'left';
+        ctx.textBaseline = window.innerHeight > window.innerWidth ? 'top' : 'middle';
         ctx.font = this._getScoreFontSize() + 'px PirulenRg-Regular';
 
         ctx.fillText('' + this.score,
-            canvas.height > canvas.width ? canvas.width / 2 : canvas.width * 0.1,
-            canvas.height > canvas.width ? canvas.height * 0.1 : canvas.height / 2);
+            window.innerHeight > window.innerWidth ? window.innerWidth / 2 : window.innerWidth * 0.1,
+            window.innerHeight > window.innerWidth ? window.innerHeight * 0.1 : window.innerHeight / 2);
     };
 
     this.click = function(x, y) {
@@ -586,7 +586,7 @@ var StaticGame = function() {
         if (x === -1 && y === -1 || TransitionManager.isTransitioning()) {
             return -1;
         }
-        var clickAngle = Math.atan2(y - canvas.height / 2, x - canvas.width / 2);
+        var clickAngle = Math.atan2(y - window.innerHeight / 2, x - window.innerWidth / 2);
         var clickUnitVector = [Math.cos(clickAngle), Math.sin(clickAngle)];
 
         var smallestDistance = 2147483647;
@@ -656,7 +656,7 @@ var StaticGame = function() {
     };
 
     this.createSparkles = function(index) {
-        var baseSize = Math.min(canvas.width, canvas.height);
+        var baseSize = Math.min(window.innerWidth, window.innerHeight);
         var radius = baseSize * this.CIRCLE_DIAMETER / 2;
 
         var collisionPaddles = this.getCollisionPaddles(radius);
@@ -682,7 +682,7 @@ var StaticGame = function() {
     };
 
     this.getPaddleLength = function(sides) {
-        var baseSize = Math.min(canvas.width, canvas.height);
+        var baseSize = Math.min(window.innerWidth, window.innerHeight);
         var radius = baseSize * this.CIRCLE_DIAMETER / 2;
         var outerPaddleAngle = Math.PI * (sides - 2) / sides;
         var innerPaddleAngle = Math.PI - outerPaddleAngle;
@@ -706,7 +706,7 @@ var StaticGame = function() {
     this.getCollisionPaddles = function(radius) {
         this.returnPaddleLines = [];
 
-        var baseSize = Math.min(canvas.width, canvas.height);
+        var baseSize = Math.min(window.innerWidth, window.innerHeight);
         var ballRadius = baseSize * this.BALL_DIAMETER / 2;
         var paddleThickness = baseSize * this.PADDLE_THICKNESS;
 
@@ -734,7 +734,7 @@ var StaticGame = function() {
         for (var i = 0; i < this.paddleAngles.length; i++) {
             var angle = this.paddleAngles[i] + this.paddleAddAngle;
 
-            var pos = [canvas.width / 2 + Math.cos(angle) * radius, canvas.height / 2 + Math.sin(angle) * radius];
+            var pos = [window.innerWidth / 2 + Math.cos(angle) * radius, window.innerHeight / 2 + Math.sin(angle) * radius];
 
             var orthogonalUnitVector = this.getOrthogonalUnitVector(angle);
 
@@ -755,20 +755,20 @@ var StaticGame = function() {
 
     // other functions
     this._getScoreFontSize = function() {
-        return canvas.width / 12;
+        return window.innerWidth / 12;
     };
 
     this._getLoserFontHeight = function() {
-        return canvas.width * 0.25;
+        return window.innerWidth * 0.25;
     };
 
     this._getLoserFontSize = function() {
-        return canvas.width / 5;
+        return window.innerWidth / 5;
     };
 
     // dont know if this is accurate
     this._getLoserFontHeight = function() {
-        return canvas.width * 0.25;
+        return window.innerWidth * 0.25;
     };
 
     this._getPaddleColor = function(index) {

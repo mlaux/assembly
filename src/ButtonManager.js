@@ -74,32 +74,32 @@ var StaticButtonManager = function() {
     this.getBackButtonPosition = function() {
         var dim = this.getButtonDimensions();
         return [
-            canvas.width * 0.05,
-            canvas.height - canvas.width * 0.05 - dim[1]
+            window.innerWidth * 0.05,
+            window.innerHeight - window.innerWidth * 0.05 - dim[1]
         ]
     };
 
     this.getSubmitButtonPosition = function() {
         var dim = this.getButtonDimensions();
         return [
-            canvas.width - canvas.width * 0.05 - dim[0],
-            canvas.height - canvas.width * 0.05 - dim[1]
+            window.innerWidth - window.innerWidth * 0.05 - dim[0],
+            window.innerHeight - window.innerWidth * 0.05 - dim[1]
         ]
     };
 
     this.getButtonDimensions = function() {
         return [
-            canvas.width * 0.00075 * 153,
-            canvas.width * 0.00075 * 128
+            window.innerWidth * 0.00075 * 153,
+            window.innerWidth * 0.00075 * 128
         ];
     };
 
     this.getButtonFontSize = function() {
-        return canvas.width * 0.02625;
+        return window.innerWidth * 0.02625;
     };
 
     this.getButtonFontHeight = function() {
-        return canvas.width * 0.027;
+        return window.innerWidth * 0.027;
     };
 
     this.isPointInsideBackButton = function(x, y) {
@@ -110,7 +110,7 @@ var StaticButtonManager = function() {
         // top right point of bounding box
         var point = [
             pos[0] + dim[0] + pos[0],
-            pos[1] - (canvas.height - pos[1] - dim[1])
+            pos[1] - (window.innerHeight - pos[1] - dim[1])
         ];
 
         return x < point[0] && y >= point[1];
@@ -123,8 +123,8 @@ var StaticButtonManager = function() {
 
         // top left point of bounding box
         var point = [
-            pos[0] - (canvas.width - pos[0] - dim[0]),
-            pos[1] - (canvas.height - pos[1] - dim[1])
+            pos[0] - (window.innerWidth - pos[0] - dim[0]),
+            pos[1] - (window.innerHeight - pos[1] - dim[1])
         ];
 
         return x >= point[0] && y >= point[1];

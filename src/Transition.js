@@ -29,8 +29,8 @@ var Transition = function() {
     };
 
     this.init = function() {
-        for (var y = 0; y < canvas.height; y += TransitionManager.getLineHeight() - 1) {
-            this.transitionLineList.push(new TitleLine(true, 1.0, y / canvas.height));
+        for (var y = 0; y < window.innerHeight; y += TransitionManager.getLineHeight() - 1) {
+            this.transitionLineList.push(new TitleLine(true, 1.0, y / window.innerHeight));
         }
     };
     this.init();
