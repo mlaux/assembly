@@ -3,12 +3,26 @@
  */
 var StaticScoresScreen = function() {
     this.scores = [];
+    this.waitingForMore = false;
+    this.loadedAllScores = false;
 
     this.init = function() {
-        Network.queryHiscores(0, 20, function(obj) {
-            this.scores = obj['hiscores'];
-            this.scores.sort(function(a, b) {
-                return b['score'] - a['score'];
+        this.requestMoreScores();
+    };
+
+    this.requestMoreScores = function() {
+        if (this.waitingForMore || this.loadedAllScores) {
+            return;
+        }
+        this.waitingForMore = true;
+        Network.queryHiscores(this.scores.length, 20, function(obj) {
+            if (obj['hiscores'].length === 0) {
+                this.loadedAllScores = true;
+            }
+            this.waitingForMore = false;
+            this.scores = this.scores.concat(obj['hiscores']);
+            _.sortBy(this.scores, function(obj) {
+                return obj['score'];
             });
         }.bind(this));
     };
@@ -19,6 +33,19 @@ var StaticScoresScreen = function() {
 
     this.render = function() {
         GuiUtils.initializeContextForGui();
+
+        var allowableScrollAmount = 2 * this._getScoreFontSize() + canvas.height * 0.2;
+        allowableScrollAmount += (this.scores.length + 1) * this._getScoreFontSize();
+        allowableScrollAmount = canvas.height - allowableScrollAmount;
+        allowableScrollAmount = Math.min(0, allowableScrollAmount);
+
+        GameInput.scrollAmount = Math.max(allowableScrollAmount, GameInput.scrollAmount);
+
+        if (GameInput.scrollAmount <= allowableScrollAmount || allowableScrollAmount === 0) {
+            this.requestMoreScores();
+        }
+
+        ctx.translate(0, GameInput.scrollAmount);
 
         ctx.textBaseline = 'top';
         ctx.font = this._getScoreFontSize() * 2 + 'px Begok';
@@ -37,6 +64,8 @@ var StaticScoresScreen = function() {
             ctx.fillText(score['score'], window.innerWidth / 2 + window.innerWidth / 50 + window.innerWidth / 10, y - window.innerWidth / 240);
             y += this._getScoreFontSize();
         }
+
+        ctx.translate(0, -GameInput.scrollAmount);
 
         this.renderBackButton();
     };

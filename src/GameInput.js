@@ -6,6 +6,8 @@ var StaticGameInput = function() {
     this.mousePos = [-1, -1];
     this.mobilePhone = false;
 
+    this.scrollAmount = 0;
+
     this.init = function() {
         canvas.addEventListener('touchend', function(e) {
             this.mobilePhone = true;
@@ -22,6 +24,11 @@ var StaticGameInput = function() {
                 return;
             }
             var touch = e.targetTouches[0];
+
+            if (this.mousePos[1] !== -1) {
+                this.scrollAmount += touch.pageY - this.mousePos[1];
+                this.scrollAmount = Math.min(0, this.scrollAmount);
+            }
             this.mousePos[0] = touch.pageX;
             this.mousePos[1] = touch.pageY;
             e.preventDefault();
@@ -63,6 +70,10 @@ var StaticGameInput = function() {
             e.stopPropagation();
             return false;
         });
+        document.addEventListener('wheel', function(e) {
+            this.scrollAmount += e.deltaY * -3;
+            this.scrollAmount = Math.min(0, this.scrollAmount);
+        }.bind(this));
     };
 
     this._dispatchClick = function(x, y) {
