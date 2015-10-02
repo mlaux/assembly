@@ -43,6 +43,14 @@
         ga('create', 'UA-68155297-1', 'auto');
         ga('send', 'pageview');
     </script>
+
+    <script>
+        var ua = navigator.userAgent.toLowerCase();
+        var isAndroid = ua.indexOf("android") > -1; //&& ua.indexOf("mobile");
+        if (isAndroid) {
+            window.location = 'https://play.google.com/store/apps/details?id=com.zmansiv.assembly';
+        }
+    </script>
 </head>
 <body>
     <canvas id="canvas"></canvas>

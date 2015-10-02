@@ -17,6 +17,8 @@ canvas {
 }
 
 .supportHeader {
+    font-family: Begok, sans-serif;
+
     display: block;
 
     text-align: center;
@@ -27,12 +29,31 @@ canvas {
     color: #ffffff;
 }
 
+.privacyPolicy {
+    color: #ffffff;
+    margin-top: 80px;
+    margin-left: 40px;
+}
+
+.privacyPolicy .privacyPolicyHeader {
+    font-size: 24px;
+}
+
+.privacyPolicy p {
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+.privacyPolicy br {
+    line-height : 4px;
+}
+
 .supportEmail {
     display: block;
 
     text-align: center;
 
-    font-size: 30px;
+    font-size: 24px;
     color: #ffffff;
 }
 
