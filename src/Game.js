@@ -544,8 +544,8 @@ var StaticGame = function() {
         ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'alphabetic';
-        ctx.font = this._getLoserFontSize() + 'px PirulenRg-Regular';
-        ctx.fillText('loser', window.innerWidth / 2, window.innerHeight / 2);
+        ctx.font = this._getLoserFontSize() / 1.6 + 'px PirulenRg-Regular';
+        ctx.fillText('you lose', window.innerWidth / 2, window.innerHeight / 2);
     };
 
     this.renderClickToContinue = function() {
