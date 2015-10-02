@@ -10,7 +10,7 @@ var StaticSound = function() {
     this.context = null;
 
     this.init = function() {
-        if (this.inited) {
+        if (this.inited || !(window.AudioContext || window.webkitAudioContext)) {
             return;
         }
 
