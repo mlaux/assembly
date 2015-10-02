@@ -680,6 +680,7 @@ var StaticGame = function() {
                 this.shakeScreen(Math.pow(this.ballSpeed, 1.2) * 150.713185891);
                 this.score++;
                 this.selectedPaddleIndex = -1;
+                Sound.playSounds();
             } else {
                 if (window.AdInterface) {
                     AdInterface.showAd();

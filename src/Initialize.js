@@ -17,6 +17,7 @@ var Instructions = new StaticInstructions();
 var MathUtils = new StaticMathUtils();
 var Network = new StaticNetwork();
 var ScoresScreen = new StaticScoresScreen();
+var Sound = new StaticSound();
 var StateManager = new StaticStateManager();
 var TitleScreen = new StaticTitleScreen();
 var TransitionManager = new StaticTransitionManager();
@@ -103,6 +104,7 @@ window.onload = function() {
 
     GameInput.init();
     TitleScreen.init();
+    Sound.init();
     initUsername();
 
     loop();
