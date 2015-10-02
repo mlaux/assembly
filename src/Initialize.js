@@ -99,6 +99,7 @@ window.onload = function() {
     globalScoreDialog.style.display = 'none';
 
     resize();
+    window.onresize = resize;
 
     GameInput.init();
     TitleScreen.init();
@@ -107,5 +108,4 @@ window.onload = function() {
     loop();
 };
 
-window.onresize = resize;
 window.onerror = Network.reportError;

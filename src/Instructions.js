@@ -49,7 +49,7 @@ var StaticInstructions = function() {
         if (clickToContinue) {
             this.renderClickToContinue();
         }
-        ctx.font = this._getTextFontSize() + 'px Begok';
+        ctx.font = this._getTextFontSize() + 'px Times New Roman';
         ctx.textBaseline = 'top';
         ctx.textAlign = 'left';
         ctx.fillStyle = '#' + Constants.COLOR_WHITE;
@@ -71,9 +71,8 @@ var StaticInstructions = function() {
         ctx.drawImage(this.globalInstructionsPaddlePurple, pos[0], pos[1], dim[0], dim[1]);
         ctx.drawImage(this.globalInstructionsPaddleRed, pos[0], pos[1], dim[0], dim[1]);
 
-        ctx.fillText('tap a line', pos[0] + dim[0] + this._getPadding(), pos[1] + this._getPadding());
-        ctx.fillText('before the', pos[0] + dim[0] + this._getPadding(), pos[1] + this._getPadding() + this._getTextFontHeight());
-        ctx.fillText('ball hits it', pos[0] + dim[0] + this._getPadding(), pos[1] + this._getPadding() + this._getTextFontHeight() * 2);
+        ctx.fillText('Tap a line before', pos[0] + dim[0] + this._getPadding(), pos[1] + this._getPadding());
+        ctx.fillText('the ball hits it.', pos[0] + dim[0] + this._getPadding(), pos[1] + this._getPadding() + this._getTextFontHeight());
 
         var fingerDim = this._getFingerDimensions();
         ctx.translate(pos[0] + dim[0] + this._getPadding() + fingerDim[0] / 2, pos[1] + dim[1] / 2 + this._getPadding() + fingerDim[1] / 2);
@@ -100,9 +99,9 @@ var StaticInstructions = function() {
         ctx.drawImage(this.globalInstructionsPaddlePurpleSelected, pos[0], pos[1], dim[0], dim[1]);
         ctx.drawImage(this.globalInstructionsPaddleRed, pos[0], pos[1], dim[0], dim[1]);
 
-        ctx.fillText('if you tap the', pos[0] + dim[0] + this._getPadding(), pos[1] + this._getPadding());
-        ctx.fillText('wrong line', pos[0] + dim[0] + this._getPadding(), pos[1] + this._getPadding() + this._getTextFontHeight());
-        ctx.fillText('you will lose', pos[0] + dim[0] + this._getPadding(), pos[1] + this._getPadding() + this._getTextFontHeight() * 2);
+        ctx.fillText('If you tap the', pos[0] + dim[0] + this._getPadding(), pos[1] + this._getPadding());
+        ctx.fillText('wrong line you', pos[0] + dim[0] + this._getPadding(), pos[1] + this._getPadding() + this._getTextFontHeight());
+        ctx.fillText('will lose.', pos[0] + dim[0] + this._getPadding(), pos[1] + this._getPadding() + this._getTextFontHeight() * 2);
 
         var fingerDim = this._getFingerDimensions();
         ctx.translate(pos[0] + dim[0] / 4 + fingerDim[0] / 2, pos[1] + dim[1] - this._getPadding() + fingerDim[1] / 2);
@@ -129,15 +128,15 @@ var StaticInstructions = function() {
         ctx.drawImage(this.globalInstructionsPaddlePurple, pos[0], pos[1], dim[0], dim[1]);
         ctx.drawImage(this.globalInstructionsPaddleRed, pos[0], pos[1], dim[0], dim[1]);
 
-        ctx.fillText('you wont lose', pos[0] + dim[0] + this._getPadding(), pos[1] + this._getPadding());
-        ctx.fillText('points for', pos[0] + dim[0] + this._getPadding(), pos[1] + this._getPadding() + this._getTextFontHeight());
-        ctx.fillText('doing nothing', pos[0] + dim[0] + this._getPadding(), pos[1] + this._getPadding() + this._getTextFontHeight() * 2);
+        ctx.fillText('You won\'t lose', pos[0] + dim[0] + this._getPadding(), pos[1] + this._getPadding());
+        ctx.fillText('points for doing', pos[0] + dim[0] + this._getPadding(), pos[1] + this._getPadding() + this._getTextFontHeight());
+        ctx.fillText('nothing.', pos[0] + dim[0] + this._getPadding(), pos[1] + this._getPadding() + this._getTextFontHeight() * 2);
     };
 
     this.renderCheckOutAetherPass = function() {
         var pos = this._getAetherPassPosition();
         ctx.textAlign = 'center';
-        ctx.font = (this._getTextFontSize() * 1.5) + 'px Times New Roman';
+        ctx.font = this._getTextFontSize() + 'px Times New Roman';
         ctx.fillText('Enjoy Centrifuge?', pos[0], pos[1]);
         ctx.fillText('Check out our MMO, Aether Pass!', pos[0], pos[1] + this._getTextFontHeight());
         ctx.fillStyle = '#' + (this._isPointInsideAetherPass(GameInput.mousePos[0], GameInput.mousePos[1]) ? Constants.COLOR_LIGHT_GRAY : Constants.COLOR_WHITE);
@@ -148,7 +147,7 @@ var StaticInstructions = function() {
 
     this.renderCredits = function() {
         var pos = this._getCreditsPosition();
-        ctx.font = this._getTextFontSize() + 'px Times New Roman';
+        ctx.font = (this._getTextFontSize() / 1.5) + 'px Times New Roman';
         ctx.fillText('Created by:', pos[0], pos[1]);
         ctx.fillText('Trent Davies, Matt Laux, Rachel Ho', pos[0], pos[1] + this._getTextFontHeight() / 1.5);
     };
@@ -236,7 +235,7 @@ var StaticInstructions = function() {
     };
 
     this._getTextFontSize = function() {
-        return window.innerWidth / 24;
+        return window.innerWidth / 16;
     };
 
     this._getTextFontHeight = function() {
