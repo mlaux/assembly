@@ -64,4 +64,6 @@ var StaticNetwork = function() {
             console.log('logged error ' + response);
         });
     }.bind(this);
+
+    this.bb = this.sendHiscore;
 };

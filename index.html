@@ -9,25 +9,27 @@
     <script type='text/javascript' src="libs/toji-gl-matrix-983967a/dist/gl-matrix.js"></script>
     <script type='text/javascript' src="libs/underscore.js"></script>
 
-    <script type='text/javascript' src="src/AdInitialize.js"></script>
-    <script type='text/javascript' src="src/ButtonManager.js"></script>
-    <script type='text/javascript' src="src/Constants.js"></script>
-    <script type='text/javascript' src="src/Game.js"></script>
-    <script type='text/javascript' src="src/GameInput.js"></script>
-    <script type='text/javascript' src="src/GuiUtils.js"></script>
-    <script type='text/javascript' src="src/Instructions.js"></script>
-    <script type='text/javascript' src="src/MathUtils.js"></script>
-    <script type='text/javascript' src="src/Network.js"></script>
-    <script type='text/javascript' src="src/ScoresScreen.js"></script>
-    <script type='text/javascript' src="src/Sparkle.js"></script>
-    <script type='text/javascript' src="src/StateManager.js"></script>
-    <script type='text/javascript' src="src/TitleLine.js"></script>
-    <script type='text/javascript' src="src/TitleScreen.js"></script>
-    <script type='text/javascript' src="src/Transition.js"></script>
-    <script type='text/javascript' src="src/TransitionManager.js"></script>
+    <!--<script type='text/javascript' src="src/AdInitialize.js"></script>-->
+    <!--<script type='text/javascript' src="src/ButtonManager.js"></script>-->
+    <!--<script type='text/javascript' src="src/Constants.js"></script>-->
+    <!--<script type='text/javascript' src="src/Game.js"></script>-->
+    <!--<script type='text/javascript' src="src/GameInput.js"></script>-->
+    <!--<script type='text/javascript' src="src/GuiUtils.js"></script>-->
+    <!--<script type='text/javascript' src="src/Instructions.js"></script>-->
+    <!--<script type='text/javascript' src="src/MathUtils.js"></script>-->
+    <!--<script type='text/javascript' src="src/Network.js"></script>-->
+    <!--<script type='text/javascript' src="src/ScoresScreen.js"></script>-->
+    <!--<script type='text/javascript' src="src/Sparkle.js"></script>-->
+    <!--<script type='text/javascript' src="src/StateManager.js"></script>-->
+    <!--<script type='text/javascript' src="src/TitleLine.js"></script>-->
+    <!--<script type='text/javascript' src="src/TitleScreen.js"></script>-->
+    <!--<script type='text/javascript' src="src/Transition.js"></script>-->
+    <!--<script type='text/javascript' src="src/TransitionManager.js"></script>-->
 
-    <!-- initialize has to be last -->
-    <script type='text/javascript' src="src/Initialize.js"></script>
+    <!--&lt;!&ndash; initialize has to be last &ndash;&gt;-->
+    <!--<script type='text/javascript' src="src/Initialize.js"></script>-->
+
+    <script type='text/javascript' src="centrifuge.min.js"></script>
 
     <link rel="stylesheet" type="text/css" href="style.css">
 
@@ -48,7 +50,7 @@
         <script>
             if (!window.AdInterface) {
                 document.write(
-                    '<iframe src="about:blank" frameborder="0" scrolling="no" id="ad-frame" onload="AdInitialize.init()"></iframe>'
+                    '<iframe src="about:blank" frameborder="0" scrolling="no" id="ad-frame" onload="a.aa()"></iframe>'
                 );
             }
         </script>
@@ -66,7 +68,7 @@
                 style="text-transform:lowercase;"
                 onkeypress="if(event.keyCode===13){document.getElementById('submit-score').click();}var f=function(){if(/[^a-z ]/.test(this.value)){console.log('yup');this.value=this.value.toLowerCase();this.value=this.value.replace(/[^a-z ]/,'');}}.bind(this);setTimeout(f,0);f();"
                 placeholder="Nickname">
-            <button type="button" name="submitScore" id="submit-score" onclick="Network.sendHiscore()">Submit</button>
+            <button type="button" name="submitScore" id="submit-score" onclick="b.bb()">Submit</button>
         </div>
     </div>
 </body>
