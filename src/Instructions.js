@@ -45,7 +45,7 @@ var StaticInstructions = function() {
             }
         }
         var allowableScrollAmount = this._getCreditsPosition()[1] + this._getTextFontHeight() / 1.5 * 2 + this._getPadding();
-        allowableScrollAmount = canvas.height - allowableScrollAmount;
+        allowableScrollAmount = window.innerHeight - allowableScrollAmount;
         allowableScrollAmount = Math.min(0, allowableScrollAmount);
 
         GameInput.scrollAmount = Math.max(allowableScrollAmount, GameInput.scrollAmount);
@@ -57,7 +57,7 @@ var StaticInstructions = function() {
         if (clickToContinue) {
             this.renderClickToContinue();
         }
-        ctx.font = this._getTextFontSize() + 'px Times New Roman';
+        ctx.font = this._getTextFontSize() + 'px Arial';
         ctx.textBaseline = 'top';
         ctx.textAlign = 'left';
         ctx.fillStyle = '#' + Constants.COLOR_WHITE;
@@ -144,7 +144,7 @@ var StaticInstructions = function() {
     this.renderCheckOutAetherPass = function() {
         var pos = this._getAetherPassPosition();
         ctx.textAlign = 'center';
-        ctx.font = this._getTextFontSize() + 'px Times New Roman';
+        ctx.font = this._getTextFontSize() + 'px Arial';
         ctx.fillText('Enjoy Centrifuge?', pos[0], pos[1]);
         ctx.fillText('Check out our MMO, Aether Pass!', pos[0], pos[1] + this._getTextFontHeight());
         ctx.fillStyle = '#' + (this._isPointInsideAetherPass(GameInput.mousePos[0], GameInput.mousePos[1]) ? Constants.COLOR_LIGHT_GRAY : Constants.COLOR_WHITE);
@@ -155,7 +155,7 @@ var StaticInstructions = function() {
 
     this.renderCredits = function() {
         var pos = this._getCreditsPosition();
-        ctx.font = (this._getTextFontSize() / 1.5) + 'px Times New Roman';
+        ctx.font = (this._getTextFontSize() / 1.5) + 'px Arial';
         ctx.fillText('Created by:', pos[0], pos[1]);
         ctx.fillText('Trent Davies, Matt Laux, Rachel Ho', pos[0], pos[1] + this._getTextFontHeight() / 1.5);
     };
@@ -239,7 +239,8 @@ var StaticInstructions = function() {
     };
 
     this._getFingerDimensions = function() {
-        return [this.globalInstructionsFinger.width * 0.3, this.globalInstructionsFinger.height * 0.3];
+        return [this.globalInstructionsFinger.width * window.innerWidth * 3 / 9800,
+            this.globalInstructionsFinger.height * window.innerWidth * 3 / 9800];
     };
 
     this._getTextFontSize = function() {

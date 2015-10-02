@@ -34,9 +34,9 @@ var StaticScoresScreen = function() {
     this.render = function() {
         GuiUtils.initializeContextForGui();
 
-        var allowableScrollAmount = 2 * this._getScoreFontSize() + canvas.height * 0.2;
+        var allowableScrollAmount = 2 * this._getScoreFontSize() + window.innerHeight * 0.2;
         allowableScrollAmount += (this.scores.length + 1) * this._getScoreFontSize();
-        allowableScrollAmount = canvas.height - allowableScrollAmount;
+        allowableScrollAmount = window.innerHeight - allowableScrollAmount;
         allowableScrollAmount = Math.min(0, allowableScrollAmount);
 
         GameInput.scrollAmount = Math.max(allowableScrollAmount, GameInput.scrollAmount);
