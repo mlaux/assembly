@@ -8,6 +8,7 @@
     "targetTouches",
     "vel", "time", "username", "user", "score", "num",
     "aa", "bb",
+    "buffer", "responseType", "onload", "playbackRate",
     "style", "width", "height", "top", "display",
     "fillStyle", "textAlign", "textBaseline", "font",
     "globalAlpha", "value", "onresize", "window", "onerror", "src", "id", "onreadystatechange",
