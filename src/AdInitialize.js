@@ -90,4 +90,6 @@ var StaticAdInitialize = function() {
 
         this.resize();
     };
+
+    this.aa = this.init;
 };

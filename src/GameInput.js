@@ -59,7 +59,7 @@ var StaticGameInput = function() {
                     this.scrollVel = this.scrollVels[i].vel;
                 }
             }
-            if (dist / baseSize <= 0.025) {
+            if (dist / baseSize <= 0.04) {
                 this._dispatchClick(touch.pageX, touch.pageY);
             }
         }.bind(this));

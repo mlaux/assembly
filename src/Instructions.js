@@ -149,7 +149,7 @@ var StaticInstructions = function() {
         ctx.fillText('Check out our MMO, Aether Pass!', pos[0], pos[1] + this._getTextFontHeight());
         ctx.fillStyle = '#' + (this._isPointInsideAetherPass(GameInput.mousePos[0], GameInput.mousePos[1]) ? Constants.COLOR_LIGHT_GRAY : Constants.COLOR_WHITE);
         ctx.fillText('http://aetherpass.com/', pos[0], pos[1] + this._getTextFontHeight() * 2);
-        ctx.fillRect(pos[0] - window.innerWidth / 3.6, pos[1] + this._getTextFontHeight() * 3, window.innerWidth / 1.8, window.innerWidth / 400);
+        ctx.fillRect(pos[0] - window.innerWidth / 3.2, pos[1] + this._getTextFontHeight() * 3, window.innerWidth / 1.6, window.innerWidth / 400);
         ctx.fillStyle = '#' + Constants.COLOR_WHITE;
     };
 
@@ -254,7 +254,7 @@ var StaticInstructions = function() {
     this._isPointInsideAetherPass = function(x, y) {
         var pos = this._getAetherPassPosition();
         pos[1] += GameInput.scrollAmount + this._getTextFontHeight() * 2;
-        var dim = [window.innerWidth / 1.75, this._getTextFontHeight() * 1.3];
+        var dim = [window.innerWidth / 1.6, this._getTextFontHeight() * 1.3];
         return x >= pos[0] - dim[0] / 2 && x < pos[0] + dim[0] / 2 && y >= pos[1] && y < pos[1] + dim[1];
     };
 

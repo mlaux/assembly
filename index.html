@@ -49,7 +49,7 @@
         <script>
             if (!window.AdInterface) {
                 document.write(
-                    '<iframe src="about:blank" frameborder="0" scrolling="no" id="ad-frame" onload="AdInitialize.init()"></iframe>'
+                    '<iframe src="about:blank" frameborder="0" scrolling="no" id="ad-frame" onload="a.aa()"></iframe>'
                 );
             }
         </script>
@@ -67,7 +67,7 @@
                 style="text-transform:lowercase;"
                 onkeypress="if(event.keyCode===13){document.getElementById('submit-score').click();}var f=function(){if(/[^a-z ]/.test(this.value)){console.log('yup');this.value=this.value.toLowerCase();this.value=this.value.replace(/[^a-z ]/,'');}}.bind(this);setTimeout(f,0);f();"
                 placeholder="Nickname">
-            <button type="button" name="submitScore" id="submit-score" onclick="Network.sendHiscore()">Submit</button>
+            <button type="button" name="submitScore" id="submit-score" onclick="b.bb()">Submit</button>
         </div>
     </div>
 </body>

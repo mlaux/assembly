@@ -22,6 +22,9 @@ var StateManager = new StaticStateManager();
 var TitleScreen = new StaticTitleScreen();
 var TransitionManager = new StaticTransitionManager();
 
+var a = AdInitialize;
+var b = Network;
+
 var globalSparkle = document.createElement('img');
 globalSparkle.src = 'assets/sparkle.png';
 globalSparkle.id = 'globalSparkle';
