@@ -62,6 +62,7 @@ var StaticGameInput = function() {
             if (dist / baseSize <= 0.04) {
                 this._dispatchClick(touch.pageX, touch.pageY);
             }
+            Sound.init();
         }.bind(this));
         canvas.addEventListener('touchmove', function(e) {
             var baseSize = Math.min(window.innerWidth, window.innerHeight);

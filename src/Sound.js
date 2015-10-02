@@ -2,6 +2,7 @@
  * Created by mlaux on 10/2/15.
  */
 var StaticSound = function() {
+    this.inited = false;
     this.frequencies = [];
     this.soundBuffer = null;
     this.rate = 1;
@@ -9,7 +10,17 @@ var StaticSound = function() {
     this.context = null;
 
     this.init = function() {
-        this.context = new AudioContext();
+        if (this.inited) {
+            return;
+        }
+
+        this.context = window.AudioContext ? new AudioContext : new webkitAudioContext;
+        var oscillator = this.context.createOscillator();
+        oscillator.frequency.value = 400;
+        oscillator.connect(this.context.destination);
+        oscillator.start(0);
+        oscillator.stop(0);
+
         var request = new XMLHttpRequest();
 
         request.open('GET', 'note.wav', true);
@@ -18,9 +29,11 @@ var StaticSound = function() {
         request.onload = function() {
             this.context.decodeAudioData(request.response, function(buffer) {
                 this.soundBuffer = buffer;
-            }.bind(this));
+            }.bind(this), function(e) { console.log(e); });
         }.bind(this);
         request.send();
+
+        this.inited = true;
     };
 
     this.playSounds = function() {
