@@ -13,7 +13,7 @@ var StaticInstructions = function() {
     this.globalInstructionsPaddleRedSelected = null;
 
     this.haveSeenInstructions = window.localStorage ?
-        window.localStorage.getItem('centrifuge-have-seen-instructions5') ? '1' : '0'
+        window.localStorage.getItem('centrifuge-have-seen-instructions6') ? '1' : '0'
     : '0';
 
     this.update = function(delta) {
@@ -36,7 +36,7 @@ var StaticInstructions = function() {
             this.haveSeenInstructions = '1';
             if (window.localStorage) {
                 try {
-                    window.localStorage.setItem('centrifuge-have-seen-instructions5', '1');
+                    window.localStorage.setItem('centrifuge-have-seen-instructions6', '1');
                 } catch (e) {
                     console.error(e);
                 }
