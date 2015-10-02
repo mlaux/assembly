@@ -15,7 +15,6 @@ var StaticInstructions = function() {
     this.haveSeenInstructions = window.localStorage ?
         window.localStorage.getItem('centrifuge-have-seen-instructions5') ? '1' : '0'
     : '0';
-    console.log(this.haveSeenInstructions);
 
     this.update = function(delta) {
 
@@ -34,7 +33,6 @@ var StaticInstructions = function() {
 
     this.renderOverlay = function(clickToContinue) {
         if (this.haveSeenInstructions === '0') {
-            console.log('setting');
             this.haveSeenInstructions = '1';
             if (window.localStorage) {
                 try {

@@ -47,6 +47,10 @@ var StaticAdInitialize = function() {
     };
 
     this.show = function() {
+        if (!window.canRunAds) {
+            console.log('detected');
+            return;
+        }
         if (this.visible) {
             return;
         }
@@ -56,6 +60,10 @@ var StaticAdInitialize = function() {
     };
 
     this.refreshAd = function() {
+        if (!window.canRunAds) {
+            console.log('detected');
+            return;
+        }
         this.adFrame.contentWindow.location.replace('adPage.html');
     };
 
