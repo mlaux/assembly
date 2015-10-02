@@ -107,6 +107,9 @@ window.onload = function() {
 
     GameInput.init();
     TitleScreen.init();
+    if (!window.AdInterface) {
+        Sound.init();
+    }
     initUsername();
 
     loop();
