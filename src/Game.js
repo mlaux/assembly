@@ -840,6 +840,10 @@ var StaticGame = function() {
         this.rotateSpeed = 0;
         this.desiredRotateSpeed = 0.02;
 
+        Sound.rate = 1;
+        Sound.baseRate = 1;
+        Sound.frequencies = [];
+
         this.selectedPaddleIndex = -1;
 
         this.ballAngle = Math.PI * 2 * Math.random();
