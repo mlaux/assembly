@@ -36,7 +36,11 @@ var StaticNetwork = function() {
         var num = Game.score;
 
         if (window.localStorage) {
-            window.localStorage.setItem('centrifuge-username', user);
+            try {
+                window.localStorage.setItem('centrifuge-username', user);
+            } catch (e) {
+                console.error(e);
+            }
         }
 
         user = user.toLowerCase();

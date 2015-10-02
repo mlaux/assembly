@@ -829,7 +829,7 @@ var StaticGame = function() {
             AdInitialize.hide();
         }
 
-        if (!Instructions.haveSeenInstructions) {
+        if (Instructions.haveSeenInstructions === '0') {
             this.showingInstructions = true;
         }
 

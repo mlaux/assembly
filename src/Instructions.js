@@ -13,8 +13,9 @@ var StaticInstructions = function() {
     this.globalInstructionsPaddleRedSelected = null;
 
     this.haveSeenInstructions = window.localStorage ?
-        window.localStorage.getItem('centrifuge-have-seen-instructions') ? true : false
-    : true;
+        window.localStorage.getItem('centrifuge-have-seen-instructions5') ? '1' : '0'
+    : '0';
+    console.log(this.haveSeenInstructions);
 
     this.update = function(delta) {
 
@@ -32,9 +33,16 @@ var StaticInstructions = function() {
     };
 
     this.renderOverlay = function(clickToContinue) {
-        if (!this.haveSeenInstructions) {
-            this.haveSeenInstructions = true;
-            window.localStorage.setItem('centrifuge-have-seen-instructions', true);
+        if (this.haveSeenInstructions === '0') {
+            console.log('setting');
+            this.haveSeenInstructions = '1';
+            if (window.localStorage) {
+                try {
+                    window.localStorage.setItem('centrifuge-have-seen-instructions5', '1');
+                } catch (e) {
+                    console.error(e);
+                }
+            }
         }
         var allowableScrollAmount = this._getCreditsPosition()[1] + this._getTextFontHeight() / 1.5 * 2 + this._getPadding();
         allowableScrollAmount = canvas.height - allowableScrollAmount;
