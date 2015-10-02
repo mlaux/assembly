@@ -1,0 +1,12 @@
+{
+  "vars": [ "define", "require", "id", "a", "b" ],
+  "props": [ "length", "prototype",
+    "./PriorityQueue/AbstractPriorityQueue",
+    "./PriorityQueue/ArrayStrategy",
+    "./PriorityQueue/BinaryHeapStrategy",
+    "./PriorityQueue/BHeapStrategy",
+    "style", "width", "height", "top", "display",
+    "fillStyle", "textAlign", "textBaseline", "font",
+    "globalAlpha", "value", "onresize", "window", "onerror", "src", "id", "onreadystatechange",
+    "vec3", "vec4", "mat3", "mat4", "isArguments", "id" ]
+}
