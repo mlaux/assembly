@@ -2,6 +2,7 @@ html, body {
     margin: 0;
     padding: 0;
     background-color: #232323;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 canvas {
@@ -13,6 +14,31 @@ canvas {
 .adContainer {
     position: relative;
     top: -10000px;
+}
+
+.supportHeader {
+    display: block;
+
+    text-align: center;
+
+    margin-top: 40px;
+
+    font-size: 40px;
+    color: #ffffff;
+}
+
+.supportEmail {
+    display: block;
+
+    text-align: center;
+
+    font-size: 30px;
+    color: #ffffff;
+}
+
+a {
+    color: #ffffff;
+    text-decoration: underline;
 }
 
 #ad-frame {
