@@ -59,7 +59,7 @@ var StaticGameInput = function() {
                     this.scrollVel = this.scrollVels[i].vel;
                 }
             }
-            if (dist / baseSize <= 0.04) {
+            if (dist / baseSize <= 0.04 || (StateManager.state === StateManager.STATE_GAME && !Game.showingInstructions)) {
                 this._dispatchClick(touch.pageX, touch.pageY);
             }
             Sound.init();

@@ -308,6 +308,8 @@ var StaticGame = function() {
 
                 newBallPos[0] = returnPoint[0];
                 newBallPos[1] = returnPoint[1];
+                this.lastCollisionPoint[0] = newBallPos[0];
+                this.lastCollisionPoint[1] = newBallPos[1];
             }
         }
 
