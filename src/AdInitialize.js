@@ -48,7 +48,6 @@ var StaticAdInitialize = function() {
 
     this.show = function() {
         if (!window.canRunAds) {
-            console.log('detected');
             return;
         }
         if (this.visible) {
@@ -61,7 +60,6 @@ var StaticAdInitialize = function() {
 
     this.refreshAd = function() {
         if (!window.canRunAds) {
-            console.log('detected');
             return;
         }
         this.adFrame.contentWindow.location.replace('adPage.html');
@@ -90,7 +88,7 @@ var StaticAdInitialize = function() {
     };
 
     this.init = function() {
-        if (window.AdInterface) {
+        if (window.AdInterface || !window.canRunAds) {
             return;
         }
         this.container = document.getElementById('ad-container');
