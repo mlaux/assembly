@@ -79,5 +79,33 @@
             <button type="button" name="submitScore" id="submit-score" onclick="b.bb()">Submit</button>
         </div>
     </div>
+    <div class="appoverlay" id="appoverlay">
+        <div class="appoverlayTop"><div class="text">For a better experience, try it on your phone!</div></div>
+        <div class="bottomContainer">
+            <a href="https://play.google.com/store/apps/details?id=com.zmansiv.assembly"><img class="appLinkLeft" src="android-install.png" /></a>
+            <!--<a href="https://play.google.com/store/apps/details?id=com.zmansiv.assembly">--><img class="appLinkRight" src="iphone-install.png" /><!--</a>-->
+        </div>
+        <div class="continue" onclick="document.getElementById('appoverlay').style.display='none';">No thanks, play in browser.</div>
+    </div>
+    <script>
+        var haveSeenAppOverlay = window.localStorage ?
+            window.localStorage.getItem('centrifuge-have-seen-app-overlay') ? '1' : '0'
+        : '0';
+
+        var overlay = document.getElementById('appoverlay');
+        if (haveSeenAppOverlay === '0') {
+            overlay.style.display = 'block';
+        } else {
+            overlay.style.display = 'none';
+        }
+
+        if (window.localStorage) {
+            try {
+                window.localStorage.setItem('centrifuge-have-seen-app-overlay', '1');
+            } catch (e) {
+                console.error(e);
+            }
+        }
+    </script>
 </body>
 </html>
