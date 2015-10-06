@@ -52,9 +52,9 @@ var StaticTransitionManager = function() {
             this.startTransition(function() {
                 StateManager.setState(StateManager.lastState);
             });
-
+        } else {
             if (window.AdInterface) {
-                AdInterface.backSucceeded();
+                AdInterface.quitApp();
             }
         }
     };

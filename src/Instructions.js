@@ -263,9 +263,7 @@ var StaticInstructions = function() {
             } else {
                 AdInitialize.hide();
             }
-            TransitionManager.startTransition(function() {
-                StateManager.setState(StateManager.lastState);
-            });
+            TransitionManager.goBack();
             return;
         }
 
