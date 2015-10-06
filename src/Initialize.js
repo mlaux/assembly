@@ -93,7 +93,11 @@ var loop = function() {
     state.render();
     TransitionManager.render();
 
-    window.requestAnimationFrame(loop);
+    if (window.requestAnimationFrame) {
+        window.requestAnimationFrame(loop);
+    } else {
+        setTimeout(loop, 1000 / 60);
+    }
 };
 
 window.onload = function() {
