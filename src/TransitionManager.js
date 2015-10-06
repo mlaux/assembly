@@ -47,6 +47,18 @@ var StaticTransitionManager = function() {
         return false;
     };
 
+    this.goBack = function() {
+        if (StateManager.state !== StateManager.STATE_TITLE_SCREEN) {
+            this.startTransition(function() {
+                StateManager.setState(StateManager.lastState);
+            });
+
+            if (window.AdInterface) {
+                AdInterface.backSucceeded();
+            }
+        }
+    };
+
     this.getTransitionTime = function() {
         return 1.0 / (Constants.DELTA_SCALE * this.LINE_BASE_TRANSITION_SPEED);
     };

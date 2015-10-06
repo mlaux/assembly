@@ -597,9 +597,7 @@ var StaticGame = function() {
                     } else {
                         AdInitialize.hide();
                     }
-                    TransitionManager.startTransition(function() {
-                        StateManager.setState(StateManager.lastState);
-                    });
+                    TransitionManager.goBack();
                     return;
                 }
                 if (ButtonManager.isPointInsideSubmitButton(x, y)) {
